@@ -20,7 +20,7 @@ ext {
             //--------------------JUnit----------------------
             junit                         : "junit:junit:4.12",
             runner                        : "com.android.support.test:runner:1.0.2",
-            espressocore                 : "com.android.support.test.espresso:espresso-core:3.0.2",
+            espressocore                  : "com.android.support.test.espresso:espresso-core:3.0.2",
 
             //-------------------Android---------------------
             "support-v4"                    : "com.android.support:support-v4:${android.supportVersion}",
@@ -47,10 +47,10 @@ ext {
             //网络
             "volley"                        : "com.mcxiaoke.volley:library:1.0.19",
             "netty-all"                     : "io.netty:netty-all:4.1.4.Final",
-            "retrofit"                      : "com.squareup.retrofit2:retrofit:2.3.0",
-            "converter-gson"                : "com.squareup.retrofit2:converter-gson:2.3.0",
-            "retrofit-converters"           : "com.squareup.retrofit2:retrofit-converters:2.3.0",
-            "adapter-rxjava2"               : "com.squareup.retrofit2:adapter-rxjava2:2.3.0",
+            "retrofit2"                     : "com.squareup.retrofit2:retrofit:2.3.0",
+            "retrofit2-converter-gson"      : "com.squareup.retrofit2:converter-gson:2.3.0",
+            "retrofit2-converters"          : "com.squareup.retrofit2:retrofit-converters:2.3.0",
+            "retrofit2-adapter-rxjava2"     : "com.squareup.retrofit2:adapter-rxjava2:2.3.0",
 
             //异常统计
             "bugly"                         : "com.tencent.bugly:crashreport:2.6.6",
