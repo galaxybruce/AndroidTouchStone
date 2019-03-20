@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 时间不可修改， 让activity 充分时间渲染，避免activity动画切换背景为黑色
+            究其原因，就是因为 overridePendingTransition(int enterAnim, int exitAnim)
+             这个方法的第二个参数是设定即将结束的那个 activity 的结束动画。如果设置为0，那么它会直接不可见，即变成黑色，造成错误。
+    -->
+    <translate android:fromYDelta="0%p" android:toYDelta="0%p" android:duration="2000"/>
+</set>

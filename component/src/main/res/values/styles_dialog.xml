@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- =========这个文件中放一些dialog样式=========-->
+
+    <!--从底部进入动画-->
+    <style name="Style_Dialog_Anim_Up_Down" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/push_up_in</item>
+        <item name="android:windowExitAnimation">@anim/push_down_out</item>
+    </style>
+
+    <!--所有dialog父类主题，其他对话框都继承这个 -->
+    <style name="Theme_Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <!--没有动画的dialog样式，这里的parent好像可以不要-->
+    <style name="Style_Dialog_NoAnim" parent="Theme.AppCompat.Dialog">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+        <item name="android:taskOpenEnterAnimation">@null</item>
+        <item name="android:taskOpenExitAnimation">@null</item>
+        <item name="android:taskCloseEnterAnimation">@null</item>
+        <item name="android:taskCloseExitAnimation">@null</item>
+        <item name="android:taskToFrontEnterAnimation">@null</item>
+        <item name="android:taskToFrontExitAnimation">@null</item>
+        <item name="android:taskToBackEnterAnimation">@null</item>
+        <item name="android:taskToBackExitAnimation">@null</item>
+    </style>
+
+    <style name="Theme_Dialog_Anim_Up_Down" parent="@style/Theme_Dialog">
+        <item name="android:windowAnimationStyle">@style/Style_Dialog_Anim_Up_Down</item>
+    </style>
+
+    <style name="Theme_Dialog_Anim_Up_Down_Touch_Not_Close" parent="@style/Theme_Dialog_Anim_Up_Down">
+        <item name="android:windowCloseOnTouchOutside">false</item>
+    </style>
+
+    <style name="Theme_Dialog_NoAnim" parent="@style/Theme_Dialog">
+        <item name="android:windowAnimationStyle">@style/Style_Dialog_NoAnim</item>
+    </style>
+
+</resources>
