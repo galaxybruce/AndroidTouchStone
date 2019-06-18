@@ -18,7 +18,7 @@ import android.widget.TextView;
  */
 public class BBSAttrResolveUtil {
 
-    public static final String APP_THEME_NAME = "KidsWant_Theme";
+    public static final String APP_THEME_NAME = "GalaxyBruce_Theme";
 
     /**
      * 把自定义的样式插入到当前activity的Theme

@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="kidswant" />
+                <data android:scheme="galaxybruce" />
             </intent-filter>
         </activity>
     </application>
