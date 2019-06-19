@@ -11,7 +11,7 @@
  * 在项目根目录中引用：apply from: 'config.gradle'
  */
 ext {
-    applicationId = 'com.blankj.androidutilcode'
+    applicationId = 'com.galaxybruce.touchstone'
     appName = 'AndroidTouchStone'
     versionCode = 1_023_007
     versionName = '1.23.7'
