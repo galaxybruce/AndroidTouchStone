@@ -10,5 +10,5 @@ package com.galaxybruce.component.ui
  */
 interface IUiData {
 
-    fun isDataEmpty(): Boolean
+    fun isDataEmpty(): Boolean { return true }
 }

@@ -14,7 +14,7 @@ import android.view.View
 interface IUiInit {
 
     /** 在initView之前初始化数据  */
-    fun initData(bundle: Bundle?, savedInstanceState: Bundle? = null): Boolean
+    fun initData(bundle: Bundle?, savedInstanceState: Bundle? = null)
 
     /** 返回布局id  */
     fun bindLayoutId(): Int

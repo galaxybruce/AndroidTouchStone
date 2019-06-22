@@ -38,9 +38,7 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiRequest, IUiDataP
         setRootLayout(bindLayoutId())
         initData(intent.extras, savedInstanceState)
         initView(mContentView)
-        if(checkLogin()) {
-            bindData(savedInstanceState)
-        }
+        if(checkLogin()) bindData(savedInstanceState)
     }
 
     open fun setRootLayout(layoutId: Int) {

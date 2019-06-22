@@ -15,8 +15,20 @@ interface IUiRequest : IUiData {
 
     /**
      * 显示errorlayout中的loading的请求
+     * 这个方法中调用{sendRequestData()}
      */
-    fun requestDataWithLoading()
+    fun requestDataWithLoading() {}
 
-    fun sendRequestData()
+    /**
+     * 下拉刷新请求
+     * 这个方法中调用{sendRequestData()}
+     */
+    fun pullRefreshData() {}
+
+    fun sendRequestData() {}
+
+    /**
+     * 加载更多
+     */
+    fun sendRequestDataLoadMore() {}
 }
