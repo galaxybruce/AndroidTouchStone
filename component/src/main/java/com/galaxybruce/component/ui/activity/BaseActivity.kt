@@ -29,7 +29,9 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiRequest, IUiDataP
     protected lateinit var mContentView: View
 
     /** 和页面相关的缓存，比如生命周期相关的代理 */
-    private lateinit var mCache: Map<String, Any>
+    private val mCache: Map<String, Any> by lazy {
+        HashMap<String, Any>(4)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mActivity = this
@@ -78,9 +80,6 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiRequest, IUiDataP
     }
 
     override fun provideCache(): Map<String, Any> {
-        if (!this::mCache.isInitialized) {
-            mCache = HashMap(4)
-        }
         return mCache
     }
 
