@@ -6,6 +6,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':component')
+//    implementation project(':packagedemo')
+
 
     testImplementation rootProject.ext.dep.junit
     androidTestImplementation rootProject.ext.dep.runner
