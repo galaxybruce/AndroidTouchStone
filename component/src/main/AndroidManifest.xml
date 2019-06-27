@@ -13,4 +13,18 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
+
+    <application>
+        <provider
+            android:name=".util.GFileProvider"
+            android:authorities="${applicationId}.galaxybruce.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:multiprocess="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/galaxybruce_provider_paths" />
+        </provider>
+    </application>
+
 </manifest>

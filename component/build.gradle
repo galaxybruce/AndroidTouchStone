@@ -23,4 +23,6 @@ dependencies {
     api rootProject.ext.dep.constraint
     api rootProject.ext.dep.kotlin
 
+    api rootProject.ext.dep.androidUtilCode
+
 }

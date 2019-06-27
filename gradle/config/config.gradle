@@ -100,5 +100,6 @@ ext {
             retrofit                    : "com.squareup.retrofit2:retrofit:2.4.0",
             javassist                   : "org.javassist:javassist:3.24.0-GA",
             commons_io                  : "commons-io:commons-io:2.5",
+            androidUtilCode             : "com.blankj:utilcode:1.24.4"
     ]
 }

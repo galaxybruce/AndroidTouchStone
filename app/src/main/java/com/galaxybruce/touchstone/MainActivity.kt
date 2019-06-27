@@ -5,10 +5,14 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.galaxybruce.component.app.BaseApplication
-import com.galaxybruce.component.ui.activity.BaseActivity
+import com.galaxybruce.component.ui.activity.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseTitleBarActivity() {
+
+    override fun bindTitle(): CharSequence {
+        return "MainActivity"
+    }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
     }
@@ -18,12 +22,18 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView(view: View?) {
-        image.setOnClickListener { Toast.makeText(this, "I am a image", Toast.LENGTH_LONG).show() }
+        image.setOnClickListener {
+            Toast.makeText(this, "I am a image", Toast.LENGTH_LONG).show()
+        }
         Log.i("com.kidswant.ss-app", "isDebug: ${BaseApplication.isDebug()}" )
 
     }
 
     override fun bindData(savedInstanceState: Bundle?) {
+    }
+
+    override fun getTitleOverLabMode(): Boolean {
+        return true
     }
 
 }
