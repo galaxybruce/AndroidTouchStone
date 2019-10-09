@@ -1,6 +1,6 @@
 package com.galaxybruce.component.app
 
-import android.support.multidex.MultiDexApplication
+import androidx.multidex.MultiDexApplication
 import com.galaxybruce.component.BuildConfig
 import com.squareup.leakcanary.LeakCanary
 

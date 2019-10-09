@@ -1,6 +1,6 @@
 package com.galaxybruce.component.util;
 
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 
 /**
  * @date 2019-06-24 19:55

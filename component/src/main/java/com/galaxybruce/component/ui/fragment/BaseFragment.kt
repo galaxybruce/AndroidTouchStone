@@ -3,9 +3,9 @@ package com.galaxybruce.component.ui.fragment
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.IdRes
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+import androidx.annotation.IdRes
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +22,7 @@ import java.util.HashMap
  *
  * modification history:
  */
-abstract class BaseFragment : Fragment(), IUiInit, IUiRequest, IUiDataProvider {
+abstract class BaseFragment : androidx.fragment.app.Fragment(), IUiInit, IUiRequest, IUiDataProvider {
 
     protected lateinit var mActivity: Activity
     protected lateinit var mInflater: LayoutInflater

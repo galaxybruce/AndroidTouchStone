@@ -3,7 +3,7 @@ package com.galaxybruce.component.util;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;

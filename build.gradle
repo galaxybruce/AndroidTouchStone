@@ -36,12 +36,12 @@ allprojects {
         resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 
         // support_version
-        resolutionStrategy.eachDependency {
-            if (it.requested.group == 'com.android.support'
-                    && !it.requested.name.contains('multidex')) {
-                it.useVersion support_version
-            }
-        }
+//        resolutionStrategy.eachDependency {
+//            if (it.requested.group == 'com.android.support'
+//                    && !it.requested.name.contains('multidex')) {
+//                it.useVersion support_version
+//            }
+//        }
     }
 }
 
