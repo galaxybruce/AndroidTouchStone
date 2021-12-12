@@ -35,7 +35,7 @@ abstract class BaseFragment : Fragment(), IUiInit, IUiRequest, IUiDataProvider {
     /** 数据第一次加载过  */
     protected var mFirstLoad = true
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         mActivity = context as Activity
     }

@@ -35,7 +35,7 @@ subprojects {
             }
             if (details.requested.group == 'androidx.lifecycle') {
                 if (!details.requested.name.contains('lifecycle-extensions')) {
-                    details.useVersion "${library_version.lifecycle_version}"
+                    details.useVersion "${lifecycle_version}"
                 }
             }
         }

@@ -19,11 +19,12 @@ ext {
 
     android = [compileSdkVersion: 28,
                buildToolsVersion: "28.0.0",
-               minSdkVersion    : 16,
+               minSdkVersion    : 19,
                targetSdkVersion : 28,
     ]
 
     kotlin_version = '1.4.21'
+    lifecycle_version = "2.3.0"
 
     dep = [
             plugin  : [
@@ -64,6 +65,7 @@ ext {
             eventbus                    : "de.greenrobot:eventbus:2.4.0",
             //图片库
             glide                       : "com.github.bumptech.glide:glide:4.11.0",
+            glide_compiler              : "com.github.bumptech.glide:compiler:4.11.0",
             PhotoView                   : "com.github.chrisbanes:PhotoView:2.0.0",
 
             //json解析
@@ -84,6 +86,23 @@ ext {
             rxlifecycle                 : "com.trello.rxlifecycle2:rxlifecycle:2.0.1",
             rxlifecycle_android         : "com.trello.rxlifecycle2:rxlifecycle-android:2.0.1",
 
+            // ViewModel
+            lifecycle_viewmodel           : "androidx.lifecycle:lifecycle-viewmodel:${lifecycle_version}",
+            // LiveData
+            lifecycle_livedata            : "androidx.lifecycle:lifecycle-livedata:${lifecycle_version}",
+            // Saved state module for ViewModel
+            lifecycle_viewmodel_savedstate: "androidx.lifecycle:lifecycle-viewmodel-savedstate:${lifecycle_version}",
+            // Annotation processor
+            lifecycle_compiler           : "androidx.lifecycle:lifecycle-compiler:${lifecycle_version}",
+            // alternately - if using Java8, use the following instead of lifecycle-compiler
+            lifecycle_common_java8        : "androidx.lifecycle:lifecycle-common-java8:${lifecycle_version}",
+            // ViewModel
+            lifecycle_viewmodel_ktx       : "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle_version}",
+            // LiveData
+            lifecycle_livedata_ktx        : "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycle_version}",
+            lifecycle_runtime_ktx         : "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycle_version}",
+
+
             //异常统计
             bugly                       : "com.tencent.bugly:crashreport:3.4.4",
             //加载so
@@ -98,6 +117,8 @@ ext {
 
             javassist                   : "org.javassist:javassist:3.24.0-GA",
             commons_io                  : "commons-io:commons-io:2.5",
-            androidUtilCode             : "com.blankj:utilcode:1.28.4"
+            androidUtilCode             : "com.blankj:utilcode:1.28.4",
+
+            anchors                     : "com.galaxybruce.android:anchors:1.1.4",
     ]
 }
