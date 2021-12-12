@@ -4,50 +4,131 @@ apply {
     plugin "kotlin-android-extensions"
 }
 
+apply {
+    from "${rootDir.path}/gradle/config/util.gradle"
+}
+
 configSigning project
 configApkName project
 
 android {
+    compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
-        applicationId rootProject.applicationId + suffix
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
+        applicationId rootProject.applicationId
+        applicationIdSuffix appIdSuffix()
         versionCode rootProject.versionCode
         versionName rootProject.versionName
         multiDexEnabled true
-        resValue "string", "app_name", rootProject.appName + suffix
+        resValue "string", "app_name", rootProject.appName + appIdSuffix()
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
+
+        manifestPlaceholders = [
+                "APP_NAME"                  : "${rootProject.appName}",
+                "APP_CODE"                  : "${rootProject.appCode}",
+        ]
     }
 
     buildTypes {
         debug {
-            minifyEnabled false
+            def debugAble = equalLocalValue(project, 'DEBUG_ABLE', 'true')
+            versionNameSuffix "-debug"
+            minifyEnabled !debugAble
+            zipAlignEnabled !debugAble
+            shrinkResources !debugAble
+            applicationIdSuffix appIdSuffix()
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.releaseConfig
+            buildConfigField "boolean", "DEBUG_ABLE", debugAble.toString()
         }
+
         release {
             minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            applicationIdSuffix appIdSuffix()
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.releaseConfig
+            buildConfigField "boolean", "DEBUG_ABLE", "false"
+        }
+    }
+
+    sourceSets {
+        main {
+//            manifest.srcFile 'src/main/AndroidManifest.xml'
+//            java.srcDirs = ['src/main/java']
+//            resources.srcDirs = ['src/main/resources']
+//            res.srcDirs = ['src/main/res']
+//            assets.srcDirs = ['src/main/assets']
+            jniLibs.srcDirs = ['libs']
         }
     }
 
     lintOptions {
         abortOnError false
+        checkReleaseBuilds false    // flutter release模式下打包失败
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/notice'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license'
+        exclude 'META-INF/license.txt'
+    }
+
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
+
+    buildFeatures {
+        dataBinding true
     }
 }
 
-
 dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+
+    testImplementation rootProject.ext.dep["junit"]
+    androidTestImplementation rootProject.ext.dep["runner"]
+    androidTestImplementation rootProject.ext.dep.espressocore
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
+
     // LeakCanary
     debugImplementation dep.leakcanary.android
-    debugImplementation dep.leakcanary.support_fragment
-    releaseImplementation dep.leakcanary.android_no_op
 }
 
-private String getSuffix() {
-    return "" //project.name
+private String appIdSuffix() {
+    def result = ""
+    if (project.hasProperty('appIdSuffix')) {
+        result = project.appIdSuffix
+    }
+    return result
 }
 
 def configSigning(Project pro) {
@@ -68,6 +149,7 @@ def configSigning(Project pro) {
             }
         }
         buildTypes.release.signingConfig signingConfigs.release
+        buildTypes.debug.signingConfig signingConfigs.release
     }
     println "$pro.name config sign end..."
 }

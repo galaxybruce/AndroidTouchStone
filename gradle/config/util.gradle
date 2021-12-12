@@ -1,0 +1,59 @@
+
+
+/**
+ * 公司内部通用library依赖方式，便有maven和源码间切换
+ * @param project
+ * @param dependencyNotation
+ * @param configurationName
+ */
+static void addCommonDependency(Project project, String dependencyNotation, String configurationName = 'api') {
+    try {
+        def moduleName = dependencyNotation.split(":")[1]
+        if(project.name == moduleName) {
+            return
+        }
+        def module = project.rootProject.findProject(":$moduleName")
+        if (module) {
+            println("========================== common module依赖: $moduleName")
+            project.dependencies.add(configurationName, module)
+        } else {
+            project.dependencies.add(configurationName, dependencyNotation)
+        }
+    } catch (Exception e) {
+        println("addCommonDependency failed: " + dependencyNotation)
+    }
+}
+
+
+/**
+ * 第一个参数可能是settings和project
+ * @param project
+ * @param key
+ * @return
+ */
+static String getLocalValue(Object project, String key) {
+    Properties localProperties = new Properties()
+    def localPropertiesFile = new File(project.rootDir, 'local.properties')
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.withReader('UTF-8') { reader ->
+            localProperties.load(reader)
+        }
+    }
+
+    if(localProperties != null) {
+        return localProperties.getProperty(key)
+    }
+    return null
+}
+
+static boolean equalLocalValue(Object project, String key, String value) {
+    return value == getLocalValue(project, key)
+}
+
+
+ext{
+    addDependency = this.&addDependency
+    addCommonDependency = this.&addCommonDependency
+    equalLocalValue = this.&equalLocalValue
+    getLocalValue = this.&getLocalValue
+}

@@ -2,16 +2,32 @@ apply {
     plugin "com.android.library"
     plugin "kotlin-android"
     plugin "kotlin-android-extensions"
+    plugin "kotlin-kapt"
 }
 
 android {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     compileSdkVersion rootProject.ext.android.compileSdkVersion
+
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
-        versionCode rootProject.versionCode
-        versionName rootProject.versionName
+        versionCode 1
+        versionName "1.0"
 
         consumerProguardFiles 'proguard-rules.pro'
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
     }
 
     buildTypes {
@@ -20,16 +36,36 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+//            manifest.srcFile 'src/main/AndroidManifest.xml'
+//            java.srcDirs = ['src/main/java']
+//            resources.srcDirs = ['src/main/resources']
+//            res.srcDirs = ['src/main/res']
+//            assets.srcDirs = ['src/main/assets']
+            jniLibs.srcDir("libs")
         }
     }
 
     lintOptions {
         abortOnError false
     }
-}
 
+    // 这里是开放实验类型的features，比如从Kotlin 1.1.4起，Extensions加入了在ViewHolder中使用视图绑定的增强功能，由于这项功能还未正式发布，因此需要开启实验标志
+    // 建议不要这样做，新feature可能不稳定
+    androidExtensions {
+        experimental = true
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+}
 
 dependencies {
     testImplementation rootProject.ext.dep.junit
@@ -42,3 +78,5 @@ afterEvaluate {
     generateReleaseBuildConfig.enabled = true
     generateDebugBuildConfig.enabled = true
 }
+
+version='1.0.0-SNAPSHOT'

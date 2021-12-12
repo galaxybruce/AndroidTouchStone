@@ -1,15 +1,12 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    apply from: './gradle/config/config.gradle'
+    apply from: rootProject.file('gradle/config/config.gradle')
 
     repositories {
+        // 阿里仓库地址 https://maven.aliyun.com/mvn/guide
+        maven { url 'https://maven.aliyun.com/repository/public'}
         maven { url "https://maven.aliyun.com/repository/google" }
-        maven { url "https://maven.aliyun.com/repository/central" }
-        maven { url "https://maven.aliyun.com/repository/jcenter" }
-
-        google()
-        jcenter()
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
     }
 
     dependencies {
@@ -21,27 +18,57 @@ buildscript {
 
 allprojects {
     repositories {
+        // 阿里仓库地址 https://maven.aliyun.com/mvn/guide
+        maven { url 'https://maven.aliyun.com/repository/public'}
         maven { url "https://maven.aliyun.com/repository/google" }
-        maven { url "https://maven.aliyun.com/repository/central" }
-        maven { url "https://maven.aliyun.com/repository/jcenter" }
-        maven { url "https://maven.aliyun.com/nexus/content/repositories/releases" }
-        maven { url "https://jitpack.io" }
-        maven { url "https://dl.bintray.com/thelasterstar/maven/" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+    }
+}
 
-        google()
-        jcenter()
+subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'org.jetbrains.kotlin') {
+                if (details.requested.name.contains('kotlin-')) {// details.requested.name == 'kotlin-stdlib' && details.requested.version == '1.3.0-rc-57'
+                    details.useVersion "${kotlin_version}"
+                }
+            }
+            if (details.requested.group == 'androidx.lifecycle') {
+                if (!details.requested.name.contains('lifecycle-extensions')) {
+                    details.useVersion "${library_version.lifecycle_version}"
+                }
+            }
+        }
+
+        resolutionStrategy {
+//            force 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.3.4'
+            int cacheTime = 24
+            // hours minutes seconds
+            cacheChangingModulesFor cacheTime, 'hours'  // SNAPSHOT版本号
+            cacheDynamicVersionsFor cacheTime, 'hours'  // 采用动态版本声明的依赖缓存10分钟
+        }
+
+        resolutionStrategy.dependencySubstitution {
+           // todo
+        }
     }
 
-    configurations.all {
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    project.afterEvaluate {
+        if (project.plugins.hasPlugin(com.android.build.gradle.AppPlugin)
+                || project.plugins.hasPlugin(com.android.build.gradle.LibraryPlugin)) {
+            project.android.defaultConfig {
+//                buildConfigField "String", "APP_NAME", "\"${rootProject.appName}\""
+//                buildConfigField "String", "APP_CODE", "\"${rootProject.appCode}\""
+//                resValue("string", "APP_NAME", "${BASE_APPSCHEME}")
+            }
 
-        // support_version
-//        resolutionStrategy.eachDependency {
-//            if (it.requested.group == 'com.android.support'
-//                    && !it.requested.name.contains('multidex')) {
-//                it.useVersion support_version
-//            }
-//        }
+            if (project.name == "app") {
+                project.android.flavorDimensions "APP"
+//                project.android.productFlavors.all {
+//                    flavor -> flavor.manifestPlaceholders = [InstallChannel_Value: name]
+//                }
+            }
+        }
     }
 }
 
