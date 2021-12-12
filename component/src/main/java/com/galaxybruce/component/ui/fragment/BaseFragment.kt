@@ -22,7 +22,7 @@ import java.util.HashMap
  *
  * modification history:
  */
-abstract class BaseFragment : androidx.fragment.app.Fragment(), IUiInit, IUiRequest, IUiDataProvider {
+abstract class BaseFragment : Fragment(), IUiInit, IUiRequest, IUiDataProvider {
 
     protected lateinit var mActivity: Activity
     protected lateinit var mInflater: LayoutInflater
