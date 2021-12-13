@@ -73,6 +73,7 @@ ext {
             gson                        : "com.google.code.gson:gson:2.8.2",
 
             //网络
+            okhttp                      : "com.squareup.okhttp3:okhttp:4.9.0",
             volley                      : "com.mcxiaoke.volley:library:1.0.19",
             retrofit2                   : "com.squareup.retrofit2:retrofit:2.4.0",
             retrofit2_converter_gson    : "com.squareup.retrofit2:converter-gson:2.4.0",

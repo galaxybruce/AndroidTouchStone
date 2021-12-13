@@ -7,7 +7,7 @@ package com.galaxybruce.component.net;
  * <p>
  * modification history:
  */
-public class NetException extends IllegalArgumentException {
+public class AppException extends IllegalArgumentException {
 
     public enum ErrorType {
         NET, PARSE
@@ -16,34 +16,34 @@ public class NetException extends IllegalArgumentException {
     private ErrorType errorType;
     private int errorCode;
 
-    public NetException() {
+    public AppException() {
     }
 
-    public NetException(String detailMessage) {
+    public AppException(String detailMessage) {
         super(detailMessage);
     }
 
-    public NetException(String detailMessage, Throwable throwable) {
+    public AppException(String detailMessage, Throwable throwable) {
         super(detailMessage, throwable);
     }
 
-    public NetException(String detailMessage, ErrorType error) {
+    public AppException(String detailMessage, ErrorType error) {
         super(detailMessage);
         this.errorType = error;
     }
 
-    public NetException(String detailMessage, int errorCode) {
+    public AppException(String detailMessage, int errorCode) {
         super(detailMessage);
         this.errorCode = errorCode;
     }
 
-    public NetException(String detailMessage, ErrorType error, int errorCode) {
+    public AppException(String detailMessage, ErrorType error, int errorCode) {
         super(detailMessage);
         this.errorType = error;
         this.errorCode = errorCode;
     }
 
-    public NetException(Throwable throwable) {
+    public AppException(Throwable throwable) {
         super(throwable);
     }
 

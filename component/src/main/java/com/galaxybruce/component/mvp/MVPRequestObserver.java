@@ -1,6 +1,6 @@
 package com.galaxybruce.component.mvp;
 
-import com.galaxybruce.component.net.NetException;
+import com.galaxybruce.component.net.AppException;
 import com.galaxybruce.component.net.ResponseStatus;
 
 import io.reactivex.Observer;
@@ -53,7 +53,7 @@ public abstract class MVPRequestObserver<T> implements Observer<T> {
                     // todo 这里可能和LoginExpiresEvent事件重复
                     hideLoadingDialog();
                     view.reLogin();
-                    onFinalError(new NetException(responseStatus.getMessage(), responseStatus.getCode()));
+                    onFinalError(new AppException(responseStatus.getMessage(), responseStatus.getCode()));
                     dispose();
                     return;
                 }
@@ -63,7 +63,7 @@ public abstract class MVPRequestObserver<T> implements Observer<T> {
             if (responseStatus.success()) {
                 onFinalNext(t);
             } else {
-                onError(new NetException(responseStatus.getMessage(), responseStatus.getCode()));
+                onError(new AppException(responseStatus.getMessage(), responseStatus.getCode()));
             }
         } else {
             onFinalNext(t);
@@ -76,10 +76,10 @@ public abstract class MVPRequestObserver<T> implements Observer<T> {
             getPresenter().clearLoginTask();
         }
         dispose();
-        if(e instanceof NetException) {
-            onFinalError((NetException)e);
+        if(e instanceof AppException) {
+            onFinalError((AppException)e);
         } else {
-            onFinalError(new NetException(e.getMessage()));
+            onFinalError(new AppException(e.getMessage()));
         }
         hideLoadingDialog();
     }
@@ -98,7 +98,7 @@ public abstract class MVPRequestObserver<T> implements Observer<T> {
 
     public abstract void onFinalNext(T t);
 
-    public abstract void onFinalError(NetException e);
+    public abstract void onFinalError(AppException e);
 
     public abstract MvpBasePresenter getPresenter();
 

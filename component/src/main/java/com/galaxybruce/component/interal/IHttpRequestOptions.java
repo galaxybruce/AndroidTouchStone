@@ -1,5 +1,6 @@
 package com.galaxybruce.component.interal;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,7 +12,31 @@ import java.util.Map;
  */
 public interface IHttpRequestOptions {
 
-    void addCookies(Map<String, String> params, Map<String, String> cookies);
+    /**
+     * 请求cookie
+     * 有两部分组成，CookieManager.generateCommonCookie() + 额外的业务cookie
+     * @param requestParams 请求中参数生成的Map
+     */
+    Map<String, String> generateCookies(Map<String, String> requestParams);
 
-    Map<String, String> addHeaders(Map<String, String> params);
+    /**
+     * WebView中的cookie
+     * 有两部分组成，CookieManager.generateCommonCookie() + 额外的业务cookie
+     * @return
+     */
+    Map<String, String> generateWebCookies();
+
+    /**
+     * 请求header中增加参数
+     * @param requestParams 请求中参数生成的Map
+     * @return
+     */
+    Map<String, String> generateHeaders(Map<String, String> requestParams);
+
+    /**
+     * 添加cookie的域名
+     * 在app里挂了站外地址，域名需要在这里提供
+     * */
+    List<String> getCookieDomains();
+
 }
