@@ -2,6 +2,7 @@ package com.galaxybruce.touchstone.task;
 
 import android.app.Application;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.effective.android.anchors.Process;
 import com.effective.android.anchors.Task;
 import com.galaxybruce.component.interal.AppInternal;
@@ -37,6 +38,7 @@ public class InitNecessaryTask_Main_Process extends Task implements IProguardKee
         initBugly(application);
         initRxJavaExceptionHandler();
         initInternal(application);
+        initRouter(application);
     }
 
     private void initBugly(Application application) {
@@ -91,5 +93,12 @@ public class InitNecessaryTask_Main_Process extends Task implements IProguardKee
         });
     }
 
+    private void initRouter(Application application) {
+        if (BuildConfig.DEBUG) {
+            ARouter.openLog();
+            ARouter.openDebug();
+        }
+        ARouter.init(application);
+    }
 
 }

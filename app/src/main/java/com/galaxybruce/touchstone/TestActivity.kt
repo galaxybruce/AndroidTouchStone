@@ -1,15 +1,19 @@
 package com.galaxybruce.touchstone
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import com.alibaba.android.arouter.launcher.ARouter
+import android.widget.Toast
+import com.alibaba.android.arouter.facade.annotation.Route
+import com.galaxybruce.component.app.BaseApplication
 import com.galaxybruce.component.ui.activity.BaseTitleBarActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseTitleBarActivity() {
+@Route(path = "/test/TestActivity")
+class TestActivity : BaseTitleBarActivity() {
 
     override fun bindTitle(): CharSequence {
-        return "MainActivity"
+        return "TestActivity"
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
@@ -21,7 +25,7 @@ class MainActivity : BaseTitleBarActivity() {
 
     override fun initView(view: View?) {
         image.setOnClickListener {
-            ARouter.getInstance().build("/test/TestActivity").navigation()
+            Toast.makeText(this, "I am a test", Toast.LENGTH_LONG).show()
         }
     }
 

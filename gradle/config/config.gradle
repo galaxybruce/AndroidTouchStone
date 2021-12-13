@@ -25,11 +25,13 @@ ext {
 
     kotlin_version = '1.4.21'
     lifecycle_version = "2.3.0"
+    arouter_version = "1.5.2"
 
     dep = [
             plugin  : [
                     "com.android.tools.build:gradle:7.0.3",
-                    "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+                    "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version",
+                    "com.alibaba:arouter-register:1.0.2"
             ],
 
             androidx : [
@@ -121,5 +123,7 @@ ext {
             androidUtilCode             : "com.blankj:utilcode:1.28.4",
 
             anchors                     : "com.galaxybruce.android:anchors:1.1.4",
+            arouter_api                 : "com.alibaba:arouter-api:$arouter_version",
+            arouter_compiler            : "com.alibaba:arouter-compiler:$arouter_version"
     ]
 }
