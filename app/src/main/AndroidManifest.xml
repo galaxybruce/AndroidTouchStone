@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".TestActivity"/>
+        <activity android:name=".demo.activity.NetTestActivity"/>
     </application>
 
 </manifest>

@@ -78,7 +78,7 @@ public class AppServiceGenerator {
 
     private static synchronized void initDefaultRetrofit() {
         AppRetrofitConfig.Builder config = new AppRetrofitConfig.Builder()
-//                .baseUrl(baseUrl)
+                .baseUrl("https://www.google.com/")
                 .setConnectTimeout(30)
                 .setReadTimeout(30)
                 .setWriteTimeout(30)

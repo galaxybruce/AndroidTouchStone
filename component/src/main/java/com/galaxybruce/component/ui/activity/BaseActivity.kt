@@ -30,7 +30,7 @@ import java.util.*
 abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUiDataProvider {
 
     protected lateinit var mActivity: Activity
-    protected lateinit var mContentView: View
+    protected var mContentView: View? = null
     protected var mPreviousDialog: AppDialogFragment? = null
 
     /** 和页面相关的缓存，比如生命周期相关的代理 */
@@ -151,5 +151,14 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
 
     override fun login() {
 
+    }
+
+    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
+    }
+
+    override fun initView(view: View?) {
+    }
+
+    override fun bindData(savedInstanceState: Bundle?) {
     }
 }

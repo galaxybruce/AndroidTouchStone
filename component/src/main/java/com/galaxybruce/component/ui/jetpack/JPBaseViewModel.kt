@@ -62,6 +62,6 @@ abstract class JPBaseViewModel : ViewModel() {
      *  }
      *
      */
-    abstract fun getRequests(): List<JPBaseRequest>?
+    abstract fun getRequests(): List<JPBaseRequest>
 
 }
