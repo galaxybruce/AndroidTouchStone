@@ -32,5 +32,5 @@ dependencies {
     api(rootProject.ext.dep.glide) {
         exclude group: "com.android.support"
     }
-    kapt rootProject.ext.dep["glide_compiler"]
+    kapt rootProject.ext.dep.glide_compiler
 }
