@@ -25,8 +25,6 @@ class MainActivity : BaseTitleBarActivity() {
         image.setOnClickListener {
             Toast.makeText(this, "I am a image", Toast.LENGTH_LONG).show()
         }
-        Log.i("com.kidswant.ss-app", "isDebug: ${BaseApplication.isDebug()}" )
-
     }
 
     override fun bindData(savedInstanceState: Bundle?) {

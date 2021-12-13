@@ -25,6 +25,12 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/app_provider_paths" />
         </provider>
+
+        <provider
+            android:name=".util.crosssp.KWCrossProcessSPContentProvider"
+            android:authorities="${applicationId}.sphelper"
+            android:exported="false"
+            android:initOrder="1000000" />
     </application>
 
 </manifest>

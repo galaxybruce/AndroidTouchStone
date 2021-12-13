@@ -37,7 +37,6 @@ public class KWCrossProcessUtils {
      * 构建uri
      * @param type 保存值的数据类型
      * @param name 保存值的key
-     * @return content://com.kidswant.sphelper/int/a
      */
     public static Uri buildUri(Context context, String type, String name) {
         StringBuilder stringBuilder = new StringBuilder();
