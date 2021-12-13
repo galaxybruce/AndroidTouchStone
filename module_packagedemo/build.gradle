@@ -1,11 +1,11 @@
 apply {
-    from "${rootDir.path}/gradle/config/config_app.gradle"
+    from "${rootDir.path}/gradle/config/config_lib.gradle"
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(':component')
-    implementation project(':module_base')
 }
+
 

@@ -3,6 +3,7 @@ buildscript {
     apply from: rootProject.file('gradle/config/config.gradle')
 
     repositories {
+        maven { url rootProject.file("repo-local") }
         // 阿里仓库地址 https://maven.aliyun.com/mvn/guide
         maven { url 'https://maven.aliyun.com/repository/public'}
         maven { url "https://maven.aliyun.com/repository/google" }

@@ -40,7 +40,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [moduleName: project.getName()]
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
             }
         }
 
@@ -113,11 +113,11 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
 
-    testImplementation rootProject.ext.dep["junit"]
-    androidTestImplementation rootProject.ext.dep["runner"]
+    testImplementation rootProject.ext.dep.junit
+    androidTestImplementation rootProject.ext.dep.runner
     androidTestImplementation rootProject.ext.dep.espressocore
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     // LeakCanary LeakCanary升级到2.x之后，只需在build.gradle中添加一个依赖就行，代码中无需嵌入
     debugImplementation dep.leakcanary.android
