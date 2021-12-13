@@ -33,4 +33,12 @@ dependencies {
         exclude group: "com.android.support"
     }
     kapt rootProject.ext.dep.glide_compiler
+
+    // room数据库
+    def room_version = "2.3.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "org.reactivestreams:reactive-streams:1.0.2"
+
+    api rootProject.ext.dep.fastjson
 }
