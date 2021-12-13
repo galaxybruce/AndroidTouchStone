@@ -1,4 +1,4 @@
-package com.galaxybruce.component.net;
+package com.galaxybruce.component.util.exception;
 
 /**
  * @date 2019/3/20 11:11
@@ -19,26 +19,26 @@ public class AppException extends IllegalArgumentException {
     public AppException() {
     }
 
-    public AppException(String detailMessage) {
-        super(detailMessage);
+    public AppException(String message) {
+        super(message);
     }
 
-    public AppException(String detailMessage, Throwable throwable) {
-        super(detailMessage, throwable);
+    public AppException(String message, Throwable throwable) {
+        super(message, throwable);
     }
 
-    public AppException(String detailMessage, ErrorType error) {
-        super(detailMessage);
+    public AppException(String message, ErrorType error) {
+        super(message);
         this.errorType = error;
     }
 
-    public AppException(String detailMessage, int errorCode) {
-        super(detailMessage);
+    public AppException(String message, int errorCode) {
+        super(message);
         this.errorCode = errorCode;
     }
 
-    public AppException(String detailMessage, ErrorType error, int errorCode) {
-        super(detailMessage);
+    public AppException(String message, ErrorType error, int errorCode) {
+        super(message);
         this.errorType = error;
         this.errorCode = errorCode;
     }

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.blankj.utilcode.util.ToastUtils
+import com.galaxybruce.component.ui.ILogin
 import com.galaxybruce.component.ui.IUiDataProvider
 import com.galaxybruce.component.ui.IUiInit
 import com.galaxybruce.component.ui.IUiView
@@ -26,7 +27,7 @@ import java.util.*
  *
  * modification history:
  */
-abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, IUiDataProvider {
+abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUiDataProvider {
 
     protected lateinit var mActivity: Activity
     protected lateinit var mContentView: View
@@ -53,7 +54,7 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, IUiDataProv
         }
     }
 
-    protected fun setRootLayout(layoutId: Int) {
+    open fun setRootLayout(layoutId: Int) {
         if (layoutId <= 0) return
         mContentView = LayoutInflater.from(this).inflate(layoutId, null)
         setContentView(mContentView)
@@ -64,15 +65,15 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, IUiDataProv
      *
      * @return boolean 是否有标题栏
      */
-    protected fun addWindowFeatures() {
+    open fun addWindowFeatures() {
 //        BBSWindowUtil.setScreenPortrait(this);
     }
 
-    protected fun applyStyle2ActivityTheme() {
+    open fun applyStyle2ActivityTheme() {
 //        AppAttrResolveUtil.applyStyle2ActivityTheme(this, false)
     }
 
-    protected fun initStatusBar() {
+    open fun initStatusBar() {
 
     }
 
@@ -146,5 +147,9 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, IUiDataProv
             }
         } catch (e: Exception) {
         }
+    }
+
+    override fun login() {
+
     }
 }

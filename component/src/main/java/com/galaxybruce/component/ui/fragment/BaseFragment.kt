@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.galaxybruce.component.ui.ILogin
 import com.galaxybruce.component.ui.IUiDataProvider
 import com.galaxybruce.component.ui.IUiInit
 import com.galaxybruce.component.ui.IUiView
@@ -23,7 +24,7 @@ import java.util.*
  *
  * modification history:
  */
-abstract class BaseFragment : Fragment(), IUiInit, IUiView, IUiDataProvider {
+abstract class BaseFragment : Fragment(), IUiInit, IUiView, ILogin, IUiDataProvider {
 
     protected lateinit var mActivity: Activity
     protected lateinit var mInflater: LayoutInflater
@@ -54,7 +55,7 @@ abstract class BaseFragment : Fragment(), IUiInit, IUiView, IUiDataProvider {
         }
         var rootView = view
         if (rootView == null) {
-            rootView = setRootLayout(bindLayoutId())
+            rootView = setRootLayout(bindLayoutId(), inflater, container)
         } else {
             val parent = rootView.parent
             if (parent is ViewGroup) {
@@ -152,7 +153,7 @@ abstract class BaseFragment : Fragment(), IUiInit, IUiView, IUiDataProvider {
         return mHidden
     }
 
-    open fun setRootLayout(layoutId: Int): View {
+    open fun setRootLayout(layoutId: Int, inflater: LayoutInflater, container: ViewGroup?): View {
         return mInflater.inflate(layoutId, null)
     }
 
@@ -250,6 +251,12 @@ abstract class BaseFragment : Fragment(), IUiInit, IUiView, IUiDataProvider {
     override fun hideLoadingProgress() {
         if (activity is BaseActivity) {
             (activity as BaseActivity).hideLoadingProgress()
+        }
+    }
+
+    override fun login() {
+        if (activity is BaseActivity) {
+            (activity as BaseActivity).login()
         }
     }
 

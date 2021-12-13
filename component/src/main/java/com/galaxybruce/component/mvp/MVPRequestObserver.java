@@ -1,6 +1,6 @@
 package com.galaxybruce.component.mvp;
 
-import com.galaxybruce.component.net.AppException;
+import com.galaxybruce.component.util.exception.AppException;
 import com.galaxybruce.component.net.ResponseStatus;
 
 import io.reactivex.Observer;

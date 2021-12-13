@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  *
  *  @描述 滚动时 控制图片加载器的  加载情况
- *  @作者 wujian
+ *  @作者
  *  @创建时间  2017/11/15 11:47
  *
 **/
