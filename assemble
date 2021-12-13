@@ -1,0 +1,43 @@
+#!/bin/bash +x
+
+# assemble.sh d or cd or r or cr
+
+if [[ $# == 0 ]]; then
+    echo "start command './gradlew assembleDebug'"
+    ./gradlew assembleDebug
+    adb install -r apk/app-debug.apk
+
+elif [[ $1 = 'd' ]]; then
+    echo "start command './gradlew assembleDebug'"
+    ./gradlew assembleDebug
+    adb install -r apk/app-debug.apk
+
+elif [[ $1 = 'cd' ]]; then
+    echo "start command './gradlew clean assembleDebug'"
+    ./gradlew clean assembleDebug
+    adb install -r apk/app-debug.apk
+
+elif [[ $1 = 'r' ]]; then
+    echo "start command './gradlew assembleRelease'"
+    ./gradlew assembleRelease
+    adb install -r apk/app-release.apk
+
+elif [[ $1 = 'cr' ]]; then
+    echo "start command './gradlew clean assembleRelease'"
+    ./gradlew clean assembleRelease
+    adb install -r apk/app-release.apk
+
+elif [[ $1 = 'id' ]]; then
+    adb install -r apk/app-debug.apk
+
+elif [[ $1 = 'ir' ]]; then
+    adb install -r apk/app-release.apk
+
+
+else
+    echo "Input Is Error."
+fi
+
+# 在有的手机上安装后不能立马启动，需要睡眠几秒
+sleep 1s
+adb shell am start -W -n com.galaxybruce.touchstone/com.galaxybruce.touchstone.MainActivity

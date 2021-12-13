@@ -25,7 +25,7 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        applicationId rootProject.applicationId
+        applicationId rootProject.ext.applicationId
         applicationIdSuffix appIdSuffix()
         versionCode rootProject.versionCode
         versionName rootProject.versionName
@@ -160,9 +160,8 @@ def configApkName(Project pro) {
             // Android Studio 3.3
             variant.getPackageApplicationProvider().get().outputDirectory = new File("${rootDir.path}/apk")
             variant.outputs.all { output ->
-                outputFileName = rootProject.name +
-                        "_" + variant.versionName.replace(".", "_") +
-                        ".apk"
+//                outputFileName = rootProject.name + "_" + variant.versionName.replace(".", "_") + ".apk"
+                outputFileName = "app-" + variant.buildType.name + ".apk"
             }
 //        }
     }
