@@ -5,33 +5,33 @@
 if [[ $# == 0 ]]; then
     echo "start command './gradlew assembleDebug'"
     ./gradlew assembleDebug
-    adb install -r apk/app-debug.apk
+    adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 elif [[ $1 = 'd' ]]; then
     echo "start command './gradlew assembleDebug'"
     ./gradlew assembleDebug
-    adb install -r apk/app-debug.apk
+    adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 elif [[ $1 = 'cd' ]]; then
     echo "start command './gradlew clean assembleDebug'"
     ./gradlew clean assembleDebug
-    adb install -r apk/app-debug.apk
+    adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 elif [[ $1 = 'r' ]]; then
     echo "start command './gradlew assembleRelease'"
     ./gradlew assembleRelease
-    adb install -r apk/app-release.apk
+    adb install -r app/build/outputs/apk/release/app-release.apk
 
 elif [[ $1 = 'cr' ]]; then
     echo "start command './gradlew clean assembleRelease'"
     ./gradlew clean assembleRelease
-    adb install -r apk/app-release.apk
+    adb install -r app/build/outputs/apk/release/app-release.apk
 
 elif [[ $1 = 'id' ]]; then
-    adb install -r apk/app-debug.apk
+    adb install -r app/build/outputs/apk/debug/app-debug.apk
 
 elif [[ $1 = 'ir' ]]; then
-    adb install -r apk/app-release.apk
+    adb install -r app/build/outputs/apk/release/app-release.apk
 
 
 else
