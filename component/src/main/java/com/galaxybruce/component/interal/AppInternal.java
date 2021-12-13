@@ -18,7 +18,7 @@ public class AppInternal implements IAppInternal {
         static AppInternal instance = new AppInternal();
     }
 
-    public static IAppInternal getInstance() {
+    public static AppInternal getInstance() {
         return InternalHolder.instance;
     }
 
