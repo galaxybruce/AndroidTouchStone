@@ -16,14 +16,14 @@
 
     <application>
         <provider
-            android:name=".util.GFileProvider"
+            android:name=".util.AppFileProvider"
             android:authorities="${applicationId}.galaxybruce.provider"
             android:exported="false"
             android:grantUriPermissions="true"
             android:multiprocess="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/galaxybruce_provider_paths" />
+                android:resource="@xml/app_provider_paths" />
         </provider>
     </application>
 

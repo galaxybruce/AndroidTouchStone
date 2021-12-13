@@ -9,12 +9,10 @@ import androidx.core.content.FileProvider;
  * <p>
  * modification history:
  */
-public class GFileProvider extends FileProvider {
+public class AppFileProvider extends FileProvider {
 
     @Override
     public boolean onCreate() {
-        // 可以在这里做些启动初始化工作
-//        Utils.init(getContext());
         return true;
     }
 }
