@@ -3,17 +3,21 @@ package com.galaxybruce.component.ui.activity
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.appcompat.app.AppCompatActivity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.blankj.utilcode.util.ToastUtils
 import com.galaxybruce.component.ui.IUiDataProvider
 import com.galaxybruce.component.ui.IUiInit
-import com.galaxybruce.component.ui.IUiRequest
+import com.galaxybruce.component.ui.IUiView
+import com.galaxybruce.component.ui.dialog.AppDialogFragment
+import com.galaxybruce.component.ui.dialog.AppLoadingDialog
 import com.galaxybruce.component.ui.fragment.BaseFragment
-import java.util.HashMap
+import java.lang.Exception
+import java.util.*
 
 /**
  * @date 2019-06-21 17:29
@@ -22,11 +26,11 @@ import java.util.HashMap
  *
  * modification history:
  */
-
-abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiRequest, IUiDataProvider {
+abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, IUiDataProvider {
 
     protected lateinit var mActivity: Activity
     protected lateinit var mContentView: View
+    protected var mPreviousDialog: AppDialogFragment? = null
 
     /** 和页面相关的缓存，比如生命周期相关的代理 */
     private val mCache: Map<String, Any> by lazy {
@@ -36,14 +40,20 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiRequest, IUiDataP
     override fun onCreate(savedInstanceState: Bundle?) {
         mActivity = this
         addWindowFeatures()
+        applyStyle2ActivityTheme()
+
         super.onCreate(savedInstanceState)
+
         setRootLayout(bindLayoutId())
         initData(intent.extras, savedInstanceState)
         initView(mContentView)
-        if(checkLogin()) bindData(savedInstanceState)
+        initStatusBar()
+        if(checkLogin()) {
+            bindData(savedInstanceState)
+        }
     }
 
-    open fun setRootLayout(layoutId: Int) {
+    protected fun setRootLayout(layoutId: Int) {
         if (layoutId <= 0) return
         mContentView = LayoutInflater.from(this).inflate(layoutId, null)
         setContentView(mContentView)
@@ -54,8 +64,16 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiRequest, IUiDataP
      *
      * @return boolean 是否有标题栏
      */
-    open fun addWindowFeatures() {
+    protected fun addWindowFeatures() {
 //        BBSWindowUtil.setScreenPortrait(this);
+    }
+
+    protected fun applyStyle2ActivityTheme() {
+//        AppAttrResolveUtil.applyStyle2ActivityTheme(this, false)
+    }
+
+    protected fun initStatusBar() {
+
     }
 
     /**
@@ -89,5 +107,44 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiRequest, IUiDataP
 
     override fun provideIdentifier(): Int {
         return hashCode()
+    }
+
+    /**
+     * 如果是tab activity，这里返回当前选中的fragment
+     * @return
+     */
+    open fun getCurrentFragment(): Fragment? {
+        return null
+    }
+
+    override fun showLoadingProgress(message: String?) {
+        showLoadingDialog(AppLoadingDialog.getInstance(message))
+    }
+
+    override fun showToast(message: String?) {
+        runOnUiThread {
+            ToastUtils.showShort(message)
+        }
+    }
+
+    override fun hideLoadingProgress() {
+        if (mPreviousDialog != null) {
+            mPreviousDialog!!.dismissAllowingStateLoss()
+            mPreviousDialog = null
+        }
+    }
+
+    private fun showLoadingDialog(dialog: AppDialogFragment) {
+        try {
+            if (mPreviousDialog != null) {
+                mPreviousDialog!!.dismissAllowingStateLoss()
+                mPreviousDialog = null
+            }
+            if (!(dialog.isAdded || isFinishing)) {
+                dialog.show(supportFragmentManager, null)
+                mPreviousDialog = dialog
+            }
+        } catch (e: Exception) {
+        }
     }
 }

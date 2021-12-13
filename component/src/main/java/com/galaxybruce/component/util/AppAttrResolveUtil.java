@@ -27,6 +27,17 @@ public class AppAttrResolveUtil {
      * 该方法在Activity.setContentView之前调用
      * @param context
      */
+    public static void applyStyle2ActivityTheme(Context context, boolean force){
+        applyStyle2ActivityTheme(context, APP_THEME_NAME, force);
+    }
+
+    /**
+     * 把自定义的样式插入到当前activity的Theme
+     * 随便在styles.xml文件中定义一个样式，如custom_theme，没有必要在styles把改样式设置到全局Theme中
+     *
+     * 该方法在Activity.setContentView之前调用
+     * @param context
+     */
     public static void applyStyle2ActivityTheme(Context context, String styleName, boolean force){
         int resId = context.getResources().getIdentifier(styleName, "style",
                 context.getPackageName());

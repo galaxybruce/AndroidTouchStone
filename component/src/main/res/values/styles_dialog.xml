@@ -3,6 +3,12 @@
 
     <!-- =========这个文件中放一些dialog样式=========-->
 
+    <style name="Dialog_NoFrame" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+
     <!--从底部进入动画-->
     <style name="Style_Dialog_Anim_Up_Down" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/push_up_in</item>
