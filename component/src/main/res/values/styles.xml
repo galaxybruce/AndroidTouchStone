@@ -17,4 +17,12 @@
     </style>
 
 
+    <!-- 加载滚动条样式 -->
+    <style name="App_List_LoadMore_Loading_Progress">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateDrawable">@drawable/app_list_loadmore_loading_anim</item>
+        <item name="android:indeterminateDuration">1000</item>
+        <item name="android:indeterminateOnly">true</item>
+    </style>
+
 </resources>
