@@ -1,16 +1,15 @@
 package com.galaxybruce.component.ui.jetpack
 
-import android.text.TextUtils
 import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.ViewUtils.runOnUiThread
 import com.galaxybruce.component.net.exception.AppNetException
 import com.galaxybruce.component.net.model.IAppBean
 import com.galaxybruce.component.net.transformer.AppNetResponseTransformer
 import com.galaxybruce.component.ui.jetpack.livedata.UnStickyMutableLiveData
+import com.galaxybruce.component.util.AppConstants.EMPTY_STR
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 /**
@@ -136,37 +135,24 @@ abstract class JPBaseRequest : IJPViewModelAction {
         return actionEvent
     }
 
-    fun <T : IAppBean> handleEverythingResult(): ObservableTransformer<T, T> {
-        return handleEverythingResult(true)
-    }
-
     fun <T : IAppBean> handleEverythingResult(showLoading: Boolean): ObservableTransformer<T, T> {
-        return handleEverythingResult(showLoading, "")
-    }
-
-    fun <T : IAppBean> handleEverythingResult(loadingMessage: String): ObservableTransformer<T, T> {
-        return handleEverythingResult(true, loadingMessage)
-    }
-
-    fun <T : IAppBean> handleEverythingResult(showLoading: Boolean, loadingMessage: String): ObservableTransformer<T, T> {
-        return ObservableTransformer { upstream -> handleCommon(
-            upstream, showLoading, loadingMessage, false) }
-    }
-
-    fun <T : IAppBean> handleOnlyNetworkResult(): ObservableTransformer<T, T> {
-        return handleOnlyNetworkResult(true)
-    }
-
-    fun <T : IAppBean> handleOnlyNetworkResult(loadingMessage: String): ObservableTransformer<T, T> {
-        return handleEverythingResult(true, loadingMessage)
+        return handleEverythingResult(showLoading, EMPTY_STR)
     }
 
     fun <T : IAppBean> handleOnlyNetworkResult(showLoading: Boolean): ObservableTransformer<T, T> {
-        return handleEverythingResult(showLoading, "")
+        return handleEverythingResult(showLoading, EMPTY_STR)
     }
 
-    open fun <T : IAppBean> handleOnlyNetworkResult(showLoading: Boolean, loadingMessage: String): ObservableTransformer<T, T> {
-        return ObservableTransformer { upstream -> handleCommon(upstream, showLoading, loadingMessage, true) }
+    fun <T : IAppBean> handleOnlyNetworkResult(showLoading: Boolean,
+                                                    loadingMessage: String): ObservableTransformer<T, T> {
+        return ObservableTransformer { upstream ->
+            handleCommon(upstream, showLoading, loadingMessage, true) }
+    }
+
+    private fun <T : IAppBean> handleEverythingResult(showLoading: Boolean,
+                                                      loadingMessage: String): ObservableTransformer<T, T> {
+        return ObservableTransformer { upstream -> handleCommon(
+            upstream, showLoading, loadingMessage, false) }
     }
 
     open fun <T : IAppBean> handleCommon(upstream: Observable<T>, showLoading: Boolean,
@@ -204,21 +190,6 @@ abstract class JPBaseRequest : IJPViewModelAction {
                         hideLoadingProgress()
                     }
                 }
-    }
-
-    fun handleThrowableConsumer(defaultErrorInfo: String?): Consumer<Throwable?> {
-        return Consumer {
-            @Throws(Exception::class)
-            fun accept(throwable: Throwable) {
-                handleThrowableMessage(throwable, defaultErrorInfo)
-            }
-        }
-    }
-
-    open fun handleThrowableMessage(throwable: Throwable, defaultErrorInfo: String?) {
-        hideLoadingProgress()
-        val message = if (TextUtils.isEmpty(throwable.message)) defaultErrorInfo else throwable.message
-        showToast(message)
     }
 
 }
