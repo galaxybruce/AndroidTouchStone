@@ -1,11 +1,11 @@
-package com.galaxybruce.touchstone.demo.mvvm.viewmodel
+package com.galaxybruce.demo.ui.mvvm.viewmodel
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.galaxybruce.component.ui.jetpack.JPBaseRequest
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
+import com.galaxybruce.demo.ui.mvvm.request.NetTestRequest
 
-import com.galaxybruce.touchstone.demo.mvvm.request.NetTestRequest
 
 class NetTestViewModel : JPBaseViewModel() {
 

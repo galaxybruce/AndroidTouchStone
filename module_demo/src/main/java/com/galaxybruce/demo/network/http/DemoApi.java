@@ -1,7 +1,8 @@
-package com.galaxybruce.touchstone.demo.http;
+package com.galaxybruce.demo.network.http;
 
 
-import com.galaxybruce.component.net.model.AppGenericBean;
+import com.galaxybruce.demo.model.AppBean4Cms;
+import com.galaxybruce.demo.model.GroupSocketHost;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -17,6 +18,6 @@ import retrofit2.http.Url;
 public interface DemoApi {
 
     @GET
-    Observable<AppGenericBean<GroupSocketHost>> getData(@Url String url);
+    Observable<AppBean4Cms<GroupSocketHost>> getData(@Url String url);
 
 }

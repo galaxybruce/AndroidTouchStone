@@ -1,7 +1,6 @@
-package com.galaxybruce.touchstone.demo.http;
+package com.galaxybruce.demo.model;
 
 import android.text.TextUtils;
-
 
 import com.galaxybruce.component.proguard.IProguardKeeper;
 

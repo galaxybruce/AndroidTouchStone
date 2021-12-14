@@ -7,11 +7,11 @@
     <data>
         <variable
             name="vm"
-            type="com.galaxybruce.touchstone.demo.mvvm.viewmodel.NetTestViewModel" />
+            type="com.galaxybruce.demo.ui.mvvm.viewmodel.NetTestViewModel" />
 
         <variable
             name="click"
-            type="com.galaxybruce.touchstone.demo.activity.NetTestActivity.ClickProxy" />
+            type="com.galaxybruce.demo.ui.activity.NetTestActivity.ClickProxy" />
 
     </data>
 

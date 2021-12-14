@@ -1,4 +1,4 @@
-package com.galaxybruce.touchstone.demo.http;
+package com.galaxybruce.demo.network.http;
 
 
 public class DemoUrl {

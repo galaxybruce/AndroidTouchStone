@@ -28,8 +28,6 @@
                 <data android:scheme="galaxybruce" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".demo.activity.NetTestActivity"/>
     </application>
 
 </manifest>

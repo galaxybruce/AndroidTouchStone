@@ -1,4 +1,4 @@
-package com.galaxybruce.touchstone.demo.activity
+package com.galaxybruce.demo.ui.activity
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -6,11 +6,11 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.galaxybruce.component.ui.jetpack.JPBaseActivity
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
+import com.galaxybruce.demo.R
+import com.galaxybruce.demo.BR
+import com.galaxybruce.demo.databinding.NetTestLayoutBinding
+import com.galaxybruce.demo.ui.mvvm.viewmodel.NetTestViewModel
 
-import com.galaxybruce.touchstone.R
-import com.galaxybruce.touchstone.BR
-import com.galaxybruce.touchstone.demo.mvvm.viewmodel.NetTestViewModel
-import com.galaxybruce.touchstone.databinding.NetTestLayoutBinding
 
 @Route(path = "/test/TestActivity")
 class NetTestActivity : JPBaseActivity<NetTestLayoutBinding>() {
@@ -50,7 +50,6 @@ class NetTestActivity : JPBaseActivity<NetTestLayoutBinding>() {
             mPageViewModel.name,
             Observer { s: String? -> showToast("name has changed") })
 
-        performRequest()
     }
 
     private fun performRequest() {
@@ -63,7 +62,7 @@ class NetTestActivity : JPBaseActivity<NetTestLayoutBinding>() {
      */
     inner class ClickProxy {
         fun handleName() {
-            showToast("handleName: " + mPageViewModel.name.value)
+            performRequest()
         }
     }
 }

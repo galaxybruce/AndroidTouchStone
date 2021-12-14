@@ -5,7 +5,7 @@ apply {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api project(':component')
+    api project(':module_base')
 }
 
 
