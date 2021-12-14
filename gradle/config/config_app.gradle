@@ -102,10 +102,11 @@ android {
         exclude 'META-INF/license.txt'
     }
 
-    dexOptions {
-        jumboMode true
-        javaMaxHeapSize "4g"
-    }
+    // It will be removed in version 8.0 of the Android Gradle plugin
+//    dexOptions {
+//        jumboMode true
+//        javaMaxHeapSize "4g"
+//    }
 
     buildFeatures {
         dataBinding true
@@ -138,7 +139,7 @@ private String appIdSuffix() {
 
 def configSigning(Project pro) {
 
-    File signPropertiesFile = file("${rootDir.path}/sign/keystore.properties")
+    File signPropertiesFile = file("${rootDir.path}/gradle/config/sign/keystore.properties")
     if (!signPropertiesFile.exists()) return
 
     println "$pro.name config sign start..."
