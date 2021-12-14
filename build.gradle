@@ -53,12 +53,12 @@ subprojects {
 //                resValue("string", "APP_NAME", "${BASE_APPSCHEME}")
             }
 
-            if (project.name == "app") {
-                project.android.flavorDimensions "APP"
+//            if (project.name == "app") {
+//                project.android.flavorDimensions "APP"
 //                project.android.productFlavors.all {
 //                    flavor -> flavor.manifestPlaceholders = [InstallChannel_Value: name]
 //                }
-            }
+//            }
         }
     }
 }
