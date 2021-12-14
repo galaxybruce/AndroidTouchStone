@@ -2,15 +2,10 @@
 buildscript {
     apply from: rootProject.file('gradle/config/config.gradle')
 
-    repositories {
-        maven { url rootProject.file("repo-local") }
-        // 阿里仓库地址 https://maven.aliyun.com/mvn/guide
-        maven { url 'https://maven.aliyun.com/repository/public'}
-        maven { url "https://maven.aliyun.com/repository/google" }
-        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
-    }
+    addRepos(repositories)
 
     dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.3'
         for (plugin in dep.plugin) {
             classpath plugin
         }
@@ -18,12 +13,7 @@ buildscript {
 }
 
 allprojects {
-    repositories {
-        // 阿里仓库地址 https://maven.aliyun.com/mvn/guide
-        maven { url 'https://maven.aliyun.com/repository/public'}
-        maven { url "https://maven.aliyun.com/repository/google" }
-        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
-    }
+    addRepos(repositories)
 }
 
 subprojects {

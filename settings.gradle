@@ -1,16 +1,9 @@
 
 buildscript {
-    apply from: './gradle/config/util.gradle'
+    apply from: './gradle/config/config.gradle'
 
-    repositories {
-        def projectDir = settings.rootProject.projectDir
-        def repoFile = new File(projectDir, 'repo-local')
-        maven{ url repoFile }
-        // 阿里仓库地址 https://maven.aliyun.com/mvn/guide
-        maven { url 'https://maven.aliyun.com/repository/public'}
-        maven { url "https://maven.aliyun.com/repository/google" }
-        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
-    }
+    addRepos(repositories)
+
     dependencies {
         classpath 'com.galaxybruce.android:pioneer-gradle-plugin:0.0.44'
     }

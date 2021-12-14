@@ -29,7 +29,6 @@ ext {
 
     dep = [
             plugin  : [
-                    "com.android.tools.build:gradle:7.0.3",
                     "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version",
                     "com.alibaba:arouter-register:1.0.2"
             ],
@@ -127,3 +126,15 @@ ext {
             arouter_compiler            : "com.alibaba:arouter-compiler:$arouter_version"
     ]
 }
+
+def addRepos(RepositoryHandler handler) {
+//    handler.maven { url rootProject.file("repo-local") }
+    def projectDir = rootProject.projectDir
+    def repoFile = new File(projectDir, 'repo-local')
+    handler.maven{ url repoFile }
+    // 阿里仓库地址 https://maven.aliyun.com/mvn/guide
+    handler.maven { url 'https://maven.aliyun.com/repository/public'}
+    handler.maven { url "https://maven.aliyun.com/repository/google" }
+    handler.maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+}
+ext.addRepos = this.&addRepos
