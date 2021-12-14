@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ClickUtils;
+import com.blankj.utilcode.util.ViewUtils;
 import com.galaxybruce.component.R;
 
 import androidx.annotation.NonNull;
@@ -46,6 +48,22 @@ public class AppLoadingDialog extends AppCenterDialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         tvMessage = view.findViewById(R.id.tv_message);
+
+        // 防止某些情况，loading框不消失，手动点击3下消失
+        final View loadingContainer = view.findViewById(R.id.loading_container);
+        if(loadingContainer != null) {
+            loadingContainer.setOnClickListener(new ClickUtils.OnMultiClickListener(3) {
+                @Override
+                public void onTriggerClick(View v) {
+                    dismissAllowingStateLoss();
+                }
+
+                @Override
+                public void onBeforeTriggerClick(View v, int count) {
+
+                }
+            });
+        }
     }
 
     @Override

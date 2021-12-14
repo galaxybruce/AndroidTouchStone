@@ -103,10 +103,10 @@ android {
     }
 
     // It will be removed in version 8.0 of the Android Gradle plugin
-//    dexOptions {
-//        jumboMode true
-//        javaMaxHeapSize "4g"
-//    }
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
 
     buildFeatures {
         dataBinding true
