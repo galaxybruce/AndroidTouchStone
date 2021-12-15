@@ -47,14 +47,6 @@ public abstract class AppBaseListViewAdapter<T> extends BaseAdapter implements I
         return mDatas == null ? 0 : mDatas.size();
     }
 
-    /**
-     * @return
-     * @deprecated use getData()
-     */
-    public ArrayList<T> getDatas() {
-        return mDatas == null ? (mDatas = new ArrayList<T>()) : mDatas;
-    }
-
     public ArrayList<T> getData() {
         return mDatas == null ? (mDatas = new ArrayList<T>()) : mDatas;
     }
