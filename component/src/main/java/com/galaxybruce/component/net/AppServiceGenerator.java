@@ -17,6 +17,16 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+/**
+ * @date 2021/12/16 14:38
+ * @author bruce.zhang
+ * @description retrofit封装
+ *
+ * 参考文章：
+ * 1. [Android搭建应用框架系列之Retrofit封装](https://www.jianshu.com/p/26b2cfc3cbda)
+ * <p>
+ * modification history:
+ */
 public class AppServiceGenerator {
 
     /**
