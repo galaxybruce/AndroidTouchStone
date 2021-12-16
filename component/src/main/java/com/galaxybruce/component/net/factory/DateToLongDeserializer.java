@@ -15,7 +15,7 @@ import java.util.Date;
 /**
  * @author bruce.zhang
  * @date 2020/11/4 10:21
- * @description (亲 ， 我是做什么的)
+ * @description 将json字符串中的Date字符串序列化为long或java.lang.Long
  * <p>
  * modification history:
  */
@@ -28,23 +28,23 @@ public class DateToLongDeserializer implements JsonDeserializer<Long> {
                             JsonDeserializationContext context) throws JsonParseException {
 
         if (json == null) {
-            return new Long(0);
+            return 0L;
         }
 
         String jsonAsString = json.getAsString();
         try {
-            Long aLong1 = Long.valueOf(jsonAsString);
-            return aLong1;
-        }catch (NumberFormatException e){}
+            return Long.valueOf(jsonAsString);
+        } catch (NumberFormatException e){}
 
-        for (int i = 0; i < datePatternArray.length; i++) {
+        for (String s : datePatternArray) {
             try {
-                Long parse = formatDate(jsonAsString, datePatternArray[i]);
+                Long parse = formatDate(jsonAsString, s);
                 if (parse != null) return parse;
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
 
-        return Long.valueOf(0);
+        return 0L;
     }
 
     @Nullable
