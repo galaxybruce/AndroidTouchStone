@@ -8,6 +8,7 @@ import com.effective.android.anchors.Task;
 import com.galaxybruce.component.interal.AppInternal;
 import com.galaxybruce.component.interal.IAppInternal;
 import com.galaxybruce.component.interal.IAuthAccount;
+import com.galaxybruce.component.interal.IHttpRequestOptions;
 import com.galaxybruce.component.proguard.IProguardKeeper;
 import com.galaxybruce.touchstone.BuildConfig;
 
@@ -89,6 +90,11 @@ public class InitNecessaryTask_Main_Process extends Task implements IProguardKee
                         return null;
                     }
                 };
+            }
+
+            @Override
+            public IHttpRequestOptions getHttpRequestOptions() {
+                return null;
             }
         });
     }

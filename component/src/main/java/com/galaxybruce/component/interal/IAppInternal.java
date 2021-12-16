@@ -17,5 +17,5 @@ public interface IAppInternal {
 
     IAuthAccount getAuthAccount();
 
-    default IHttpRequestOptions getHttpRequestOptions() { return null; }
+    IHttpRequestOptions getHttpRequestOptions();
 }
