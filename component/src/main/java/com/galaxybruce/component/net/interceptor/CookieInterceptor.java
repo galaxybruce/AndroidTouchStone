@@ -2,7 +2,10 @@ package com.galaxybruce.component.net.interceptor;
 
 import android.text.TextUtils;
 
+import com.galaxybruce.component.interal.AppInternal;
+import com.galaxybruce.component.interal.IAuthAccount;
 import com.galaxybruce.component.net.cookie.AppCookieManager;
+import com.galaxybruce.component.net.exception.AppLoginExpiresException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -51,6 +54,16 @@ public class CookieInterceptor implements Interceptor {
                         && !TextUtils.isEmpty(entry.getValue())) {
                     builder.header(entry.getKey(), entry.getValue());
                 }
+            }
+        }
+
+        // 登录态检测，需要再header中增加checkLogin:
+        // @Headers({"Content-type:application/json;charset=UTF-8;", "checkLogin:true"})
+        String checkLogin = source.header("checkLogin");
+        if(TextUtils.equals(Boolean.toString(true), checkLogin)) {
+            IAuthAccount authAccount = AppInternal.getInstance().getAuthAccount();
+            if (authAccount != null && TextUtils.isEmpty(authAccount.getUid())) {
+                throw new AppLoginExpiresException();
             }
         }
 

@@ -41,7 +41,7 @@ public class AppNetExceptionHandler {
             httpException = new AppRetrofitException(MESSAGE_CONNECT_TIMEOUT, ERROR_CONNECT_TIMEOUT);
         } else if (e instanceof JsonParseException || e instanceof JSONException || e instanceof ParseException) {
             httpException = new AppRetrofitException(MESSAGE_PARSE, ERROR_PARSE);
-        } else if (e instanceof AppNetException) {
+        } else if (e instanceof AppNetException || e instanceof AppLoginExpiresException) {
             httpException = e;
         } else {
             httpException = new AppRetrofitException(e.getMessage(), ERROR_UNKNOWN);

@@ -2,6 +2,7 @@ package com.galaxybruce.component.ui.jetpack
 
 import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.ViewUtils.runOnUiThread
+import com.galaxybruce.component.net.exception.AppLoginExpiresException
 import com.galaxybruce.component.net.exception.AppNetException
 import com.galaxybruce.component.net.model.IAppBean
 import com.galaxybruce.component.net.transformer.AppNetResponseTransformer
@@ -188,6 +189,9 @@ abstract class JPBaseRequest : IJPViewModelAction {
                     it.printStackTrace()
                     if (showLoading) {
                         hideLoadingProgress()
+                    }
+                    if(it is AppLoginExpiresException) {
+                        reLogin()
                     }
                 }
     }
