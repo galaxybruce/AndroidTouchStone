@@ -18,4 +18,8 @@ interface IUiView {
 
     fun showToast(message: String?)
 
+    /**
+     * 关闭所有页面
+     */
+    fun finishAllActivity()
 }

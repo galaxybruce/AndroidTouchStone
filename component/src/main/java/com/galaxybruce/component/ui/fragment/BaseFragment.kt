@@ -260,4 +260,10 @@ abstract class BaseFragment : Fragment(), IUiInit, IUiView, ILogin, IUiDataProvi
         }
     }
 
+    override fun finishAllActivity() {
+        activity.takeIf { it != null && !it.isFinishing && it is IUiView }?.let {
+            (it as IUiView).finishAllActivity()
+        }
+    }
+
 }

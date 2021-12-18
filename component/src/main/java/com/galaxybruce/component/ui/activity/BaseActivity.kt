@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.blankj.utilcode.util.ToastUtils
+import com.galaxybruce.component.app.BaseApplication
 import com.galaxybruce.component.ui.ILogin
 import com.galaxybruce.component.ui.IUiDataProvider
 import com.galaxybruce.component.ui.IUiInit
@@ -160,5 +161,9 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
     }
 
     override fun bindData(savedInstanceState: Bundle?) {
+    }
+
+    override fun finishAllActivity() {
+        BaseApplication.instance.finishAllActivity()
     }
 }
