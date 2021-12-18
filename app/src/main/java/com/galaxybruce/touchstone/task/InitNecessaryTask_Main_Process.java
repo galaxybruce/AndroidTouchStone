@@ -6,7 +6,6 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.effective.android.anchors.Process;
 import com.effective.android.anchors.Task;
 import com.galaxybruce.base.manager.AppUserInfoManager;
-import com.galaxybruce.base.model.AppUserInfo;
 import com.galaxybruce.component.interal.AppInternal;
 import com.galaxybruce.component.interal.IAppInternal;
 import com.galaxybruce.component.interal.IAuthAccount;
@@ -40,8 +39,9 @@ public class InitNecessaryTask_Main_Process extends Task implements IProguardKee
     protected void run(String name, Application application) {
         initBugly(application);
         initRxJavaExceptionHandler();
-        initInternal(application);
         initRouter(application);
+        initInternal(application);
+        initUserInfo();
     }
 
     private void initBugly(Application application) {
@@ -107,6 +107,15 @@ public class InitNecessaryTask_Main_Process extends Task implements IProguardKee
             ARouter.openDebug();
         }
         ARouter.init(application);
+    }
+
+    private void initUserInfo() {
+        AppUserInfoManager.getInstance().initUserInfo();
+
+        // 如果用户是登录状态，就获取最新用户信息
+        if(AppUserInfoManager.getInstance().isLogin()) {
+            // todo 调接口获取用户最新信息
+        }
     }
 
 }
