@@ -116,7 +116,6 @@ public class InitNecessaryTask_Main_Process extends Task implements IProguardKee
 
     private void initUserInfo() {
         AppUserInfoManager.getInstance().initUserInfo();
-
         // 如果用户是登录状态，就获取最新用户信息
         if(AppUserInfoManager.getInstance().isLogin()) {
             // todo 调接口获取用户最新信息
