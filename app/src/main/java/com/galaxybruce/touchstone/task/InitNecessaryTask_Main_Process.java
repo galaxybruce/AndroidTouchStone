@@ -5,6 +5,8 @@ import android.app.Application;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.effective.android.anchors.Process;
 import com.effective.android.anchors.Task;
+import com.galaxybruce.base.manager.AppUserInfoManager;
+import com.galaxybruce.base.model.AppUserInfo;
 import com.galaxybruce.component.interal.AppInternal;
 import com.galaxybruce.component.interal.IAppInternal;
 import com.galaxybruce.component.interal.IAuthAccount;
@@ -72,22 +74,22 @@ public class InitNecessaryTask_Main_Process extends Task implements IProguardKee
                 return new IAuthAccount() {
                     @Override
                     public String getUid() {
-                        return null;
+                        return AppUserInfoManager.getInstance().getUserInfo().getUid();
                     }
 
                     @Override
                     public String getPhone() {
-                        return null;
+                        return AppUserInfoManager.getInstance().getUserInfo().getPhone();
                     }
 
                     @Override
                     public String getName() {
-                        return null;
+                        return AppUserInfoManager.getInstance().getUserInfo().getName();
                     }
 
                     @Override
                     public String getAvatar() {
-                        return null;
+                        return AppUserInfoManager.getInstance().getUserInfo().getAvatar();
                     }
                 };
             }

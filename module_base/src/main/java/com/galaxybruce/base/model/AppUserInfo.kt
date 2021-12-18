@@ -15,6 +15,7 @@ data class AppUserInfo(
     var name: String? = null,
     var avatar: String? = null,
     var sex: String? = null,
+    var phone: String? = null,
 ): IProguardKeeper {
 
 }
