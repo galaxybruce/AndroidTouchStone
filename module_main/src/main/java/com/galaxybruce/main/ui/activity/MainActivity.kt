@@ -8,7 +8,7 @@ import com.galaxybruce.component.ui.activity.BaseTitleBarActivity
 import com.galaxybruce.main.R
 import kotlinx.android.synthetic.main.activity_main.*
 
-@Route(path = "main")
+@Route(path = "/app/main")
 class MainActivity : BaseTitleBarActivity() {
 
     override fun bindTitle(): CharSequence {

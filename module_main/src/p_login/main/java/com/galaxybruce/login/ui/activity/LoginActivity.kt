@@ -39,7 +39,7 @@ import com.galaxybruce.main.databinding.LoginLayoutBinding
  * <p>
  * modification history:
  */
-@Route(path = "login")
+@Route(path = "/app/login")
 class LoginActivity : AppBaseActivity<LoginLayoutBinding>() {
 
     private lateinit var mPageViewModel: LoginViewModel

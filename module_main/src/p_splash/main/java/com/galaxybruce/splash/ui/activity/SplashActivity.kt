@@ -62,10 +62,10 @@ class SplashActivity : AppBaseActivity<SplashLayoutBinding>() {
         super.bindData(savedInstanceState)
 
         if(!AppInternal.getInstance().mustLogin() || AppUserInfoManager.getInstance().isLogin) {
-            RouterUrlBuilder.instance("main").go(this)
+            RouterUrlBuilder.instance("/app/main").go(this)
         } else {
-            RouterUrlBuilder.instance("login")
-                .addParam(AppConstants.Login.KEY_LOGIN_SUCCESS_ROUTER, "main").go(this)
+            RouterUrlBuilder.instance("/app/login")
+                .addParam(AppConstants.Login.KEY_LOGIN_SUCCESS_ROUTER, "/app/main").go(this)
 
         }
         finish()
