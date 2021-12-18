@@ -26,9 +26,8 @@ public class AppInternal implements IAppInternal {
     private IAuthAccount authAccount;
     private IHttpRequestOptions httpRequestOptions;
 
-    public IAppInternal setAppInternal(IAppInternal var) {
+    public void setAppInternal(IAppInternal var) {
         appInternal = var;
-        return this;
     }
 
     @Override
