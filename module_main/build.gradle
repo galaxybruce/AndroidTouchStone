@@ -1,5 +1,6 @@
 apply {
     from "${rootDir.path}/gradle/config/config_lib.gradle"
+    plugin "galaxybruce-pioneer"
 }
 
 dependencies {

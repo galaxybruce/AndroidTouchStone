@@ -67,4 +67,12 @@ public class AppInternal implements IAppInternal {
         }
         return httpRequestOptions;
     }
+
+    @Override
+    public boolean mustLogin() {
+        if(appInternal != null) {
+            return appInternal.mustLogin();
+        }
+        return false;
+    }
 }

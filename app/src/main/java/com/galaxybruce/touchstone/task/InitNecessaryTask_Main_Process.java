@@ -98,6 +98,11 @@ public class InitNecessaryTask_Main_Process extends Task implements IProguardKee
             public IHttpRequestOptions getHttpRequestOptions() {
                 return null;
             }
+
+            @Override
+            public boolean mustLogin() {
+                return false;
+            }
         });
     }
 

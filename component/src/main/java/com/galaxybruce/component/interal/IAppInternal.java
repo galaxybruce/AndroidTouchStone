@@ -18,4 +18,10 @@ public interface IAppInternal {
     IAuthAccount getAuthAccount();
 
     IHttpRequestOptions getHttpRequestOptions();
+
+    /**
+     * app是否必须登录才能使用
+     * @return
+     */
+    boolean mustLogin();
 }

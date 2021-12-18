@@ -5,6 +5,21 @@
         android:allowBackup="true"
         android:supportsRtl="true">
 
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTask"
+            android:theme="@style/MainTheme">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="galaxybruce" />
+            </intent-filter>
+        </activity>
+
+
         <activity android:name="com.galaxybruce.main.ui.activity.NetTestActivity"/>
     </application>
 

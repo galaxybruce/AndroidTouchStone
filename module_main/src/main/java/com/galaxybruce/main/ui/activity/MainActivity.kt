@@ -1,10 +1,10 @@
-package com.galaxybruce.touchstone
+package com.galaxybruce.main.ui.activity
 
 import android.os.Bundle
 import android.view.View
-import com.alibaba.android.arouter.launcher.ARouter
 import com.galaxybruce.component.router.RouterUrlBuilder
 import com.galaxybruce.component.ui.activity.BaseTitleBarActivity
+import com.galaxybruce.main.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseTitleBarActivity() {
@@ -22,7 +22,8 @@ class MainActivity : BaseTitleBarActivity() {
 
     override fun initView(view: View?) {
         image.setOnClickListener {
-            RouterUrlBuilder.instance("/test/TestActivity").addParam("a", "a11").go(this)
+            RouterUrlBuilder.instance("/test/TestActivity")
+                .addParam("a", "a11").go(this)
         }
     }
 

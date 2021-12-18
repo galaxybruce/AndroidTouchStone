@@ -19,4 +19,8 @@ public class AppConstants {
      */
     public final static String EMPTY_JSON = "{}";
 
+    public interface Login {
+        String KEY_LOGIN_SUCCESS_ROUTER = "KEY_LOGIN_SUCCESS_ROUTER";
+    }
+
 }
