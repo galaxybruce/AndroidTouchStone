@@ -8,9 +8,10 @@ import com.galaxybruce.component.interal.AppInternal
 import com.galaxybruce.component.router.RouterUrlBuilder
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
+import com.galaxybruce.component.util.ActivityUtil
 import com.galaxybruce.component.util.AppConstants
-import com.galaxybruce.main.R
 import com.galaxybruce.main.BR
+import com.galaxybruce.main.R
 import com.galaxybruce.main.databinding.SplashLayoutBinding
 import com.galaxybruce.splash.ui.mvvm.viewmodel.SplashViewModel
 
@@ -25,6 +26,19 @@ import com.galaxybruce.splash.ui.mvvm.viewmodel.SplashViewModel
 class SplashActivity : AppBaseActivity<SplashLayoutBinding>() {
 
     private lateinit var mPageViewModel: SplashViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // todo 没有同意隐私政策时，杀死进程
+//        if (!PrivacyUtil.checkPrivacyInLaunchActivity(this)) {
+//            return
+//        }
+
+        // 避免从桌面启动程序后，会重新实例化入口类的activity
+        if (ActivityUtil.handleSplashActivity(this)) {
+            return
+        }
+        super.onCreate(savedInstanceState)
+    }
 
     override fun initViewModel(): JPBaseViewModel {
         mPageViewModel = getActivityViewModel(SplashViewModel::class.java)

@@ -126,7 +126,6 @@ abstract class BaseApplication : MultiDexApplication(), ViewModelStoreOwner {
      * 其他解决方案：[通过拦截 Activity的创建 实现APP的隐私政策改造](https://juejin.cn/post/6990643611130363917)
      */
     protected open fun checkPrivacyPolicy(): Boolean {
-//        return PrivacyUtil.checkPrivacyPolicy(this)
         return true
     }
 

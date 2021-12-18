@@ -42,4 +42,9 @@ class AppContext : BaseApplication() {
             )
             .start(initTaskFactory, project)
     }
+
+    override fun checkPrivacyPolicy(): Boolean {
+        //        return PrivacyUtil.checkPrivacyPolicy(this)
+        return true
+    }
 }
