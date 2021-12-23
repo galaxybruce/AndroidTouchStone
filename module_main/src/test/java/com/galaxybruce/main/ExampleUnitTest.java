@@ -1,4 +1,4 @@
-package com.galaxybruce.base;
+package com.galaxybruce.main;
 
 import org.junit.Test;
 

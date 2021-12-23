@@ -1,4 +1,4 @@
-package com.galaxybruce.base;
+package com.galaxybruce.packagedemo;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;
