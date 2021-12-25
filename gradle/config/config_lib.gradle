@@ -69,8 +69,12 @@ android {
 
 dependencies {
     testImplementation rootProject.ext.dep.junit
-    androidTestImplementation rootProject.ext.dep.runner
-    androidTestImplementation rootProject.ext.dep.espressocore
+//    testImplementation rootProject.ext.dep.mockito
+//    testImplementation rootProject.ext.dep.robolectric
+    androidTestImplementation rootProject.ext.dep.androidx_runner
+    androidTestImplementation rootProject.ext.dep.androidx_espressocore
+    androidTestImplementation rootProject.ext.dep.androidx_junit
+
 
     kapt rootProject.ext.dep.arouter_compiler
     api rootProject.ext.dep.arouter_api

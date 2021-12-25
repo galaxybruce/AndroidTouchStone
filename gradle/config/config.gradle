@@ -47,9 +47,12 @@ ext {
             ],
 
             //--------------------JUnit----------------------
+            mockito                     : "org.mockito:mockito-core:3.9.0",
             junit                       : "junit:junit:4.12",
-            runner                      : 'androidx.test:runner:1.1.0',
-            espressocore                : 'androidx.test.espresso:espresso-core:3.1.0',
+            robolectric                 : "org.robolectric:robolectric:4.3.1",
+            androidx_junit              : 'androidx.test.ext:junit:1.1.2',
+            androidx_runner             : 'androidx.test:runner:1.1.0',
+            androidx_espressocore       : 'androidx.test.espresso:espresso-core:3.1.0',
 
             //-------------------Android---------------------
             kotlin                      : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
