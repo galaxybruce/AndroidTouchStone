@@ -1,12 +1,15 @@
 package com.galaxybruce.component.ui.dialog;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.galaxybruce.component.ui.IUiInit;
 import com.trello.rxlifecycle2.LifecycleProvider;
@@ -26,7 +29,7 @@ import androidx.fragment.app.FragmentTransaction;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 
-public abstract class AppDialogFragment extends DialogFragment implements LifecycleProvider<FragmentEvent>, IUiInit {
+public abstract class AppDialogFragment extends DialogFragment implements IUiInit {
     
     @Override
     public void show(FragmentManager manager, String tag) {
@@ -44,101 +47,30 @@ public abstract class AppDialogFragment extends DialogFragment implements Lifecy
         }
     }
 
-    private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
-
     @Override
-    @NonNull
-    @CheckResult
-    public final Observable<FragmentEvent> lifecycle() {
-        return lifecycleSubject.hide();
-    }
+    public void onStart() {
+        super.onStart();
+        resizeDialogFragment();
 
-    @Override
-    @NonNull
-    @CheckResult
-    public final <T> LifecycleTransformer<T> bindUntilEvent(@NonNull FragmentEvent event) {
-        return RxLifecycle.bindUntilEvent(lifecycleSubject, event);
-    }
-
-    @Override
-    @NonNull
-    @CheckResult
-    public final <T> LifecycleTransformer<T> bindToLifecycle() {
-        return RxLifecycleAndroid.bindFragment(lifecycleSubject);
-    }
-
-    @Override
-    @CallSuper
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        lifecycleSubject.onNext(FragmentEvent.ATTACH);
-    }
-
-    @Override
-    @CallSuper
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        lifecycleSubject.onNext(FragmentEvent.CREATE);
+        // 禁用软键盘
+        if(forbiddenSoftKeyboard()) {
+            Dialog dialog = getDialog();
+            if(dialog != null) {
+                Window window = dialog.getWindow();
+                if (window != null) {
+                    // 可以随时开启和禁用 软键盘：getDialog().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                    window.addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                }
+            }
+        }
     }
 
     @Override
     @CallSuper
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        lifecycleSubject.onNext(FragmentEvent.CREATE_VIEW);
-
         initData(getArguments(), savedInstanceState);
     }
-
-    @Override
-    @CallSuper
-    public void onStart() {
-        super.onStart();
-        lifecycleSubject.onNext(FragmentEvent.START);
-    }
-
-    @Override
-    @CallSuper
-    public void onResume() {
-        super.onResume();
-        lifecycleSubject.onNext(FragmentEvent.RESUME);
-    }
-
-    @Override
-    @CallSuper
-    public void onPause() {
-        lifecycleSubject.onNext(FragmentEvent.PAUSE);
-        super.onPause();
-    }
-
-    @Override
-    @CallSuper
-    public void onStop() {
-        lifecycleSubject.onNext(FragmentEvent.STOP);
-        super.onStop();
-    }
-
-    @Override
-    @CallSuper
-    public void onDestroyView() {
-        lifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW);
-        super.onDestroyView();
-    }
-
-    @Override
-    @CallSuper
-    public void onDestroy() {
-        lifecycleSubject.onNext(FragmentEvent.DESTROY);
-        super.onDestroy();
-    }
-
-    @Override
-    @CallSuper
-    public void onDetach() {
-        lifecycleSubject.onNext(FragmentEvent.DETACH);
-        super.onDetach();
-    }
-
 
     protected LayoutInflater mInflater;
 
@@ -221,5 +153,17 @@ public abstract class AppDialogFragment extends DialogFragment implements Lifecy
             return ((T) activity);
         }
         return null;
+    }
+
+    protected void resizeDialogFragment() {
+
+    }
+
+    /**
+     * 禁用软键盘
+     * @return
+     */
+    protected boolean forbiddenSoftKeyboard() {
+        return false;
     }
 }

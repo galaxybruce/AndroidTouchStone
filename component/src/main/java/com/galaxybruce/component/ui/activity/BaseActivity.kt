@@ -63,6 +63,7 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
 
     /**
      * 添加window窗口特征
+     * 如设置全屏：window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)//remove notification bar  即全屏
      *
      * @return boolean 是否有标题栏
      */
