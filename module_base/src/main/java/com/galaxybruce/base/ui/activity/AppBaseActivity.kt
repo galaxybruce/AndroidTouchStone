@@ -30,7 +30,7 @@ abstract class AppBaseActivity<B: ViewDataBinding> : JPBaseActivity<B>() {
      * 以pt为单位适配，这里的宽度已设计稿的标准像素尺寸为准
      */
     override fun getResources(): Resources {
-        return AdaptScreenUtils.adaptHeight(super.getResources(), 1080)
+        return AdaptScreenUtils.adaptWidth(super.getResources(), 750)
     }
 
 }
