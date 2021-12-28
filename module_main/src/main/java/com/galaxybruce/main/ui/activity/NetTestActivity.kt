@@ -3,17 +3,17 @@ package com.galaxybruce.main.ui.activity
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.galaxybruce.component.ui.jetpack.JPBaseActivity
+import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
-import com.galaxybruce.main.R
 import com.galaxybruce.main.BR
+import com.galaxybruce.main.R
 import com.galaxybruce.main.databinding.NetTestLayoutBinding
 import com.galaxybruce.main.ui.mvvm.viewmodel.NetTestViewModel
 
 
 @Route(path = "/test/TestActivity")
-class NetTestActivity : JPBaseActivity<NetTestLayoutBinding>() {
+class NetTestActivity : AppBaseActivity<NetTestLayoutBinding>() {
 
     private lateinit var mPageViewModel: NetTestViewModel
 

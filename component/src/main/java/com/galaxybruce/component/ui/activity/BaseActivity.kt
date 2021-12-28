@@ -9,7 +9,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.blankj.utilcode.util.ToastUtils
+
 import com.galaxybruce.component.app.BaseApplication
 import com.galaxybruce.component.ui.ILogin
 import com.galaxybruce.component.ui.IUiDataProvider
@@ -18,6 +18,7 @@ import com.galaxybruce.component.ui.IUiView
 import com.galaxybruce.component.ui.dialog.AppDialogFragment
 import com.galaxybruce.component.ui.dialog.AppLoadingDialog
 import com.galaxybruce.component.ui.fragment.BaseFragment
+import com.galaxybruce.component.util.ToastUtils
 import java.lang.Exception
 import java.util.*
 
@@ -126,7 +127,7 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
 
     override fun showToast(message: String?) {
         runOnUiThread {
-            ToastUtils.showShort(message)
+            ToastUtils.showToast(mActivity, message)
         }
     }
 
