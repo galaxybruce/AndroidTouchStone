@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item type="id" name="swipe_refresh_layout"/>
+    <item type="id" name="video_view"/>
+    <item type="id" name="viewpager"/>
+    <item type="id" name="recycler_view"/>
+    <item type="id" name="listview"/>
+    <item type="id" name="error_layout"/>
+    <item type="id" name="edit_scrollview"/>
+
+</resources>

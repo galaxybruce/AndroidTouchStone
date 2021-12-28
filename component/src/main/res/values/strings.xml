@@ -10,4 +10,11 @@
     <!-- 确定取消 -->
     <string name="dialog_text_cancel">取消</string>
     <string name="dialog_text_confirm">确认</string>
+
+    <string name="app_error_view_click_to_refresh">点击屏幕,重新加载</string>
+    <string name="app_error_view_no_data">暂无内容</string>
+    <string name="app_error_view_loading">加载中…</string>
+    <string name="app_error_view_load_error_click_to_refresh">内容加载失败\n点击重新加载</string>
+    <string name="app_error_view_network_error_click_to_refresh">好像没有网络</string>
+
 </resources>

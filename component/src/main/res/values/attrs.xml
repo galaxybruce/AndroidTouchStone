@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="app_recycler_view">
+        <!-- 默认favor图片-->
+        <attr format="reference" name="layout_res_id"/>
+
+    </declare-styleable>
+</resources>

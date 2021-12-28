@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.blankj.utilcode.util.ClickUtils
 import com.galaxybruce.component.ui.jetpack.JPListDataModel
+import com.galaxybruce.component.ui.view.recyclerview.AppRecyclerView2
 
 
 /**
@@ -46,63 +47,44 @@ object JPCommonBindingAdapter {
 //    fun displayMiddleImage(view: ImageView, target: Any?, url: String?, placeholder: Int = 0) {
 //        BBSImageLoaderUtilWrapper.displayMiddleImage(target, url, view, placeholder)
 //    }
-//
-//    @BindingAdapter(value = ["binding_selected"])
-//    @JvmStatic
-//    fun setViewSelected(view: View, isSelected: Boolean = false) {
-//        view.setSelected { isSelected }
-//    }
-//
-//    @BindingAdapter(value = ["binding_enabled"])
-//    @JvmStatic
-//    fun setViewEnabled(view: View, isEnabled: Boolean = false) {
-//        view.isEnabled = isEnabled
-//    }
-//
-//    @BindingAdapter(value = ["binding_visible", "binding_notGone"], requireAll = false)
-//    @JvmStatic
-//    fun visible(view: View, visible: Boolean, notGone: Boolean = false) {
-//        view.visibility = if (visible) View.VISIBLE else if (notGone) View.INVISIBLE else View.GONE
-//    }
-//
-//    @BindingAdapter(value = ["binding_enable"])
-//    @JvmStatic
-//    fun visible(view: View, isEnabled: Boolean) {
-//        view.isEnabled = isEnabled
-//    }
-//
-//    @BindingAdapter(value = ["binding_textNull", "binding_defaultText"], requireAll = false)
-//    @JvmStatic
-//    fun setTextNull(view: TextView, text: String?, defaultText: String?) {
-//        view.textNull(text, defaultText)
-//    }
-//
-//    @BindingAdapter(value = ["binding_onClickWithDebouncing"], requireAll = false)
-//    @JvmStatic
-//    fun onClickWithDebouncing(view: View?, clickListener: View.OnClickListener) {
-//        ClickUtils.applySingleDebouncing(view, 500, clickListener)
-//    }
-//
-//    @BindingAdapter(value = ["binding_bbsRecyclerViewListData"], requireAll = false)
-//    @JvmStatic
-//    fun updateBBSRecyclerViewData(recyclerview: BBSRecyclerView2<Any>, listData: JPListDataModel?){
-//        listData?.takeIf { it.isAvailable }?.let {
-//            if(it.isError) {
-//                recyclerview.bbsExecuteListener.executeOnLoadDataError(null)
-//            } else {
-//                recyclerview.bbsExecuteListener.executeOnLoadDataSuccess(it.list)
-//            }
-//            recyclerview.bbsExecuteListener.executeOnLoadFinish()
-//        }
-//
-//    }
-//
-//    @BindingAdapter(value = ["binding_notifyBBSRecyclerViewListChanged"], requireAll = false)
-//    @JvmStatic
-//    fun notifyBBSRecyclerViewListChanged(recyclerView: BBSRecyclerView2<Any>, notify: Boolean) {
-//        if (notify) {
-//            recyclerView.notifyAdapterDataSetChanged()
-//        }
-//    }
+
+    @BindingAdapter(value = ["binding_selected"])
+    @JvmStatic
+    fun setViewSelected(view: View, isSelected: Boolean = false) {
+        view.isSelected = isSelected
+    }
+
+    @BindingAdapter(value = ["binding_enabled"])
+    @JvmStatic
+    fun setViewEnabled(view: View, isEnabled: Boolean = false) {
+        view.isEnabled = isEnabled
+    }
+
+    @BindingAdapter(value = ["binding_onClickWithDebouncing"], requireAll = false)
+    @JvmStatic
+    fun onClickWithDebouncing(view: View?, clickListener: View.OnClickListener) {
+        ClickUtils.applySingleDebouncing(view, 500, clickListener)
+    }
+
+    @BindingAdapter(value = ["binding_setRecyclerViewListData"], requireAll = false)
+    @JvmStatic
+    fun setAppRecyclerViewData(recyclerview: AppRecyclerView2<Any>, listData: JPListDataModel?){
+        listData?.takeIf { it.isAvailable }?.let {
+            if(it.isError) {
+                recyclerview.bbsExecuteListener.executeOnLoadDataError(null)
+            } else {
+                recyclerview.bbsExecuteListener.executeOnLoadDataSuccess(it.list)
+            }
+            recyclerview.bbsExecuteListener.executeOnLoadFinish()
+        }
+    }
+
+    @BindingAdapter(value = ["binding_notifyRecyclerViewListChanged"], requireAll = false)
+    @JvmStatic
+    fun notifyAppRecyclerViewListChanged(recyclerView: AppRecyclerView2<Any>, notify: Boolean) {
+        if (notify) {
+            recyclerView.notifyAdapterDataSetChanged()
+        }
+    }
 
 }

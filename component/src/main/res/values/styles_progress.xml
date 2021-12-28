@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- =========这个文件放置progressbar样式========= -->
+
+    <style name="Style_Loading" parent="Base.Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateDrawable">@drawable/app_loading_progressbar</item>
+    </style>
+
+    <style name="Style_Video_Loading_Play">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateDrawable">@drawable/app_video_loading_progressbar</item>
+        <item name="android:indeterminateDuration">1200</item>
+        <item name="android:indeterminateOnly">true</item>
+        <item name="android:indeterminateBehavior">repeat</item>
+    </style>
+
+</resources>
