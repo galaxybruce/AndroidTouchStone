@@ -5,15 +5,15 @@
     android:gravity="center">
 
     <LinearLayout android:id="@+id/loading_container"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="160pt"
+        android:layout_height="160pt"
         android:background="@drawable/app_dialog_loading_bg"
         android:gravity="center"
         android:orientation="vertical">
 
         <ProgressBar
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="60pt"
+            android:layout_height="60pt"
             android:indeterminateBehavior="repeat"
             android:indeterminateDrawable="@drawable/app_dialog_loading_anim"
             android:indeterminateOnly="true" />
@@ -22,11 +22,11 @@
             android:id="@+id/tv_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20pt"
             android:gravity="center"
             android:text="加载中..."
             android:textColor="@android:color/white"
-            android:textSize="14sp"
+            android:textSize="28pt"
             android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>
