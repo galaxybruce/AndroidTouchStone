@@ -6,4 +6,8 @@
     <string name="loading_no_more">没有更多的内容</string>
     <string name="loading_no_data">暂无内容</string>
     <string name="loading">数据载入中，请稍候</string>
+
+    <!-- 确定取消 -->
+    <string name="dialog_text_cancel">取消</string>
+    <string name="dialog_text_confirm">确认</string>
 </resources>

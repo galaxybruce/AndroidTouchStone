@@ -3,20 +3,16 @@ package com.galaxybruce.component.ui.dialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ClickUtils;
-import com.blankj.utilcode.util.ViewUtils;
 import com.galaxybruce.component.R;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-public class AppLoadingDialog extends AppCenterDialogFragment {
+public class AppLoadingDialog extends AppCenterDialog {
 
     public static AppLoadingDialog getInstance() {
         return new AppLoadingDialog();
@@ -38,15 +34,15 @@ public class AppLoadingDialog extends AppCenterDialogFragment {
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Dialog_NoFrame);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.app_dialog_loading, container, false);
+    public int bindLayoutId() {
+        return R.layout.app_dialog_loading;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void initView(@Nullable View view) {
+        super.initView(view);
+
         tvMessage = view.findViewById(R.id.tv_message);
 
         // 防止某些情况，loading框不消失，手动点击3下消失
@@ -67,8 +63,8 @@ public class AppLoadingDialog extends AppCenterDialogFragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void bindData(@Nullable Bundle savedInstanceState) {
+        super.bindData(savedInstanceState);
         if (getArguments() != null && getView() != null) {
             String message = getArguments().getString("message");
             if (!TextUtils.isEmpty(message)) {

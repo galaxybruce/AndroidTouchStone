@@ -1,7 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Appbar背景色-->
     <color name="colorPrimary">#34A48E</color>
+    <!--状态栏颜色-->
     <color name="colorPrimaryDark">#245C50</color>
+    <!--控制各个控件被选中时的颜色-->
     <color name="colorAccent">#FF73A3</color>
     <color name="windowBackground">#F4F4F4</color>
+
+    <!--渐变色-->
+    <color name="theme_primary_color_start">#6F78E7</color>
+    <color name="theme_primary_color_end">#19A5F5</color>
+
+    <!--app主题色是蓝色-->
+    <color name="theme_primary_color">#4191FC</color>
+    <!--app分割线颜色-->
+    <color name="theme_primary_cutoff_color">#FEFEFE</color>
+
+    <!--app常用文本颜色-->
+    <color name="theme_text_color_1">#FF121212</color>
+    <color name="theme_text_color_2">#FF333333</color>
+    <color name="theme_text_color_3">#FF666666</color>
+    <color name="theme_text_color_4">#FF999999</color>
+
+    <!--下拉刷新和加载圈的颜色-->
+    <color name="theme_refresh_color">@color/theme_primary_color</color>
+    <color name="theme_progress_color">@color/theme_primary_color</color>
+
+    <!--app标题栏背景颜色-->
+    <color name="theme_title_bar_bg_color">#4b4b57</color>
+    <!--app标题栏标题颜色-->
+    <color name="theme_title_bar_text_color">#FF121212</color>
+
+    <!-- 对话框的颜色值 -->
+    <color name="dialog_title_color">#FF121212</color>
+    <color name="dialog_msg_color">#FF666666</color>
+    <color name="dialog_cancel_color">#FF666666</color>
+    <color name="dialog_confirm_color">@color/theme_primary_color</color>
+    <color name="dialog_line_color">#dbdbdb</color>
 </resources>

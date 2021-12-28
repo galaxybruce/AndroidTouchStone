@@ -33,7 +33,7 @@ public abstract class JPBaseDialogFragment<B extends ViewDataBinding> extends Ap
      * @return 默认返回false
      */
     protected boolean supportMVVM() {
-        return false;
+        return true;
     }
 
     /**
@@ -41,7 +41,9 @@ public abstract class JPBaseDialogFragment<B extends ViewDataBinding> extends Ap
      * @return 返回 该页面对应的ViewModel
      */
     @Override
-    public abstract JPBaseViewModel initViewModel();
+    public JPBaseViewModel initViewModel() {
+        return null;
+    }
 
     /**
      * 多个"通用的ViewModel"的初始化
