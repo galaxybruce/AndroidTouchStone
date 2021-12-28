@@ -260,6 +260,15 @@ abstract class BaseFragment : Fragment(), IUiInit, IUiView, ILogin, IUiDataProvi
         }
     }
 
+    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
+    }
+
+    override fun initView(view: View?) {
+    }
+
+    override fun bindData(savedInstanceState: Bundle?) {
+    }
+
     override fun finishAllActivity() {
         activity.takeIf { it != null && !it.isFinishing && it is IUiView }?.let {
             (it as IUiView).finishAllActivity()
