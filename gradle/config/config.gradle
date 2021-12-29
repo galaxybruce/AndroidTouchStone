@@ -29,6 +29,7 @@ ext {
 
     dep = [
             plugin  : [
+                    "com.galaxybruce.android:pioneer-gradle-plugin:0.0.44",
                     "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version",
                     "com.alibaba:arouter-register:1.0.2"
             ],
