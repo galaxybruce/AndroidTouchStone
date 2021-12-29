@@ -1,13 +1,6 @@
 
 buildscript {
-    apply from: './gradle/config/config.gradle'
-
-    addRepos(repositories)
-
-    dependencies {
-        classpath 'com.galaxybruce.android:pioneer-gradle-plugin:0.0.44'
-    }
+    apply from: './gradle/config/util.gradle'
 }
-apply plugin: 'galaxybruce-pioneer-settings'
 
-settings.ext.includeDefaultModule(['module_packagedemo'])
+includeModule(settings, [settings.getRootDir().path], ['module_packagedemo'])

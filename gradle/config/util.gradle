@@ -1,5 +1,4 @@
 
-
 /**
  * 公司内部通用library依赖方式，便有maven和源码间切换
  * @param project
@@ -50,10 +49,55 @@ static boolean equalLocalValue(Object project, String key, String value) {
     return value == getLocalValue(project, key)
 }
 
+/**
+ * 加载指定目录中的module
+ * 调用方式： includeModule(settings, [settings.getRootDir().path], ['aopstat','plugin'])
+ * @param libraryPaths
+ * @param excludeDirs
+ * @return
+ */
+static includeModule(Settings settings, List<String> libraryPaths, List<String> excludeDirs) {
+    libraryPaths.each {
+        File f = new File(it) // file(it)
+        if (!f.exists() || !f.isDirectory()) {
+            return
+        }
+        if (isModule(f)) {
+            if(excludeDirs != null && excludeDirs.contains(f.name)) {
+                return
+            }
+            settings.include "${f.name}"
+            settings.project(":${f.name}").projectDir = f
+        } else {
+            f.eachDir { dir ->
+                if (!isModule(dir)) {
+                    return
+                }
+                if(excludeDirs != null && excludeDirs.contains(dir.name)) {
+                    return
+                }
+                settings.include "${dir.name}"
+                settings.project(":${dir.name}").projectDir = dir
+            }
+        }
+    }
+}
+
+static boolean isModule(File dir) {
+    File[] files = dir.listFiles(new FilenameFilter() {
+        @Override
+        boolean accept(File file, String name) {
+            return name == 'build.gradle' || name == 'src'
+        }
+    })
+    return files.size() == 2
+}
+
 
 ext{
     addDependency = this.&addDependency
     addCommonDependency = this.&addCommonDependency
     equalLocalValue = this.&equalLocalValue
     getLocalValue = this.&getLocalValue
+    includeModule = this.&includeModule
 }
