@@ -40,4 +40,4 @@ fi
 
 # 在有的手机上安装后不能立马启动，需要睡眠几秒
 sleep 1s
-adb shell am start -W -n com.galaxybruce.touchstone/com.galaxybruce.touchstone.MainActivity
+adb shell am start -W -n com.galaxybruce.touchstone/com.galaxybruce.splash.ui.activity.SplashActivity

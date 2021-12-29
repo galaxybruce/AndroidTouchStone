@@ -14,6 +14,11 @@ import androidx.fragment.app.DialogFragment;
 
 public class AppLoadingDialog extends AppCenterDialog {
 
+    @Override
+    protected boolean supportMVVM() {
+        return false;
+    }
+
     public static AppLoadingDialog getInstance() {
         return new AppLoadingDialog();
     }
