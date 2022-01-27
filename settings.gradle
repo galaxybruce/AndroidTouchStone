@@ -3,4 +3,6 @@ buildscript {
     apply from: './gradle/config/util.gradle'
 }
 
-includeModule(settings, [settings.getRootDir().path], ['module_packagedemo'])
+includeModule(settings,
+        [settings.getRootDir().path],
+        ['module_packagedemo'])

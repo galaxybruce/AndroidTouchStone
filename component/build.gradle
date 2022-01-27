@@ -46,6 +46,9 @@ dependencies {
     implementation 'com.elvishew:xlog:1.8.0'
 
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
+
+    api 'com.uber.autodispose:autodispose:1.4.0'
+    api 'com.uber.autodispose:autodispose-android-archcomponents:1.4.0'
 }
 
 

@@ -8,9 +8,15 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ClickUtils;
 import com.galaxybruce.component.R;
+import com.galaxybruce.component.util.RxLifecycleUtils;
+
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 
 public class AppLoadingDialog extends AppCenterDialog {
 
@@ -65,6 +71,29 @@ public class AppLoadingDialog extends AppCenterDialog {
                 }
             });
         }
+
+        final View closeView  = view.findViewById(R.id.img_close);
+        if(closeView != null) {
+            closeView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismissAllowingStateLoss();
+                }
+            });
+        }
+
+        View rootView = getView();
+        if(rootView != null && closeView != null) {
+            Observable.timer(20, TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .as(RxLifecycleUtils.bindLifecycle(this))
+                    .subscribe(new Consumer<Long>() {
+                        @Override
+                        public void accept(Long aLong) throws Exception {
+                            closeView.setVisibility(View.VISIBLE);
+                        }
+                    });
+        }
     }
 
     @Override
@@ -89,11 +118,6 @@ public class AppLoadingDialog extends AppCenterDialog {
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 
     /**
