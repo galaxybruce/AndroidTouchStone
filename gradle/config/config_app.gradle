@@ -27,6 +27,29 @@ android {
 
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
+    splits { // [优化ApK大小之ABI Filters 和 APK split](https://www.jianshu.com/p/76db8b87fac3)
+        // Configures multiple APKs based on ABI.
+        abi {
+            def isReleaseBuild = false
+            gradle.startParameter.taskNames.find {
+                if (it ==~ /assemble.*Release/) {
+                    isReleaseBuild = true
+                    return true
+                }
+                return false
+            }
+            // Enables building multiple APKs per ABI.
+            enable isReleaseBuild
+            // By default all ABIs are included, so use reset() and include to specify that we only
+            // want APKs for x86, armeabi-v7a, and mips.
+            reset()
+            // Specifies a list of ABIs that Gradle should create APKs for.
+            include 'armeabi-v7a', 'arm64-v8a'
+            // Specifies that we want to also generate a universal APK that includes all ABIs.
+            universalApk false
+        }
+    }
+
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
@@ -39,9 +62,10 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
-        ndk {
-            abiFilters "armeabi-v7a"
-        }
+        // splits中配置后，这里不能再配置
+//        ndk {
+//            abiFilters 'armeabi-v7a', 'arm64-v8a'
+//        }
 
         javaCompileOptions {
             annotationProcessorOptions {
