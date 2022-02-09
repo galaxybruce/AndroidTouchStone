@@ -39,12 +39,16 @@ android {
                 return false
             }
             // Enables building multiple APKs per ABI.
-            enable isReleaseBuild
+            enable true
             // By default all ABIs are included, so use reset() and include to specify that we only
             // want APKs for x86, armeabi-v7a, and mips.
             reset()
             // Specifies a list of ABIs that Gradle should create APKs for.
-            include 'armeabi-v7a', 'arm64-v8a'
+            if(isReleaseBuild) {
+                include 'armeabi-v7a', 'arm64-v8a'
+            } else {
+                include 'arm64-v8a'
+            }
             // Specifies that we want to also generate a universal APK that includes all ABIs.
             universalApk false
         }
