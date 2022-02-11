@@ -1,7 +1,10 @@
 package com.galaxybruce.component.ui.dialog;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +27,25 @@ import androidx.fragment.app.DialogFragment;
  * <p>
  * modification history:
  */
-public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends JPBaseDialogFragment<B> {
+public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends JPBaseDialogFragment<B>
+        implements DialogInterface.OnKeyListener, DialogInterface.OnShowListener{
 
-    /**
-     * 确定和取消按钮的文本通过bundle传进来
-     */
-    protected static final String KEY_CANCEL_TEXT = "KEY_CANCEL_TEXT";
-    protected static final String KEY_CONFIRM_TEXT = "KEY_CONFIRM_TEXT";
+    public interface AppConfirmDialogCallback {
+
+        default void onCancel() {};
+
+        void onConfirm();
+    }
+
+    protected AppConfirmDialogCallback callback;
+
+    protected View vLine;
+    protected TextView btnCancel;
+    protected TextView btnConfirm;
+
+    private boolean isVisibleCancel;
+    private boolean isVisibleConfirm;
+    private boolean cancelable;
 
     @Override
     public void onCreate(@androidx.annotation.Nullable Bundle savedInstanceState) {
@@ -59,6 +74,18 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
     public abstract int bindContentLayoutId();
 
     @Override
+    public void initData(@androidx.annotation.Nullable Bundle bundle, @androidx.annotation.Nullable Bundle savedInstanceState) {
+        super.initData(bundle, savedInstanceState);
+
+        Bundle arguments = getArguments();
+        if(arguments != null) {
+            cancelable = arguments.getBoolean("cancelable", true);
+            isVisibleCancel = arguments.getBoolean("isVisibleCancel", true);
+            isVisibleConfirm = arguments.getBoolean("isVisibleConfirm", true);
+        }
+    }
+
+    @Override
     public void initView(@Nullable View view) {
         super.initView(view);
 
@@ -67,14 +94,9 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
             LayoutInflater.from(getContext()).inflate(bindContentLayoutId(), contentLayout, true);
         }
 
-        final TextView btnCancel = view.findViewById(R.id.btnCancel);
-        final TextView btnConfirm = view.findViewById(R.id.btnConfirm);
-        if(getArguments() != null && !TextUtils.isEmpty(getArguments().getString(KEY_CANCEL_TEXT))) {
-            btnCancel.setText(getArguments().getString(KEY_CANCEL_TEXT));
-        }
-        if(getArguments() != null && !TextUtils.isEmpty(getArguments().getString(KEY_CONFIRM_TEXT))) {
-            btnConfirm.setText(getArguments().getString(KEY_CONFIRM_TEXT));
-        }
+        vLine = view.findViewById(R.id.line);
+        btnCancel = view.findViewById(R.id.btnCancel);
+        btnConfirm = view.findViewById(R.id.btnConfirm);
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,12 +113,84 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
         });
     }
 
+    @Override
+    public void bindData(@androidx.annotation.Nullable Bundle savedInstanceState) {
+        super.bindData(savedInstanceState);
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String cancelText = bundle.getString("cancelText");
+            String confirmText = bundle.getString("confirmText");
+            cancelable = bundle.getBoolean("cancelable", true);
+            isVisibleCancel = bundle.getBoolean("isVisibleCancel", true);
+            isVisibleConfirm = bundle.getBoolean("isVisibleConfirm", true);
+
+            if(!TextUtils.isEmpty(cancelText)) {
+                btnCancel.setText(cancelText);
+            }
+            if(!TextUtils.isEmpty(confirmText)) {
+                btnConfirm.setText(confirmText);
+            }
+
+            if (!isVisibleCancel) {
+                btnCancel.setVisibility(View.GONE);
+                vLine.setVisibility(View.GONE);
+            } else {
+                btnCancel.setVisibility(View.VISIBLE);
+            }
+            if (!isVisibleConfirm) {
+                btnConfirm.setVisibility(View.GONE);
+                vLine.setVisibility(View.GONE);
+            } else {
+                btnConfirm.setVisibility(View.VISIBLE);
+            }
+            if (isVisibleCancel && isVisibleConfirm) {
+                vLine.setVisibility(View.VISIBLE);
+            }
+
+            setCancelable(cancelable);
+        }
+    }
+
     protected void onCancelClick() {
+        if(callback != null) {
+            callback.onCancel();
+        }
         dismiss();
     }
 
     protected void onConfirmClick() {
+        if(callback != null) {
+            callback.onConfirm();
+        }
         dismiss();
     }
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.setOnKeyListener(this);
+        dialog.setOnShowListener(this);
+        return dialog;
+    }
+
+    @Override
+    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+        if (!cancelable
+                && (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_ESCAPE)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onShow(DialogInterface dialog) {
+
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+    }
 }

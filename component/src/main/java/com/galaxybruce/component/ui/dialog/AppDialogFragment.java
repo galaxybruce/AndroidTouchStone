@@ -3,7 +3,9 @@ package com.galaxybruce.component.ui.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -155,8 +157,25 @@ public abstract class AppDialogFragment extends DialogFragment implements IUiIni
         return null;
     }
 
+    /**
+     * 不能放在onCreateDialog方法中，不然不会生效，需要另外在onCreateView中设置布局宽度为屏幕宽度
+     * v.setMinimumWidth(getResources().getDisplayMetrics().widthPixels);
+     *
+     * 默认dialog显示在中间
+     */
     protected void resizeDialogFragment() {
-
+        Dialog dialog = getDialog();
+        if (dialog == null) {
+            return;
+        }
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.gravity = Gravity.CENTER;
+        lp.width = Resources.getSystem().getDisplayMetrics().widthPixels * 86 / 100;
+        window.setLayout(lp.width, lp.height);
     }
 
     /**

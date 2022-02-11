@@ -29,10 +29,6 @@ public class AppCenterDialog<B extends ViewDataBinding> extends JPBaseDialogFrag
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Dialog_NoFrame);
     }
 
-    /**
-     * 不能放在onCreateDialog方法中，不然不会生效，需要另外在onCreateView中设置布局宽度为屏幕宽度
-     * v.setMinimumWidth(getResources().getDisplayMetrics().widthPixels);
-     */
     protected void resizeDialogFragment() {
         Dialog dialog = getDialog();
         if (dialog == null) {
