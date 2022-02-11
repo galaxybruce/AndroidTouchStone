@@ -2,7 +2,6 @@ package com.galaxybruce.component.ui.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -13,24 +12,32 @@ import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.AdaptScreenUtils;
 import com.galaxybruce.component.ui.IUiInit;
-import com.trello.rxlifecycle2.LifecycleProvider;
-import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.trello.rxlifecycle2.RxLifecycle;
-import com.trello.rxlifecycle2.android.FragmentEvent;
-import com.trello.rxlifecycle2.android.RxLifecycleAndroid;
 
 import androidx.annotation.CallSuper;
-import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import io.reactivex.Observable;
-import io.reactivex.subjects.BehaviorSubject;
 
+/**
+ * @date 2022/2/12 00:38
+ * @author bruce.zhang
+ * @description
+ *
+ * 关于dialog的宽度：
+ *  如果是以宽度为维度适配的话，如果高度写死的话，由于不同的设备宽高比不一致，导致dialog不能展示全或者高度没有充分利用。
+ *  所以需要按照高度的比例来算：假如设计稿中屏幕高度是1080，dialog高度是900，那么实际应该返回： ScreenUtils.getScreenHeight() * (900 /1080f)
+ * 关于dialog高度：
+ * 如果是以宽度为维度适配的话，如果高度写死的话，由于不同的设备宽高比不一致，导致dialog不能展示全或者高度没有充分利用。
+ * 所以需要按照高度的比例来算：假如设计稿中屏幕高度是1080，dialog高度是900，那么实际应该返回： ScreenUtils.getScreenHeight() * (900 /1080f)
+ *
+ * <p>
+ * modification history:
+ */
 public abstract class AppDialogFragment extends DialogFragment implements IUiInit {
     
     @Override
@@ -51,6 +58,7 @@ public abstract class AppDialogFragment extends DialogFragment implements IUiIni
 
     @Override
     public void onStart() {
+        adapterScreen();
         super.onStart();
         resizeDialogFragment();
 
@@ -184,5 +192,13 @@ public abstract class AppDialogFragment extends DialogFragment implements IUiIni
      */
     protected boolean forbiddenSoftKeyboard() {
         return false;
+    }
+
+    /**
+     * 屏幕灭屏再亮屏Application的DisplayMetrics被重置，为避免resizeDialogFragment方法获取的宽和高度适配错误
+     * 需要在resizeDialogFragment前重新适配
+     */
+    protected void adapterScreen() {
+        AdaptScreenUtils.adaptWidth(super.getResources(), 750);
     }
 }

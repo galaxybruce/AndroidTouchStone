@@ -1,10 +1,14 @@
 package com.galaxybruce.main.ui.activity
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.blankj.utilcode.util.AdaptScreenUtils
 import com.galaxybruce.component.router.RouterUrlBuilder
 import com.galaxybruce.component.ui.activity.BaseTitleBarActivity
+import com.galaxybruce.component.ui.dialog.AppConfirmDialog
+import com.galaxybruce.component.ui.dialog.AppCustomConfirmDialog
 import com.galaxybruce.main.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -24,8 +28,17 @@ class MainActivity : BaseTitleBarActivity() {
 
     override fun initView(view: View?) {
         image.setOnClickListener {
-            RouterUrlBuilder.instance("/test/TestActivity")
-                .addParam("a", "a11").go(this)
+//            RouterUrlBuilder.instance("/test/TestActivity")
+//                .addParam("a", "a11").go(this)
+
+            AppConfirmDialog.getInstance("提示", "哈哈哈哈", false,
+                object: AppCustomConfirmDialog.AppConfirmDialogCallback {
+                    override fun onConfirm() {
+                        showToast("ok")
+                    }
+
+                })
+                .show(supportFragmentManager, "aaa")
         }
     }
 
@@ -34,6 +47,13 @@ class MainActivity : BaseTitleBarActivity() {
 
     override fun getTitleOverLabMode(): Boolean {
         return true
+    }
+
+    /**
+     * 以pt为单位适配，这里的宽度已设计稿的标准像素尺寸为准
+     */
+    override fun getResources(): Resources {
+        return AdaptScreenUtils.adaptWidth(super.getResources(), 750)
     }
 
 }
