@@ -3,6 +3,8 @@ package com.galaxybruce.component.ui.dialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -30,11 +32,59 @@ import androidx.fragment.app.DialogFragment;
 public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends JPBaseDialogFragment<B>
         implements DialogInterface.OnKeyListener, DialogInterface.OnShowListener{
 
-    public interface AppConfirmDialogCallback {
+    public abstract static class AppConfirmDialogCallback implements Parcelable {
 
-        default void onCancel() {};
+        public abstract void onCancel();
 
-        void onConfirm();
+        public abstract void onConfirm();
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+
+        }
+    }
+
+    public static class Builder<T extends Builder> {
+        protected Bundle bundle;
+
+        public Builder() {
+            bundle = new Bundle();
+        }
+
+        public T setVisibleCancel(boolean visibleCancel) {
+            bundle.putBoolean("isVisibleCancel", visibleCancel);
+            return (T)this;
+        }
+
+        public T setVisibleConfirm(boolean visibleConfirm) {
+            bundle.putBoolean("isVisibleConfirm", visibleConfirm);
+            return (T)this;
+        }
+
+        public T setCancelText(String cancelText) {
+            bundle.putString("cancelText", cancelText);
+            return (T)this;
+        }
+
+        public T setConfirmText(String confirmText) {
+            bundle.putString("confirmText", confirmText);
+            return (T)this;
+        }
+
+        public T setCancelable(boolean cancelable) {
+            bundle.putBoolean("cancelable", cancelable);
+            return (T)this;
+        }
+
+        public T setCallback(AppConfirmDialogCallback callback) {
+            bundle.putParcelable("callback", callback);
+            return (T)this;
+        }
     }
 
     protected AppConfirmDialogCallback callback;
@@ -82,6 +132,7 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
             cancelable = arguments.getBoolean("cancelable", true);
             isVisibleCancel = arguments.getBoolean("isVisibleCancel", true);
             isVisibleConfirm = arguments.getBoolean("isVisibleConfirm", true);
+            callback = arguments.getParcelable("callback");
         }
     }
 
@@ -111,6 +162,11 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
                 onConfirmClick();
             }
         });
+
+        AppConfirmDialogCallback confirmDialogCallback = getDialogListener(this, AppConfirmDialogCallback.class);
+        if(confirmDialogCallback != null) {
+            this.callback = confirmDialogCallback;
+        }
     }
 
     @Override

@@ -9,7 +9,6 @@
             android:name=".ui.activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
             android:theme="@style/MainTheme">
 
             <intent-filter>

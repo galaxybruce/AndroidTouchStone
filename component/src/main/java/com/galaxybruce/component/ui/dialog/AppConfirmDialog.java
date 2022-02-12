@@ -13,7 +13,6 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.text.style.UnderlineSpan;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -39,103 +38,54 @@ public class AppConfirmDialog extends AppCustomConfirmDialog {
         return false;
     }
 
-    public static class Builder {
-        private String title;
-        private String message;
-        private boolean isHtml;
-        private boolean includeUrl;
-        private boolean isVisibleCancel = true;
-        private boolean isVisibleConfirm = true;
-        private String cancelText;
-        private String confirmText;
-        private boolean cancelable = true;
-        private int gravity = Gravity.CENTER;
-        private AppConfirmDialogCallback callback;
+    public static class Builder extends AppCustomConfirmDialog.Builder<Builder> {
 
+        public Builder() {
+            super();
+        }
 
         public Builder setTitle(String title) {
-            this.title = title;
+            bundle.putString("title", title);
             return this;
         }
 
         public Builder setMessage(String message) {
-            this.message = message;
+            bundle.putString("message", message);
             return this;
         }
 
         public Builder setMessageGravity(int gravity) {
-            this.gravity = gravity;
+            bundle.putInt("gravity", gravity);
             return this;
         }
 
         public Builder setMessage(String message, boolean isHtml, boolean includeUrl) {
-            this.message = message;
-            this.isHtml = isHtml;
-            this.includeUrl = includeUrl;
-            return this;
-        }
-
-        public Builder setVisibleCancel(boolean visibleCancel) {
-            isVisibleCancel = visibleCancel;
-            return this;
-        }
-
-        public Builder setVisibleConfirm(boolean visibleConfirm) {
-            isVisibleConfirm = visibleConfirm;
-            return this;
-        }
-
-        public Builder setCancelText(String cancelText) {
-            this.cancelText = cancelText;
-            return this;
-        }
-
-        public Builder setConfirmText(String confirmText) {
-            this.confirmText = confirmText;
-            return this;
-        }
-
-        public Builder setCancelable(boolean cancelable) {
-            this.cancelable = cancelable;
-            return this;
-        }
-
-        public Builder setListener(AppConfirmDialogCallback callback) {
-            this.callback = callback;
-            return this;
-        }
-
-        public AppConfirmDialog create() {
-            AppConfirmDialog dialog = new AppConfirmDialog();
-            Bundle bundle = new Bundle();
-            bundle.putString("title", title);
-            bundle.putInt("gravity", gravity);
             bundle.putString("message", message);
             bundle.putBoolean("isHtml", isHtml);
             bundle.putBoolean("includeUrl", includeUrl);
-            bundle.putBoolean("cancelable", cancelable);
-            bundle.putBoolean("isVisibleCancel", isVisibleCancel);
-            bundle.putBoolean("isVisibleConfirm", isVisibleConfirm);
-            bundle.putString("cancelText", cancelText);
-            bundle.putString("confirmText", confirmText);
+            return this;
+        }
+
+        public AppConfirmDialog build() {
+            AppConfirmDialog dialog = new AppConfirmDialog();
             dialog.setArguments(bundle);
-            dialog.callback = callback;
             return dialog;
         }
 
         public void show(FragmentManager manager, String tag) {
-            AppConfirmDialog dialog = create();
+            AppConfirmDialog dialog = build();
             dialog.show(manager, tag);
         }
     }
 
-    public static AppConfirmDialog getInstance(String title, String message, boolean cancelable, AppConfirmDialogCallback callback) {
+    public static AppConfirmDialog getInstance(String title, String message,
+                                               boolean cancelable, AppConfirmDialogCallback callback) {
         return new AppConfirmDialog.Builder()
                 .setTitle(title)
                 .setMessage(message)
                 .setCancelable(cancelable)
-                .setListener(callback)
-                .create();
+                .setCallback(callback)
+                .build();
     }
 
     private TextView tvTitle;
