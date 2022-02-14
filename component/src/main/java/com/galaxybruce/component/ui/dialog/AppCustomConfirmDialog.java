@@ -32,21 +32,11 @@ import androidx.fragment.app.DialogFragment;
 public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends JPBaseDialogFragment<B>
         implements DialogInterface.OnKeyListener, DialogInterface.OnShowListener{
 
-    public abstract static class AppConfirmDialogCallback implements Parcelable {
+    public abstract static class AppConfirmDialogCallback extends AppDialogCallback {
 
         public abstract void onCancel();
 
         public abstract void onConfirm();
-
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        @Override
-        public void writeToParcel(Parcel dest, int flags) {
-
-        }
     }
 
     public static class Builder<T extends Builder> {

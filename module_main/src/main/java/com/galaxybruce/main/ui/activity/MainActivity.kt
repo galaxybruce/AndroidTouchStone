@@ -28,9 +28,7 @@ class MainActivity : BaseTitleBarActivity() {
         return R.layout.activity_main
     }
 
-    companion object {
-        var n: Int = 0
-    }
+    var n: Int = 0
 
     override fun initView(view: View?) {
         image.setOnClickListener {
