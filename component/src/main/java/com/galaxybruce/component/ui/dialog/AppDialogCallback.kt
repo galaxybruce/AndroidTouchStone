@@ -7,6 +7,7 @@ import android.os.Parcelable
  * @date 2022/2/14 10:34
  * @author bruce.zhang
  * @description dialog callback 父类，用于防止旋转屏幕等callback丢失
+ * 也可以参考ResultReciver实现
  *
  * modification history:
  */
