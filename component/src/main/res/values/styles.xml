@@ -30,4 +30,9 @@
         <item name="android:indeterminateOnly">true</item>
     </style>
 
+    <!-- 透明activity，dialog和toast背景dim模式 -->
+    <style name="ActivityTranslucentDim" parent="ActivityTranslucent">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
 </resources>
