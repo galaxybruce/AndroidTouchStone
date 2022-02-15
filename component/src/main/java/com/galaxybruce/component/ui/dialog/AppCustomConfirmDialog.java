@@ -36,7 +36,9 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
         default void onCancel() {
         }
 
-        void onConfirm();
+        default void onConfirm() {
+
+        }
     }
 
     public static class Builder<T extends Builder> {
