@@ -123,17 +123,13 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
     public void initData(@androidx.annotation.Nullable Bundle bundle, @androidx.annotation.Nullable Bundle savedInstanceState) {
         super.initData(bundle, savedInstanceState);
 
+        this.callback = getDialogListener(this, AppConfirmDialogCallback.class);
         Bundle arguments = getArguments();
         if(arguments != null) {
             cancelable = arguments.getBoolean("cancelable", true);
             isVisibleCancel = arguments.getBoolean("isVisibleCancel", true);
             isVisibleConfirm = arguments.getBoolean("isVisibleConfirm", true);
             callback = arguments.getParcelable("callback");
-        }
-
-        AppConfirmDialogCallback confirmDialogCallback = getDialogListener(this, AppConfirmDialogCallback.class);
-        if(confirmDialogCallback != null) {
-            this.callback = confirmDialogCallback;
         }
     }
 
