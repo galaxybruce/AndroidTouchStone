@@ -11,7 +11,7 @@ import android.os.Parcelable
  *
  * modification history:
  */
-abstract class AppDialogCallback : Parcelable {
+ interface AppDialogCallback : Parcelable {
 
     override fun describeContents(): Int {
         return 0

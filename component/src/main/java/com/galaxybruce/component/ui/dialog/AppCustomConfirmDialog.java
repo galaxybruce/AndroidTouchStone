@@ -3,7 +3,6 @@ package com.galaxybruce.component.ui.dialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -32,11 +31,12 @@ import androidx.fragment.app.DialogFragment;
 public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends JPBaseDialogFragment<B>
         implements DialogInterface.OnKeyListener, DialogInterface.OnShowListener{
 
-    public abstract static class AppConfirmDialogCallback extends AppDialogCallback {
+    public interface AppConfirmDialogCallback extends AppDialogCallback {
 
-        public abstract void onCancel();
+        default void onCancel() {
+        }
 
-        public abstract void onConfirm();
+        void onConfirm();
     }
 
     public static class Builder<T extends Builder> {
@@ -44,6 +44,16 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
 
         public Builder() {
             bundle = new Bundle();
+        }
+
+        /**
+         * 设置callback，可以是实现了Parcelable接口的任何类
+         * @param callback
+         * @return
+         */
+        public T setCallback(Parcelable callback) {
+            bundle.putParcelable("callback", callback);
+            return (T)this;
         }
 
         public T setVisibleCancel(boolean visibleCancel) {
@@ -71,10 +81,6 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
             return (T)this;
         }
 
-        public T setCallback(AppConfirmDialogCallback callback) {
-            bundle.putParcelable("callback", callback);
-            return (T)this;
-        }
     }
 
     protected AppConfirmDialogCallback callback;
@@ -124,6 +130,11 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
             isVisibleConfirm = arguments.getBoolean("isVisibleConfirm", true);
             callback = arguments.getParcelable("callback");
         }
+
+        AppConfirmDialogCallback confirmDialogCallback = getDialogListener(this, AppConfirmDialogCallback.class);
+        if(confirmDialogCallback != null) {
+            this.callback = confirmDialogCallback;
+        }
     }
 
     @Override
@@ -152,11 +163,6 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
                 onConfirmClick();
             }
         });
-
-        AppConfirmDialogCallback confirmDialogCallback = getDialogListener(this, AppConfirmDialogCallback.class);
-        if(confirmDialogCallback != null) {
-            this.callback = confirmDialogCallback;
-        }
     }
 
     @Override
