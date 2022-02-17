@@ -9,6 +9,10 @@
  * rootProject.ext.dependencies.junit
  *
  * 在项目根目录中引用：apply from: 'config.gradle' 或者 apply from: rootProject.file('gradle/config/config.gradle')
+ *
+ *
+ * 依赖方案持续更新：
+ * [Kotlin + buildSrc：更好的管理Gadle依赖](https://juejin.cn/post/6844903615346245646)
  */
 ext {
     applicationId = 'com.galaxybruce.touchstone'
