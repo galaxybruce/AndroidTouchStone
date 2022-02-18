@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="vm"
+            type="com.galaxybruce.base.util.debug.AppDebugLogDialogViewModel" />
+
+        <variable
+            name="click"
+            type="com.galaxybruce.base.util.debug.AppDebugLogDialog.ClickProxy" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="80pt"
+            android:layout_height="80pt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="20pt"
+            android:src="@drawable/app_debug_log_dialog_close_icon"
+            android:scaleType="centerInside"
+            />
+
+        <TextView
+            android:id="@+id/tv_gravity"
+            android:layout_width="150pt"
+            android:layout_height="80pt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:includeFontPadding="false"
+            android:onClick="@{() -> click.switchGravityEvent()}"
+            android:gravity="center"
+            android:textSize="30pt"
+            android:textColor="@android:color/white"
+            android:text="切换位置"/>
+
+        <com.galaxybruce.component.ui.view.recyclerview.AppRecyclerView2
+            android:id="@+id/bbs_recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="800pt"
+            android:background="#50000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_close"
+            android:layout_marginTop="20pt"
+            binding_setRecyclerViewListData="@{vm.listData}"
+            binding_notifyRecyclerViewListChanged="@{vm.notifyCurrentListChanged}"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

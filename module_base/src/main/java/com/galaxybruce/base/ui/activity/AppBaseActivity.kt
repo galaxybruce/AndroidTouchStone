@@ -2,8 +2,12 @@ package com.galaxybruce.base.ui.activity
 
 
 import android.content.res.Resources
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import com.blankj.utilcode.util.AdaptScreenUtils
+import com.blankj.utilcode.util.ClickUtils
+import com.galaxybruce.base.util.debug.AppDebugLogDialog
 import com.galaxybruce.component.ui.jetpack.JPBaseActivity
 
 /**
@@ -33,4 +37,19 @@ abstract class AppBaseActivity<B: ViewDataBinding> : JPBaseActivity<B>() {
         return AdaptScreenUtils.adaptWidth(super.getResources(), 750)
     }
 
+    override fun initView(view: View?) {
+        super.initView(view)
+
+        // 调试日志面板
+        findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
+            .setOnClickListener(object: ClickUtils.OnMultiClickListener(5) {
+                override fun onTriggerClick(v: View?) {
+                    AppDebugLogDialog.Builder()
+                        .build().show(supportFragmentManager, "AppDebugLogDialog")
+                }
+
+                override fun onBeforeTriggerClick(v: View?, count: Int) {
+                }
+            })
+    }
 }
