@@ -38,6 +38,7 @@ abstract class BaseApplication : MultiDexApplication(), ViewModelStoreOwner {
     }
 
     override fun onCreate() {
+        onPreCreate()
         super.onCreate()
         instance = this
 
@@ -51,7 +52,7 @@ abstract class BaseApplication : MultiDexApplication(), ViewModelStoreOwner {
         if (!checkPrivacyPolicy()) {
             return
         }
-        _onCreate(isMainProcess)
+        initTask(isMainProcess)
     }
 
 
@@ -115,10 +116,6 @@ abstract class BaseApplication : MultiDexApplication(), ViewModelStoreOwner {
         appViewModel.loginEvent.value = login
     }
 
-    protected open fun _onCreate(isMainProcess: Boolean) {
-
-    }
-
     /**
      * 隐私政策check
      * privacy_policy_agreed_type: 0: 默认状态 1-同意; 2-拒绝
@@ -128,5 +125,9 @@ abstract class BaseApplication : MultiDexApplication(), ViewModelStoreOwner {
     protected open fun checkPrivacyPolicy(): Boolean {
         return true
     }
+
+    protected abstract fun onPreCreate()
+
+    protected abstract fun initTask(isMainProcess: Boolean)
 
 }

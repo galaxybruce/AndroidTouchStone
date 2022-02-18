@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
  * @description app级别ViewMode，用来存放app级数据
  *
  * 监听登录：
- * AppViewModel appViewModel = UVBaseApplication.Companion.getInstance()
+ * AppViewModel appViewModel = BaseApplication.Companion.getInstance()
  *         .getAppViewModelProvider().get(AppViewModel.class);
  * appViewModel.getLoginEvent().observe(activity/fragment.getViewLifecycleOwner(), new Observer<Boolean>() {
  *     @Override

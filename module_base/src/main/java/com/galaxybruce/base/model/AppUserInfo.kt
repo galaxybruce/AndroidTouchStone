@@ -11,6 +11,9 @@ import com.galaxybruce.component.proguard.IProguardKeeper
  */
 
 data class AppUserInfo(
+    var account: String? = null,        // 账户
+    var pwd: String? = null,        // 密码
+
     var uid: String? = null,
     var name: String? = null,
     var avatar: String? = null,

@@ -16,15 +16,12 @@ import com.galaxybruce.touchstone.task.InitTaskFactory
 
 class AppContext : BaseApplication() {
 
-    override fun onCreate() {
+    override fun onPreCreate() {
         BaseApplication.DEBUG = BuildConfig.DEBUG
         BaseApplication.DEBUG_ABLE = BuildConfig.DEBUG_ABLE
-        super.onCreate()
     }
 
-    override fun _onCreate(isMainProcess: Boolean) {
-        super._onCreate(isMainProcess)
-
+    override fun initTask(isMainProcess: Boolean) {
         // 启动任务初始化，建议以后都采用这种方式
         val initTaskFactory = InitTaskFactory(null)
         val builder = Project.Builder(InitTaskFactory.PROJECT, initTaskFactory)

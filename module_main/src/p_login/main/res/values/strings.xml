@@ -1,2 +1,3 @@
 <resources>
+    <string name="login_user_info_empty_hint">用户信息是null</string>
 </resources>

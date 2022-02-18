@@ -4,6 +4,7 @@ package com.galaxybruce.login.ui.activity
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.galaxybruce.base.ui.activity.AppBaseActivity
+import com.galaxybruce.component.app.BaseApplication
 import com.galaxybruce.component.router.RouterUrlBuilder
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
@@ -65,8 +66,10 @@ class LoginActivity : AppBaseActivity<LoginLayoutBinding>() {
         // RouterUrlBuilder.instance("/app/login")
         //      .addParam(AppConstants.Login.KEY_LOGIN_SUCCESS_ROUTER, "/app/startphone")
         //      .go(mActivity)
-        setLiveDataObserver(mPageViewModel.loginSuccess) {loginSuccess ->
+        setLiveDataObserver(mPageViewModel.loginSuccess) { loginSuccess ->
             loginSuccess?.takeIf { it }?.let {
+                BaseApplication.instance.updateLoginEvent(true)
+
                 val routePath = intent.getStringExtra(AppConstants.Login.KEY_LOGIN_SUCCESS_ROUTER)
                 if(routePath.isNullOrBlank()) {
                     finish()
