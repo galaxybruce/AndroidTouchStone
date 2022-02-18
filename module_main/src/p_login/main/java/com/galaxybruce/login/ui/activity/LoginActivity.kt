@@ -9,8 +9,8 @@ import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.util.AppConstants
 import com.galaxybruce.login.ui.mvvm.viewmodel.LoginViewModel
-import com.galaxybruce.main.R
 import com.galaxybruce.main.BR
+import com.galaxybruce.main.R
 import com.galaxybruce.main.databinding.LoginLayoutBinding
 
 /**
@@ -62,13 +62,18 @@ class LoginActivity : AppBaseActivity<LoginLayoutBinding>() {
     override fun bindData(savedInstanceState: Bundle?) {
         super.bindData(savedInstanceState)
 
+        // RouterUrlBuilder.instance("/app/login")
+        //      .addParam(AppConstants.Login.KEY_LOGIN_SUCCESS_ROUTER, "/app/startphone")
+        //      .go(mActivity)
         setLiveDataObserver(mPageViewModel.loginSuccess) {loginSuccess ->
             loginSuccess?.takeIf { it }?.let {
-                intent.getStringExtra(AppConstants.Login.KEY_LOGIN_SUCCESS_ROUTER)
-                    .takeIf { !it.isNullOrBlank() }?.let {
-                        RouterUrlBuilder.instance(it).go(this)
-                    }
-                finish()
+                val routePath = intent.getStringExtra(AppConstants.Login.KEY_LOGIN_SUCCESS_ROUTER)
+                if(routePath.isNullOrBlank()) {
+                    finish()
+                } else {
+                    RouterUrlBuilder.instance(routePath).go(this)
+                    finishAllActivity()
+                }
             }
         }
     }

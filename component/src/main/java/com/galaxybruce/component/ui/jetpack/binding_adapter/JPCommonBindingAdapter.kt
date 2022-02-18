@@ -22,7 +22,9 @@ import com.galaxybruce.component.util.imageloader.AppImageLoaderUtilWrapper
  */
 object JPCommonBindingAdapter {
 
-
+    /**
+     * @param placeholder binding_placeholder="@{com.galaxybruce.main.R.drawable.app_transparent_drawable}"
+     */
     @BindingAdapter(value = ["binding_image_original_target", "binding_displayOriginalImage", "binding_placeholder"], requireAll = false)
     @JvmStatic
     fun displayOriginalImage(view: ImageView, target: Any?, url: String?, placeholder: Int = 0) {
