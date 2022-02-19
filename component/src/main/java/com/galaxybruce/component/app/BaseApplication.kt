@@ -100,20 +100,19 @@ abstract class BaseApplication : MultiDexApplication(), ViewModelStoreOwner {
         return mAppViewModelStore
     }
 
+    /**
+     * 提供AppViewModelProvider
+     * val appViewModel = BaseApplication.instance
+     * .getAppViewModelProvider().get(AppViewModel::class.java)
+     * appViewModel.loginEvent.value = login
+     * appViewModel.loginEvent.observe(activity/fragment.getViewLifecycleOwner()) {
+     *
+     * }
+     */
     open fun getAppViewModelProvider(): ViewModelProvider {
         val factory: ViewModelProvider.Factory =
             ViewModelProvider.AndroidViewModelFactory.getInstance(this)
         return ViewModelProvider(this, factory)
-    }
-
-    /**
-     * 更新登录事件
-     */
-    open fun updateLoginEvent(login : Boolean) {
-        // 增加LiveData通知事件
-        val appViewModel = instance
-            .getAppViewModelProvider().get(AppViewModel::class.java)
-        appViewModel.loginEvent.value = login
     }
 
     /**

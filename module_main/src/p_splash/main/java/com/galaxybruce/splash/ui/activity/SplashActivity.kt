@@ -2,7 +2,7 @@ package com.galaxybruce.splash.ui.activity
 
 import android.os.Bundle
 import android.view.View
-import com.galaxybruce.base.manager.AppUserInfoManager
+import com.galaxybruce.base.manager.AppSessionManager
 import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.interal.AppInternal
 import com.galaxybruce.component.router.RouterUrlBuilder
@@ -61,7 +61,7 @@ class SplashActivity : AppBaseActivity<SplashLayoutBinding>() {
     override fun bindData(savedInstanceState: Bundle?) {
         super.bindData(savedInstanceState)
 
-        if(AppInternal.getInstance().mustLogin() && !AppUserInfoManager.getInstance().isLogin) {
+        if(AppInternal.getInstance().mustLogin() && !AppSessionManager.getInstance().isLogin) {
             RouterUrlBuilder.instance("/app/login")
                 .addParam(AppConstants.Login.KEY_LOGIN_SUCCESS_ROUTER, "/app/main").go(this)
         } else {

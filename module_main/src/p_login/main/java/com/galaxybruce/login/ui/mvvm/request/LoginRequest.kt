@@ -1,7 +1,7 @@
 package com.galaxybruce.login.ui.mvvm.request
 
 import android.annotation.SuppressLint
-import com.galaxybruce.base.manager.AppUserInfoManager
+import com.galaxybruce.base.manager.AppSessionManager
 import com.galaxybruce.base.model.AppUserInfo
 import com.galaxybruce.component.app.BaseApplication
 import com.galaxybruce.component.net.AppServiceGenerator
@@ -49,7 +49,7 @@ class LoginRequest(private val viewModel: LoginViewModel) : JPBaseRequest() {
                 if(it.data == null) {
                     throw Exception(BaseApplication.instance.resources.getString(R.string.login_user_info_empty_hint))
                 }
-                AppUserInfoManager.getInstance().userInfo = it.data.apply {
+                AppSessionManager.getInstance().userInfo = it.data.apply {
                     this.account = account
                     this.pwd = pwd
                 }

@@ -5,7 +5,7 @@ import android.app.Application;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.effective.android.anchors.Process;
 import com.effective.android.anchors.Task;
-import com.galaxybruce.base.manager.AppUserInfoManager;
+import com.galaxybruce.base.manager.AppSessionManager;
 import com.galaxybruce.component.interal.AppInternal;
 import com.galaxybruce.component.interal.IAppInternal;
 import com.galaxybruce.component.interal.IAuthAccount;
@@ -74,22 +74,22 @@ public class InitNecessaryTask_Main_Process extends Task implements IProguardKee
                 return new IAuthAccount() {
                     @Override
                     public String getUid() {
-                        return AppUserInfoManager.getInstance().getUserInfo().getUid();
+                        return AppSessionManager.getInstance().getUserInfo().getUid();
                     }
 
                     @Override
                     public String getPhone() {
-                        return AppUserInfoManager.getInstance().getUserInfo().getPhone();
+                        return AppSessionManager.getInstance().getUserInfo().getPhone();
                     }
 
                     @Override
                     public String getName() {
-                        return AppUserInfoManager.getInstance().getUserInfo().getName();
+                        return AppSessionManager.getInstance().getUserInfo().getName();
                     }
 
                     @Override
                     public String getAvatar() {
-                        return AppUserInfoManager.getInstance().getUserInfo().getAvatar();
+                        return AppSessionManager.getInstance().getUserInfo().getAvatar();
                     }
                 };
             }
@@ -116,7 +116,7 @@ public class InitNecessaryTask_Main_Process extends Task implements IProguardKee
 
     private void initUserInfo() {
         // 如果用户是登录状态，就获取最新用户信息
-        if(AppUserInfoManager.getInstance().isLogin()) {
+        if(AppSessionManager.getInstance().isLogin()) {
             // todo 调接口获取用户最新信息
         }
     }

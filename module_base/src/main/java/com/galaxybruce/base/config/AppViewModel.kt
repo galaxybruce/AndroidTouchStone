@@ -1,4 +1,4 @@
-package com.galaxybruce.component.app
+package com.galaxybruce.base.config
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,12 +22,5 @@ import androidx.lifecycle.ViewModel
  */
 class AppViewModel : ViewModel() {
 
-    /**
-     * 是否重新登录或者切换账号
-     */
-    val loginEvent = MutableLiveData<Boolean>()
 
-    init {
-        loginEvent.value = false
-    }
 }
