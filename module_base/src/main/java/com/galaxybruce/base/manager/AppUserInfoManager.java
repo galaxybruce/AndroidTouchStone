@@ -36,10 +36,12 @@ public class AppUserInfoManager {
     public @interface ExitTypeInter {
     }
 
+    @ExitTypeInter
+    public int exitType = AppExitType.EXIT_TYPE_NONE;
+
     private AppUserInfo userInfo;
 
     private AppUserInfoManager() {
-
     }
 
     private static class InternalHolder {
@@ -83,11 +85,7 @@ public class AppUserInfoManager {
         if (userInfo == null) {
             return false;
         }
-        return !TextUtils.isEmpty(userInfo.getUid()) && getExitType() == AppExitType.EXIT_TYPE_NONE;
-    }
-
-    public int getExitType() {
-        return exitType;
+        return !TextUtils.isEmpty(userInfo.getUid()) && exitType == AppExitType.EXIT_TYPE_NONE;
     }
 
     public void clear() {
@@ -96,7 +94,6 @@ public class AppUserInfoManager {
                 KEY_FILE_NAME, false);
     }
 
-    @ExitTypeInter
-    public int exitType = AppExitType.EXIT_TYPE_NONE;
+
 
 }
