@@ -15,6 +15,35 @@ import androidx.lifecycle.LifecycleOwner;
  * 可以给view实现ViewLifecycleOwner：
  * [一个简单非侵入式的AutoDispose](https://juejin.cn/post/6872337518163918861)
  *
+ * 使用方式：
+ * 案例1：
+ * Observable.just(true)
+ *    .subscribeOn(Schedulers.io())
+ *    .observeOn(AndroidSchedulers.mainThread())
+ *    .`as`(RxLifecycleUtils.bindLifecycle(this))
+ *    .subscribe {
+ *    }
+ *
+ * 案例2：
+ * Observable.interval(0, 10, TimeUnit.MILLISECONDS)
+ *    .take(10) // 执行10次
+ *    .subscribeOn(Schedulers.io())
+ *    .observeOn(AndroidSchedulers.mainThread())
+ *    .`as`(RxLifecycleUtils.bindLifecycle(lifecycleOwner))
+ *    .subscribe(object : Observer<Long> {
+ *        override fun onSubscribe(d: Disposable) {
+ *        }
+ *
+ *        override fun onNext(value: Long) {
+ *
+ *        }
+ *
+ *        override fun onError(e: Throwable) {}
+ *
+ *        override fun onComplete() {
+ *        }
+ *   })
+ *
  * <p>
  * modification history:
  */
