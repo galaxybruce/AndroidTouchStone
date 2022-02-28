@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- =========这个文件放置progressbar样式========= -->
 
     <style name="Style_Loading" parent="Base.Widget.AppCompat.ProgressBar">
