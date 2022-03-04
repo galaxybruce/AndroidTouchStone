@@ -9,6 +9,11 @@ import android.os.Parcelable;
  * @description dialog callback 父类，用于防止旋转屏幕等callback丢失
  * 也可以参考ResultReciver实现 或者直接使用ResultReciver来当做callback
  *
+ *  public T setCallback(Parcelable callback) {
+ *      bundle.putParcelable("callback", callback);
+ *      return (T)this;
+ *  }
+ *
  * modification history:
  */
 
