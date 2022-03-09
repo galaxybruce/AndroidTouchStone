@@ -15,6 +15,7 @@ import com.galaxybruce.base.R;
 import com.galaxybruce.base.databinding.AppDebugLogDialogBinding;
 import com.galaxybruce.base.databinding.AppDebugLogDialogItemLayoutBinding;
 import com.galaxybruce.component.ui.dialog.AppBottomDialog;
+import com.galaxybruce.component.ui.dialog.AppTouchPassThroughDialog;
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel;
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig;
 import com.galaxybruce.component.ui.jetpack.JPListDataModel;
@@ -26,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,18 +62,10 @@ public class AppDebugLogDialog extends AppBottomDialog<AppDebugLogDialogBinding>
         }
     }
 
+    @NonNull
     @Override
-    public void resizeDialogFragment() {
-        super.resizeDialogFragment();
-        Dialog dialog = getDialog();
-        if(dialog != null) {
-            dialog.setCanceledOnTouchOutside(false);
-        }
-    }
-
-    @Override
-    protected boolean supportMVVM() {
-        return true;
+    public Dialog onCreateDialog(@androidx.annotation.Nullable Bundle savedInstanceState) {
+        return new AppTouchPassThroughDialog(requireContext(), getTheme());
     }
 
     @Override
@@ -107,7 +101,7 @@ public class AppDebugLogDialog extends AppBottomDialog<AppDebugLogDialogBinding>
                         mPageViewModel.listData.setValue(new JPListDataModel(list, true));
                         getBinding().bbsRecyclerView.getRecyclerView().scrollToPosition(list.size() - 1);
                     }
-                });
+        });
     }
 
     @Override
@@ -126,6 +120,7 @@ public class AppDebugLogDialog extends AppBottomDialog<AppDebugLogDialogBinding>
         bbsRecyclerView.setBbsAdapter(new InnerAdapter(getContext()))
                 .setPullRefreshEnable(false)
                 .setRequestDataIfViewCreated(true)
+                .setNeedShowEmptyNoData(false)
                 .setInitPage(1)
                 .setLayoutManager(layoutManager)
                 .setBbsRequestListener(new AppRecyclerView2.AppRequestListener() {
@@ -183,42 +178,42 @@ public class AppDebugLogDialog extends AppBottomDialog<AppDebugLogDialogBinding>
 
     private class InnerAdapter extends JPRecyclerViewLoadMoreAdapter<String> {
 
-        private static final int VIEW_TYPE_XXX = 0x2001f;
+            private static final int VIEW_TYPE_XXX = 0x2001f;
 
-        public InnerAdapter(Context context) {
-            super(context);
-        }
-
-        @Override
-        public boolean needLoadMore() {
-            return false;
-        }
-
-        @Override
-        protected boolean showFooterViewOfHint() {
-            return false;
-        }
-
-        @Override
-        protected int getRealItemViewType(int position) {
-            return VIEW_TYPE_XXX;
-        }
-
-        @Override
-        protected int getLayoutId(int viewType) {
-            if(viewType == VIEW_TYPE_XXX) {
-                return R.layout.app_debug_log_dialog_item_layout;
+            public InnerAdapter(Context context) {
+                super(context);
             }
-            return super.getLayoutId(viewType);
-        }
 
-        @Override
-        protected void onBindItem(ViewDataBinding binding, int dataPosition) {
-            if(binding instanceof AppDebugLogDialogItemLayoutBinding) {
-                String itemInfo = getData().get(dataPosition);
-                AppDebugLogDialogItemLayoutBinding itemLayoutBinding = ((AppDebugLogDialogItemLayoutBinding) binding);
-                itemLayoutBinding.setVm(itemInfo);
+            @Override
+            public boolean needLoadMore() {
+                return false;
+            }
+
+            @Override
+            protected boolean showFooterViewOfHint() {
+                return false;
+            }
+
+            @Override
+            protected int getRealItemViewType(int position) {
+                return VIEW_TYPE_XXX;
+            }
+
+            @Override
+            protected int getLayoutId(int viewType) {
+                if(viewType == VIEW_TYPE_XXX) {
+                    return R.layout.app_debug_log_dialog_item_layout;
+                }
+                return super.getLayoutId(viewType);
+            }
+
+            @Override
+            protected void onBindItem(ViewDataBinding binding, int dataPosition) {
+                if(binding instanceof AppDebugLogDialogItemLayoutBinding) {
+                    String itemInfo = getData().get(dataPosition);
+                    AppDebugLogDialogItemLayoutBinding itemLayoutBinding = ((AppDebugLogDialogItemLayoutBinding) binding);
+                    itemLayoutBinding.setVm(itemInfo);
+                }
             }
         }
-    }
 }
