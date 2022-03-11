@@ -28,6 +28,7 @@ class MainActivity : BaseTitleBarActivity(){
     var n: Int = 0
 
     override fun initView(view: View?) {
+        super.initView(view)
         image.setOnClickListener {
 //            RouterUrlBuilder.instance("/test/TestActivity")
 //                .addParam("a", "a11").go(this)
