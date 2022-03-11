@@ -22,7 +22,7 @@
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintGuide_begin="80pt"
+            app:layout_constraintGuide_end="80pt"
             android:orientation="horizontal"
             />
 
@@ -32,8 +32,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_close"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@id/guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread"
             android:background="@android:color/holo_blue_dark"
             android:padding="20pt"
@@ -50,8 +50,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/tv_clear"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="@id/guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:background="@android:color/holo_blue_dark"
             android:padding="20pt"
             android:includeFontPadding="false"
@@ -67,9 +67,9 @@
             android:layout_height="0pt"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="20pt"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/guideline"
+            android:layout_marginBottom="20pt"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
