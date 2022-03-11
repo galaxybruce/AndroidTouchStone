@@ -47,6 +47,11 @@ import androidx.recyclerview.widget.RecyclerView;
  *         })
  *         .create();
  *
+ * 注意：使用该组件后，因为涉及到组件中的各种状态，所以发送请求不能直接调用发送接口，需要通过下面方式触发。
+ * 1. 下拉或者上拉触发接口
+ * 2. 调用方法：requestDataWithLoading()
+ * 3. 调用方法：requestDataWithoutLoading()
+ *
  * modification history:
  */
 public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends RelativeLayout
