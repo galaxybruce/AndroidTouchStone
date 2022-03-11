@@ -19,6 +19,7 @@ import com.galaxybruce.component.ui.dialog.AppDialogFragment
 import com.galaxybruce.component.ui.dialog.AppLoadingDialog
 import com.galaxybruce.component.ui.fragment.BaseFragment
 import com.galaxybruce.component.util.ToastUtils
+import com.galaxybruce.component.util.debug.AppDebugLogDialog
 import java.lang.Exception
 import java.util.*
 
@@ -160,6 +161,8 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
     }
 
     override fun initView(view: View?) {
+        // 调试日志面板
+        AppDebugLogDialog.show(this@BaseActivity)
     }
 
     override fun bindData(savedInstanceState: Bundle?) {

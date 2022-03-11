@@ -16,7 +16,7 @@ package com.galaxybruce.component.ui.jetpack
  *
  *
  *      <BBSRecyclerView2
-            android:id="@+id/bbs_recyclerView"
+            android:id="@+id/app_recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

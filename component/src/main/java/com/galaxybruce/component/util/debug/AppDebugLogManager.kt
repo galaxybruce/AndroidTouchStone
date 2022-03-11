@@ -1,4 +1,4 @@
-package com.galaxybruce.base.util.debug
+package com.galaxybruce.component.util.debug
 
 import androidx.lifecycle.MutableLiveData
 import com.galaxybruce.component.util.extensions.runOnUiThread
