@@ -47,6 +47,9 @@ public class AppSessionManager {
 
     /**
      * 是否重新登录或者切换账号
+     * 业务方根据需要监听该事件：
+     * AppSessionManager.getInstance().loginEvent.observeForever(loginObserver);
+     * AppSessionManager.getInstance().loginEvent.removeObserver(loginObserver);
      */
     public MutableLiveData<Boolean> loginEvent = new MutableLiveData<Boolean>();
 
