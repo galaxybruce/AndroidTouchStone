@@ -12,11 +12,13 @@ import java.util.List;
  * ListView base adapter
  * created by bruce.zhang
  */
-public abstract class AppBaseListViewAdapter<T> extends BaseAdapter implements IListAdapter {
+public abstract class AppBaseListViewAdapter<T> extends BaseAdapter
+        implements IListAdapter {
+
     protected Context mContext;
     protected LayoutInflater mInflater;
     protected Resources mResources;
-    protected ArrayList<T> mDatas = new ArrayList<T>();
+    protected List<T> mDataList = new ArrayList<T>();
 
     public AppBaseListViewAdapter(Context context) {
         mContext = context;
@@ -26,13 +28,13 @@ public abstract class AppBaseListViewAdapter<T> extends BaseAdapter implements I
 
     @Override
     public int getCount() {
-        return mDatas == null ? 0 : mDatas.size();
+        return mDataList == null ? 0 : mDataList.size();
     }
 
     @Override
     public T getItem(int position) {
-        if (mDatas.size() > position) {
-            return mDatas.get(position);
+        if (mDataList.size() > position) {
+            return mDataList.get(position);
         }
         return null;
     }
@@ -42,17 +44,16 @@ public abstract class AppBaseListViewAdapter<T> extends BaseAdapter implements I
         return position;
     }
 
-
     public int getDataSize() {
-        return mDatas == null ? 0 : mDatas.size();
+        return mDataList == null ? 0 : mDataList.size();
     }
 
-    public ArrayList<T> getData() {
-        return mDatas == null ? (mDatas = new ArrayList<T>()) : mDatas;
+    public List<T> getData() {
+        return mDataList == null ? (mDataList = new ArrayList<T>()) : mDataList;
     }
 
     public void setData(ArrayList<T> data) {
-        mDatas = data;
+        mDataList = data;
         notifyDataSetChanged();
     }
 
@@ -63,8 +64,8 @@ public abstract class AppBaseListViewAdapter<T> extends BaseAdapter implements I
     public void addData(List<T> data, boolean refresh) {
         if (data == null) return;
 
-        if (mDatas != null) {
-            mDatas.addAll(data);
+        if (mDataList != null) {
+            mDataList.addAll(data);
         }
         if (refresh) {
             notifyDataSetChanged();
@@ -72,22 +73,22 @@ public abstract class AppBaseListViewAdapter<T> extends BaseAdapter implements I
     }
 
     public void addData(T data) {
-        if (mDatas != null) {
-            mDatas.add(data);
+        if (mDataList != null) {
+            mDataList.add(data);
         }
         notifyDataSetChanged();
     }
 
     public void addData(int index, T data) {
-        if (mDatas != null) {
-            mDatas.add(index, data);
+        if (mDataList != null) {
+            mDataList.add(index, data);
         }
         notifyDataSetChanged();
     }
 
     public void removeData(Object obj) {
-        if (mDatas != null) {
-            mDatas.remove(obj);
+        if (mDataList != null) {
+            mDataList.remove(obj);
         }
         notifyDataSetChanged();
     }
@@ -97,8 +98,8 @@ public abstract class AppBaseListViewAdapter<T> extends BaseAdapter implements I
     }
 
     public void clear(boolean refresh) {
-        if (mDatas != null) {
-            mDatas.clear();
+        if (mDataList != null) {
+            mDataList.clear();
         }
         if (refresh) {
             notifyDataSetChanged();

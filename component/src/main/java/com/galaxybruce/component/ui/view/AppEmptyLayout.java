@@ -3,6 +3,7 @@ package com.galaxybruce.component.ui.view;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -15,6 +16,11 @@ import android.widget.TextView;
 import com.galaxybruce.component.R;
 import com.galaxybruce.component.util.NetworkUtil;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.IntDef;
+
 
 /**
  * created by bruce.zhang
@@ -26,13 +32,17 @@ public class AppEmptyLayout extends FrameLayout {
     public static final int NO_DATA = 3;
     public static final int HIDE_LAYOUT = 4;
 
+    @IntDef({NETWORK_ERROR, NETWORK_LOADING, NO_DATA, HIDE_LAYOUT})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface AppEmptyLayoutState {
+    }
+
     private final Context context;
     private LinearLayout llContent;
     private ImageView img;
     private TextView tvMsg;
     private ProgressBar animProgress;
     private OnClickListener listener;
-    private OnClickListener tvButtonListener;
 
     private int mErrorState = HIDE_LAYOUT;
     private String strNoDataContent = "";
@@ -61,12 +71,11 @@ public class AppEmptyLayout extends FrameLayout {
         llContent.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null) {
+                if (listener != null && !isLoading()) {
                     listener.onClick(v);
                 }
             }
         });
-
     }
 
     public void dismiss() {
@@ -89,7 +98,7 @@ public class AppEmptyLayout extends FrameLayout {
         return mErrorState == HIDE_LAYOUT;
     }
 
-    public void setErrorType(int state) {
+    public void setErrorType(@AppEmptyLayoutState int state) {
         mErrorState = state;
         animate().cancel();
 
@@ -168,12 +177,8 @@ public class AppEmptyLayout extends FrameLayout {
         this.listener = listener;
     }
 
-    public void setOnButtonClickListener(OnClickListener tvButtonListener) {
-        this.tvButtonListener = tvButtonListener;
-    }
-
     public void setTvNoDataContent() {
-        if (!strNoDataContent.equals("")) {
+        if (!TextUtils.isEmpty(strNoDataContent)) {
             tvMsg.setText(strNoDataContent);
         } else {
             tvMsg.setText(R.string.app_error_view_no_data);
@@ -197,21 +202,10 @@ public class AppEmptyLayout extends FrameLayout {
         super.setVisibility(visibility);
     }
 
-    public void setContentGravity(int gravity) {
-        if (gravity == Gravity.TOP) {
-            LayoutParams params = (LayoutParams) llContent.getLayoutParams();
-            params.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-            params.topMargin = dip2px(context, 100);
-        } else {
-            LayoutParams params = (LayoutParams) llContent.getLayoutParams();
-            params.gravity = Gravity.CENTER;
-            params.topMargin = 0;
-        }
-    }
-
-    private int dip2px(Context context, float dipValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
+    public void setContentGravity(int gravity, int topMargin) {
+        LayoutParams params = (LayoutParams) llContent.getLayoutParams();
+        params.gravity = gravity;
+        params.topMargin = topMargin;
     }
 
     public void setContentClickable(boolean clickable) {

@@ -2,11 +2,11 @@ package com.galaxybruce.component.ui.view.recyclerview;
 
 import java.util.List;
 
-public interface AppRecyclerViewExecuteListener {
+public interface AppRecyclerViewExecuteListener<T> {
         /**
          * 请求成功执行
          * */
-        void executeOnLoadDataSuccess(List data);
+        void executeOnLoadDataSuccess(List<T> data);
 
         /**
          * 请求失败执行

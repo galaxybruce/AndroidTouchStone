@@ -11,10 +11,10 @@ import com.galaxybruce.component.ui.view.AppEmptyLayout;
  * desc   :
  * version: 1.0
  */
-interface IAppRecyclerView {
+interface IAppRecyclerView<T> {
     Context getAppContext();
 
-    AppRecyclerLoadMoreAdapter getAppRecyclerLoadMoreAdapter();
+    AppRecyclerLoadMoreAdapter<T> getAppRecyclerLoadMoreAdapter();
 
     AppEmptyLayout getEmptyLayout();
 
@@ -32,8 +32,10 @@ interface IAppRecyclerView {
 
     void setState(int mState);
 
-    AbsAppRecyclerView.AppRequestListener getBbsRequestListener();
+    AbsAppRecyclerView.AppRequestListener getRequestListener();
 
-    AppRecyclerViewExecuteListener getBbsExecuteListener();
+    AbsAppRecyclerView.AppLoadMoreParams getLoadMoreParams();
+
+    AppRecyclerViewExecuteListener<T> getExecuteListener();
 
 }

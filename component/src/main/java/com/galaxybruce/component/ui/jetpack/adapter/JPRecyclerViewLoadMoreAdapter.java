@@ -15,7 +15,7 @@ import com.galaxybruce.component.ui.adapter.RecyclerViewHolder;
 /**
  * @date 2020/8/14  4:54 PM
  * @author
- * @description 刷新  加载 adapter 配合 bbsrecyclerview 使用
+ * @description 刷新  加载 adapter 配合 AppRecyclerView 使用
  *
  *  只需实现  getLayoutId   onBindItem 方法
  *

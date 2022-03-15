@@ -72,11 +72,11 @@ object JPCommonBindingAdapter {
     fun setAppRecyclerViewData(recyclerview: AppRecyclerView2<Any>, listData: JPListDataModel?){
         listData?.takeIf { it.isAvailable }?.let {
             if(it.isError) {
-                recyclerview.bbsExecuteListener.executeOnLoadDataError(null)
+                recyclerview.executeListener.executeOnLoadDataError(null)
             } else {
-                recyclerview.bbsExecuteListener.executeOnLoadDataSuccess(it.list)
+                recyclerview.executeListener.executeOnLoadDataSuccess(it.list)
             }
-            recyclerview.bbsExecuteListener.executeOnLoadFinish()
+            recyclerview.executeListener.executeOnLoadFinish()
         }
     }
 

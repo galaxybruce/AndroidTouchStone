@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
  * RecyclerView base adapter
  * created by bruce.zhang
  */
-public abstract class AppBaseRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements IListAdapter {
+public abstract class AppBaseRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements IListAdapter {
+
     protected Context mContext;
     protected LayoutInflater mInflater;
     protected Resources mResources;
-    protected ArrayList<T> mDatas = new ArrayList<T>();
+    protected List<T> mDataList = new ArrayList<T>();
 
     public AppBaseRecyclerAdapter(Context context) {
         mContext = context;
@@ -27,7 +29,7 @@ public abstract class AppBaseRecyclerAdapter<T> extends RecyclerView.Adapter<Rec
 
     @Override
     public int getItemCount() {
-        return mDatas == null ? 0 : mDatas.size();
+        return mDataList == null ? 0 : mDataList.size();
     }
 
     @Override
@@ -39,23 +41,23 @@ public abstract class AppBaseRecyclerAdapter<T> extends RecyclerView.Adapter<Rec
         return 0;
     }
 
-    public void setData(ArrayList<T> data) {
-        mDatas = data;
+    public void setData(List<T> data) {
+        mDataList = data;
         notifyDataSetChanged();
     }
 
     public void addData(T data) {
         int position = getDataSize();
-        if (mDatas != null) {
-            mDatas.add(data);
+        if (mDataList != null) {
+            mDataList.add(data);
         }
 //		notifyDataSetChanged();
         notifyItemInserted(position + getHeaderViewCount());
     }
 
     public void addData(int index, T data) {
-        if (mDatas != null) {
-            mDatas.add(index, data);
+        if (mDataList != null) {
+            mDataList.add(index, data);
         }
 //		notifyDataSetChanged();
         notifyItemInserted(index + getHeaderViewCount());
@@ -74,18 +76,15 @@ public abstract class AppBaseRecyclerAdapter<T> extends RecyclerView.Adapter<Rec
 
         try {
             int count = data.size();
-            if (mDatas != null) {
+            if (mDataList != null) {
                 if (position >= 0) {
-                    mDatas.addAll(position, data);
-                    if (refresh) {
-//						notifyItemRangeInserted(position, count);
-                        notifyDataSetChanged();
-                    }
+                    mDataList.addAll(position, data);
                 } else {
-                    mDatas.addAll(data);
-                    if (refresh) {
-                        notifyDataSetChanged();
-                    }
+                    mDataList.addAll(data);
+                }
+                if (refresh) {
+//						notifyItemRangeInserted(position, count);
+                    notifyDataSetChanged();
                 }
             }
         } catch (Exception e) {
@@ -94,8 +93,8 @@ public abstract class AppBaseRecyclerAdapter<T> extends RecyclerView.Adapter<Rec
     }
 
     public void removeData(T data) {
-        if (mDatas != null) {
-            mDatas.remove(data);
+        if (mDataList != null) {
+            mDataList.remove(data);
         }
         notifyDataSetChanged();
     }
@@ -105,8 +104,8 @@ public abstract class AppBaseRecyclerAdapter<T> extends RecyclerView.Adapter<Rec
     }
 
     public void clear(boolean refresh) {
-        if (mDatas != null) {
-            mDatas.clear();
+        if (mDataList != null) {
+            mDataList.clear();
         }
         if (refresh) {
             notifyDataSetChanged();
@@ -114,11 +113,11 @@ public abstract class AppBaseRecyclerAdapter<T> extends RecyclerView.Adapter<Rec
     }
 
     public int getDataSize() {
-        return mDatas == null ? 0 : mDatas.size();
+        return mDataList == null ? 0 : mDataList.size();
     }
 
-    public ArrayList<T> getData() {
-        return mDatas == null ? (mDatas = new ArrayList<T>()) : mDatas;
+    public List<T> getData() {
+        return mDataList == null ? (mDataList = new ArrayList<T>()) : mDataList;
     }
 
 

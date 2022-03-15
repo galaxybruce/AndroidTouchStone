@@ -3,6 +3,7 @@ package com.galaxybruce.component.ui.view.recyclerview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +33,11 @@ import androidx.recyclerview.widget.RecyclerView;
  * <p>
  *
  *  使用方式
- *    bbsRecyclerView.setBbsAdapter(new BBSCoursePlayRecordAdapter(mContext))
+ *    appRecyclerView.setAdapter(new BBSCoursePlayRecordAdapter(mContext))
  *         .showBack2TopView(5)
  *         .setRequestDataIfViewCreated(false)
  *         .setNeedShowEmptyNoData(true)
- *         .setBbsRequestListener(new BBSRecyclerView.BBSRequestListener() {
+ *         .setRequestListener(new AppRecyclerView.BBSRequestListener() {
  *             @Override
  *             public void sendRequestData(boolean refresh) {
  *                 BBSCoursePlayRecordActivity.this.sendRequestData();
@@ -55,7 +56,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * modification history:
  */
 public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends RelativeLayout
-        implements IAppRecyclerView {
+        implements IAppRecyclerView<T> {
 
     public int mState = AppLoadDataState.STATE_NONE;
     protected int mCurrentPage = 0;
@@ -86,8 +87,9 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
     Rect mRecyclerViewPaddingRect;
     List<RecyclerView.ItemDecoration> mItemDecorationList = new ArrayList<>();
 
-    AppRequestListener bbsRequestListener;
-    AppRecyclerViewExecuteListener bbsExecuteListener;
+    AppLoadMoreParams loadMoreParams;
+    AppRequestListener requestListener;
+    AppRecyclerViewExecuteListener<T> executeListener;
 
 
     public AbsAppRecyclerView(Context context) {
@@ -108,7 +110,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         int layoutResId = a.getResourceId(R.styleable.app_recycler_view_layout_res_id, defaultLayout());
         a.recycle();
 
-        LayoutInflater.from(getContext()).inflate(layoutResId,this,true);
+        LayoutInflater.from(getContext()).inflate(layoutResId, this, true);
 
         initRefreshView();
 
@@ -117,7 +119,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         mRecyclerView.addOnScrollListener(mOnScrollListener);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator() {
             @Override
-            public boolean canReuseUpdatedViewHolder(RecyclerView.ViewHolder viewHolder) {
+            public boolean canReuseUpdatedViewHolder(@NonNull RecyclerView.ViewHolder viewHolder) {
                 return true;
             }
         });
@@ -147,22 +149,37 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
             ToastUtils.showToast(getContext().getApplicationContext(),"必须实现Adapter");
             return;
         }
-        // 不需要下拉刷新和上拉加载的场景可以不用设置请求回调
-        if(bbsRequestListener == null){
-            bbsRequestListener = new AppRequestListener() {
+        if(loadMoreParams == null) {
+            loadMoreParams = new AppLoadMoreParams() {
+                @Override
+                public boolean needLoadMore() {
+                    return AppLoadMoreParams.super.needLoadMore();
+                }
+
+                @Override
+                public boolean showLoadMoreView() {
+                    return AppLoadMoreParams.super.showLoadMoreView();
+                }
+
+                @Override
+                public boolean showNoMoreView() {
+                    return AppLoadMoreParams.super.showNoMoreView();
+                }
+            };
+        }
+        if(requestListener == null){
+            requestListener = new AppRequestListener() {
                 @Override
                 public void sendRequestData(boolean refresh, int page) {
-
                 }
 
                 @Override
                 public void sendRequestLoadMoreData(int page) {
-
                 }
             };
         }
-        if(bbsExecuteListener == null){
-            bbsExecuteListener = new AppRecyclerViewExecuteListenerImpl(this);
+        if(executeListener == null){
+            executeListener = new AppRecyclerViewExecuteListenerImpl<>(this);
         }
         if (mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.setEnabled(pullRefreshEnable);
@@ -196,9 +213,9 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         }
     }
 
-    private void setErrorLayoutType(int type){
+    private void setErrorLayoutType(@AppEmptyLayout.AppEmptyLayoutState int state){
         if (mErrorLayout != null) {
-            mErrorLayout.setErrorType(type);
+            mErrorLayout.setErrorType(state);
         }
     }
 
@@ -215,7 +232,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
             } else {
                 hideLoading();
             }
-            bbsRequestListener.sendRequestData(false, getCurrentPage());
+            requestListener.sendRequestData(false, getCurrentPage());
         }
     }
 
@@ -235,9 +252,9 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
 
     public RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (mAdapter == null || mAdapter.getItemCount() == 0 || !mAdapter.needLoadMore()) {
+            if (mAdapter == null || mAdapter.getItemCount() == 0 || !loadMoreParams.needLoadMore()) {
                 return;
             }
             // 数据已经全部加载，或数据为空时，或正在加载，不处理滚动事件
@@ -248,8 +265,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
             boolean scrollEnd = false;
             try {
                 int lastVisibleItem = ItemsPositionHelper.getLastVisiblePosition(recyclerView);
-                if(mAdapter.hasFooterView())
-                {
+                if(loadMoreParams.showLoadMoreView()) {
                     if (recyclerView.getChildAdapterPosition(mAdapter.getFooterView()) == lastVisibleItem) {
                         scrollEnd = true;
                     }
@@ -267,7 +283,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
                         || mAdapter.getState() == AdapterLoadDataState.STATE_NETWORK_ERROR) {
                     mCurrentPage++;
                     mState = AppLoadDataState.STATE_LOAD_MORE;
-                    bbsRequestListener.sendRequestLoadMoreData(getCurrentPage());
+                    requestListener.sendRequestLoadMoreData(getCurrentPage());
                     mAdapter.setFooterViewLoading();
                 }
             }
@@ -283,8 +299,9 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         setSwipeRefreshLoadingState();
         mCurrentPage = mDefaultPage;
         mState = AppLoadDataState.STATE_REFRESH;
-        if(bbsRequestListener != null) {
-            bbsRequestListener.sendRequestData(true, getCurrentPage());
+
+        if(requestListener != null) {
+            requestListener.sendRequestData(true, getCurrentPage());
         }
     }
 
@@ -331,9 +348,9 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
     }
 
     @Override
-    public void setCurrentPage(int mCurrentPage) {
-        if (mCurrentPage >= mDefaultPage) {
-            this.mCurrentPage = mCurrentPage;
+    public void setCurrentPage(int currentPage) {
+        if (currentPage >= mDefaultPage) {
+            this.mCurrentPage = currentPage;
         }
     }
 
@@ -371,7 +388,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         return this;
     }
 
-    public AbsAppRecyclerView<V, T> setBbsAdapter(AppRecyclerLoadMoreAdapter<T> mAdapter) {
+    public AbsAppRecyclerView<V, T> setAdapter(AppRecyclerLoadMoreAdapter<T> mAdapter) {
         this.mAdapter = mAdapter;
         return this;
     }
@@ -441,9 +458,9 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         return this;
     }
 
-    public AbsAppRecyclerView<V, T> setEmptyLayoutGravity(int gravity) {
+    public AbsAppRecyclerView<V, T> setEmptyLayoutGravity(int gravity, int topMargin) {
         if(mErrorLayout != null) {
-            mErrorLayout.setContentGravity(gravity);
+            mErrorLayout.setContentGravity(gravity, topMargin);
         }
         return this;
     }
@@ -467,24 +484,34 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         return this;
     }
 
-    public AbsAppRecyclerView<V, T> setBbsRequestListener(AppRequestListener bbsRequestListener) {
-        this.bbsRequestListener = bbsRequestListener;
+    public AbsAppRecyclerView<V, T> setRequestListener(AppRequestListener requestListener) {
+        this.requestListener = requestListener;
         return this;
     }
 
-    public AbsAppRecyclerView<V, T> setBbsExecuteListener(AppRecyclerViewExecuteListener bbsExecuteListener) {
-        this.bbsExecuteListener = bbsExecuteListener;
+    public AbsAppRecyclerView<V, T> setAppLoadMoreParams(AppLoadMoreParams loadMoreParams) {
+        this.loadMoreParams = loadMoreParams;
+        return this;
+    }
+
+    public AbsAppRecyclerView<V, T> setExecuteListener(AppRecyclerViewExecuteListener<T> executeListener) {
+        this.executeListener = executeListener;
         return this;
     }
 
     @Override
-    public AppRequestListener getBbsRequestListener() {
-        return bbsRequestListener;
+    public AppRequestListener getRequestListener() {
+        return requestListener;
     }
 
     @Override
-    public AppRecyclerViewExecuteListener getBbsExecuteListener() {
-        return bbsExecuteListener;
+    public AppLoadMoreParams getLoadMoreParams() {
+        return loadMoreParams;
+    }
+
+    @Override
+    public AppRecyclerViewExecuteListener<T> getExecuteListener() {
+        return executeListener;
     }
 
     /**
@@ -503,10 +530,43 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
          * 下拉请求
          * */
         void sendRequestData(boolean refresh, int page);
+
         /**
          * 加载更多请求
          * */
         void sendRequestLoadMoreData(int page);
+    }
+
+    public interface AppLoadMoreParams {
+        /**
+         * 是否需要分页。分页时加载更多数据时，是否显示"加载更多"View通过showLoadMoreView()控制
+         *
+         * @return
+         */
+        default boolean needLoadMore() {
+            return true;
+        }
+
+        /**
+         * 分页加载是否显示"加载更多"View。有的分页是滑到快到底部时，自动加载更多，则不需要显示"加载更多"View
+         * @return
+         */
+        default boolean showLoadMoreView() {
+            return true;
+        }
+
+        /**
+         * 是否显示"没有更多数据"View
+         *
+         * @return
+         */
+        default boolean showNoMoreView() {
+            return true;
+        }
+
+        default Drawable loadMoreBg() {
+            return null;
+        }
     }
 
     protected abstract int defaultLayout();

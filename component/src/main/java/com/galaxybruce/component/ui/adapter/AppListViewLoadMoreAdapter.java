@@ -2,6 +2,7 @@ package com.galaxybruce.component.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,16 +12,10 @@ import android.view.ViewGroup;
  */
 public class AppListViewLoadMoreAdapter<T> extends AppBaseListViewAdapter<T> {
 
-    protected static final int ITEM_VIEW_TYPE_LOAD_MORE = Integer.MAX_VALUE;
     protected static final int DEFAULT_REAL_ITEM_VIEW_TYPE = 0;
+    protected static final int ITEM_VIEW_TYPE_LOAD_MORE = Integer.MAX_VALUE;
 
     protected int state = AdapterLoadDataState.STATE_DEFAULT;
-
-    protected int mScreenWidth;
-
-    public void setScreenWidth(int width) {
-        mScreenWidth = width;
-    }
 
     public void setState(int state) {
         this.state = state;
@@ -41,29 +36,24 @@ public class AppListViewLoadMoreAdapter<T> extends AppBaseListViewAdapter<T> {
                 return getDataSize();
             case AdapterLoadDataState.STATE_NETWORK_ERROR:
             case AdapterLoadDataState.STATE_NO_MORE:
-                return showFooterViewOfHint() ? getDataSizePlus1() : getDataSize();
+                return showNoMoreView() ? getDataSize() + 1 : getDataSize();
             case AdapterLoadDataState.STATE_LOAD_MORE:
-                return getDataSizePlus1();
+                return showLoadMoreView() ? getDataSize() + 1 : getDataSize();
             default:
                 break;
         }
         return getDataSize();
     }
 
-    public int getDataSizePlus1() {
-        if (hasFooterView()) {
-            return getDataSize() + 1;
-        }
-        return getDataSize();
-    }
-
-    protected boolean loadMoreHasBg() {
-        return false;
+    private Drawable loadMoreBg() {
+        return null;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == getCount() - 1 && getCount() > getDataSize() && hasFooterView()) {// 最后一条
+        if (position == getCount() - 1
+                && getCount() > getDataSize()
+                && (showLoadMoreView() || showNoMoreView())) {// 最后一条
             return ITEM_VIEW_TYPE_LOAD_MORE;
         } else {
             return getRealItemViewType(position);
@@ -84,7 +74,7 @@ public class AppListViewLoadMoreAdapter<T> extends AppBaseListViewAdapter<T> {
             if (convertView == null) {
                 this.mFooterView = new ListFooterView(mContext);
             }
-            mFooterView.setState(getState(), loadMoreHasBg());
+            mFooterView.setState(getState(), loadMoreBg());
             return mFooterView;
         } else {
             return getRealView(position, convertView, parent);
@@ -100,16 +90,30 @@ public class AppListViewLoadMoreAdapter<T> extends AppBaseListViewAdapter<T> {
         return null;
     }
 
-    public boolean hasFooterView() {
-        return true;
-    }
-
+    /**
+     * 是否需要分页。分页时加载更多数据时，是否显示"加载更多"View通过showLoadMoreView()控制
+     *
+     * @return
+     */
     public boolean needLoadMore() {
         return true;
     }
 
-    protected boolean showFooterViewOfHint() {//头部有数据，列表无数据时有时候需要显示特殊布局，这时返回false
-        return false;
+    /**
+     * 分页加载是否显示"加载更多"View。有的分页是滑到快到底部时，自动加载更多，则不需要显示"加载更多"View
+     * @return
+     */
+    public boolean showLoadMoreView() {
+        return true;
+    }
+
+    /**
+     * 是否显示"没有更多数据"View
+     *
+     * @return
+     */
+    protected boolean showNoMoreView() {
+        return true;
     }
 
     private ListFooterView mFooterView;

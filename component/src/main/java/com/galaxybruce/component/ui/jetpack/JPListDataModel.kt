@@ -5,7 +5,7 @@ package com.galaxybruce.component.ui.jetpack
  * @author
  * @description
  * 
- *  bbsrecyclerView   数据配套使用 databinding 中 CustomBindAdapter updateBBSRecyclerViewData 使用
+ *  bbsrecyclerView   数据配套使用 databinding 中 CustomBindAdapter updateAppRecyclerViewData 使用
  *  
  *  在 viewmodel
  *      public MutableLiveData<JPListDataModel> list = new MutableLiveData<>();
@@ -15,7 +15,7 @@ package com.galaxybruce.component.ui.jetpack
             }
  *
  *
- *      <BBSRecyclerView2
+ *      <AppRecyclerView2
             android:id="@+id/app_recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -23,7 +23,7 @@ package com.galaxybruce.component.ui.jetpack
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fl_title"
-            bbsRecyclerViewListData="@{vm.listData}"
+            appRecyclerViewListData="@{vm.listData}"
             />
  *
  *

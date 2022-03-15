@@ -1,6 +1,7 @@
 package com.galaxybruce.component.ui.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -18,7 +19,7 @@ import com.galaxybruce.component.R;
 /**
  * Created by bruce.zhang on 2016/9/12.
  */
-public class ListFooterView extends LinearLayout{
+public class ListFooterView extends LinearLayout {
 
     public ProgressBar progress;
     public  TextView text;
@@ -52,11 +53,8 @@ public class ListFooterView extends LinearLayout{
 
     }
 
-    public void setState(final int state, final boolean loadMoreHasBg)
-    {
-        if (!loadMoreHasBg) {
-            setBackgroundDrawable(null);
-        }
+    public void setState(final int state, final Drawable loadMoreBg) {
+        setBackground(loadMoreBg);
 
         switch (state) {
             case AdapterLoadDataState.STATE_LOAD_MORE:

@@ -1,10 +1,14 @@
 package com.galaxybruce.component.ui.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.galaxybruce.component.ui.view.recyclerview.AbsAppRecyclerView;
+
+import androidx.annotation.NonNull;
 import androidx.collection.SparseArrayCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,14 +21,16 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
  */
 public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
 
-    protected static final int ITEM_VIEW_TYPE_LOAD_MORE = Integer.MAX_VALUE;      //底部加载更多viewType
-    protected static final int DEFAULT_REAL_ITEM_VIEW_TYPE = 0;                    //默认的正常的viewType
-    private static final int ITEM_VIEW_TYPE_HEADER = 200000;                        //头部viewType从200000开始
+    public static final int DEFAULT_REAL_ITEM_VIEW_TYPE = 0;                        //默认的正常的viewType
+    protected static final int ITEM_VIEW_TYPE_HEADER = 200000;                        //头部viewType从200000开始
+    protected static final int ITEM_VIEW_TYPE_LOAD_MORE = Integer.MAX_VALUE;          //底部加载更多viewType
 
-    private SparseArrayCompat<View> mHeaderViews = new SparseArrayCompat<>();
+    private final SparseArrayCompat<View> mHeaderViews = new SparseArrayCompat<>();
     private ListFooterView mFooterView;
 
     protected int state = AdapterLoadDataState.STATE_DEFAULT;
+
+    private AbsAppRecyclerView.AppLoadMoreParams loadMoreParams;
 
     public void setState(int state) {
         this.state = state;
@@ -32,6 +38,10 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
 
     public int getState() {
         return this.state;
+    }
+
+    public void setLoadMoreParams(@NonNull AbsAppRecyclerView.AppLoadMoreParams loadMoreParams) {
+        this.loadMoreParams = loadMoreParams;
     }
 
     public AppRecyclerLoadMoreAdapter(Context context) {
@@ -47,10 +57,10 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
                 break;
             case AdapterLoadDataState.STATE_NETWORK_ERROR:
             case AdapterLoadDataState.STATE_NO_MORE:
-                count = showFooterViewOfHint() ? getDataSizePlus1() : getDataSize();
+                count = showNoMoreView() ? getDataSize() + 1 : getDataSize();
                 break;
             case AdapterLoadDataState.STATE_LOAD_MORE:
-                count = getDataSizePlus1();
+                count = showLoadMoreView() ? getDataSize() + 1 : getDataSize();
                 break;
             default:
                 count = getDataSize();
@@ -59,22 +69,11 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
         return count + getHeaderViewCount();
     }
 
-    public int getDataSizePlus1() {
-        if (hasFooterView()) {
-            return getDataSize() + 1;
-        }
-        return getDataSize();
-    }
-
-    protected boolean loadMoreHasBg() {
-        return false;
-    }
-
     @Override
     public int getItemViewType(int position) {
         if (isHeaderView(position)) {
             return mHeaderViews.keyAt(position);
-        } else if (isFooterView(position)) {// 最后一条
+        } else if (isFooterView(position)) {
             return ITEM_VIEW_TYPE_LOAD_MORE;
         } else {
             return getRealItemViewType(position);
@@ -94,12 +93,12 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (isHeaderView(position)) {
-            return;
+
         } else if (holder instanceof FooterHolder) {
             final FooterHolder footerHolder = (FooterHolder) holder;
-            footerHolder.footerView.setState(getState(), loadMoreHasBg());
+            footerHolder.footerView.setState(getState(), loadMoreBg());
         } else {
             int dataPosition = translateRealDataPosition(position);
             onBindRealViewHolder(holder, dataPosition);
@@ -111,10 +110,9 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
     }
 
     public void setFooterViewLoading(String loadMsg) {
-        if (mFooterView == null) {
-            return;
+        if (mFooterView != null) {
+            mFooterView.setFooterViewLoading(loadMsg);
         }
-        mFooterView.setFooterViewLoading(loadMsg);
     }
 
     public void setFooterViewLoading() {
@@ -126,9 +124,9 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
     }
 
     protected boolean isFooterView(int position) {
-        return position == getItemCount() - 1 &&
-                getItemCount() > (getDataSize() + getHeaderViewCount()) &&
-                hasFooterView();
+        return position == getItemCount() - 1
+                && getItemCount() > (getDataSize() + getHeaderViewCount())
+                && (showLoadMoreView() || showNoMoreView());
     }
 
     public void addHeaderView(View view) {
@@ -193,10 +191,35 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
 
     protected boolean isStaggeredGridLayout(RecyclerView.ViewHolder holder) {
         ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
-        if (layoutParams != null && layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
+        if (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 分页加载是否显示"加载更多"View。有的分页是滑到快到底部时，自动加载更多，则不需要显示"加载更多"View
+     * @return
+     */
+    private boolean showLoadMoreView() {
+        return loadMoreParams != null && loadMoreParams.showLoadMoreView();
+    }
+
+    /**
+     * 是否显示"没有更多数据"View
+     *
+     * @return
+     */
+    private boolean showNoMoreView() {
+        return loadMoreParams != null && loadMoreParams.showNoMoreView();
+    }
+
+    /**
+     * 加载更多的背景
+     * @return
+     */
+    private Drawable loadMoreBg() {
+        return loadMoreParams != null ? loadMoreParams.loadMoreBg() : null;
     }
 
     protected static class FooterHolder extends RecyclerView.ViewHolder {
@@ -213,7 +236,7 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
     /***************************************子类可以重写的部分start***************************************/
 
     /**
-     * 除开头和尾部，其他的viewtype；如果头部全部用addHeaderView方法，这个方法不用重写，DEFAULT_REAL_ITEM_VIEW_TYPE就是默认列表的的type
+     * 除开头和尾部，其他的ViewType；如果头部全部用addHeaderView方法，这个方法不用重写，DEFAULT_REAL_ITEM_VIEW_TYPE就是默认列表的的type
      *
      * @param position
      * @return
@@ -222,36 +245,14 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
         return DEFAULT_REAL_ITEM_VIEW_TYPE;
     }
 
-    public RecyclerView.ViewHolder onCreateRealViewHolder(ViewGroup viewGroup, int viewType) {
-        // 返回一个空的RecyclerView.ViewHolder，防止子类直接super.onCreateRealViewHolder，导致RecyclerView内部空指针bug
+    protected RecyclerView.ViewHolder onCreateRealViewHolder(ViewGroup viewGroup, int viewType) {
         return new RecyclerView.ViewHolder(new FrameLayout(mContext)) {
+
         };
     }
 
-    public void onBindRealViewHolder(RecyclerView.ViewHolder holder, int dataPosition) {
+    protected void onBindRealViewHolder(RecyclerView.ViewHolder holder, int dataPosition) {
 
-    }
-
-    /**
-     * 是否需要分页
-     *
-     * @return
-     */
-    public boolean needLoadMore() {
-        return true;
-    }
-
-    public boolean hasFooterView() {
-        return true;
-    }
-
-    /**
-     * 头部有数据，列表无数据时有时候需要显示特殊布局，这时返回false
-     *
-     * @return
-     */
-    protected boolean showFooterViewOfHint() {
-        return true;
     }
 
     /**

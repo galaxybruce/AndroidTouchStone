@@ -16,35 +16,35 @@ import java.util.List;
  * <p>
  * modification history:
  */
-public class AppRecyclerViewExecuteListenerImpl implements AppRecyclerViewExecuteListener {
+public class AppRecyclerViewExecuteListenerImpl<T> implements AppRecyclerViewExecuteListener<T> {
     // 错误信息
     protected AppBaseBean mResult;
-    protected IAppRecyclerView bbsRecyclerView;
+    protected IAppRecyclerView<T> appRecyclerView;
 
-    public AppRecyclerViewExecuteListenerImpl(IAppRecyclerView bbsRecyclerView) {
-        this.bbsRecyclerView = bbsRecyclerView;
+    public AppRecyclerViewExecuteListenerImpl(IAppRecyclerView<T> appRecyclerView) {
+        this.appRecyclerView = appRecyclerView;
     }
 
     @Override
-    public void executeOnLoadDataSuccess(List data) {
+    public void executeOnLoadDataSuccess(List<T> data) {
         if (data == null) {
             data = new ArrayList<>();
         }
 
         if (mResult != null && !mResult.isSuccessful()) {
-            ToastUtils.showToast(bbsRecyclerView.getAppContext(), mResult.getMessage());
+            ToastUtils.showToast(appRecyclerView.getAppContext(), mResult.getMessage());
         }
 
-        AppRecyclerLoadMoreAdapter adapter = bbsRecyclerView.getAppRecyclerLoadMoreAdapter();
+        AppRecyclerLoadMoreAdapter<T> adapter = appRecyclerView.getAppRecyclerLoadMoreAdapter();
         if(adapter == null) {
             return;
         }
 
-        AppEmptyLayout emptyLayout = bbsRecyclerView.getEmptyLayout();
+        AppEmptyLayout emptyLayout = appRecyclerView.getEmptyLayout();
         if (emptyLayout != null) {
             emptyLayout.setErrorType(AppEmptyLayout.HIDE_LAYOUT);
         }
-        if (bbsRecyclerView.getCurrentPage() == bbsRecyclerView.getInitPage()) {
+        if (appRecyclerView.getCurrentPage() == appRecyclerView.getInitPage()) {
             adapter.clear(false);
         }
 
@@ -52,15 +52,15 @@ public class AppRecyclerViewExecuteListenerImpl implements AppRecyclerViewExecut
         int count = data.size();
         adapter.addData(data, false);
 
-        if(data.size() == 0 && bbsRecyclerView.getCurrentPage() > bbsRecyclerView.getInitPage()) {
-            bbsRecyclerView.setCurrentPage(bbsRecyclerView.getCurrentPage()-1);
+        if(data.size() == 0 && appRecyclerView.getCurrentPage() > appRecyclerView.getInitPage()) {
+            appRecyclerView.setCurrentPage(appRecyclerView.getCurrentPage()-1);
         }
 
-        if (adapter.needLoadMore()) {
+        if (appRecyclerView.getLoadMoreParams().needLoadMore()) {
             int adapterState = AdapterLoadDataState.STATE_DEFAULT;
             if (adapter.getDataSize() == 0) {
                 adapterState = AdapterLoadDataState.STATE_EMPTY_ITEM;
-            } else if (data.size() < bbsRecyclerView.getPageSize()) {
+            } else if (data.size() < appRecyclerView.getPageSize()) {
                 adapterState = AdapterLoadDataState.STATE_NO_MORE;
             } else {
                 adapterState = AdapterLoadDataState.STATE_LOAD_MORE;
@@ -74,7 +74,7 @@ public class AppRecyclerViewExecuteListenerImpl implements AppRecyclerViewExecut
         adapter.notifyDataSetChanged();
 
         if (adapter.getDataSize() == 0) {
-            if (bbsRecyclerView.needShowEmptyNoData()) {
+            if (appRecyclerView.needShowEmptyNoData()) {
                 if (emptyLayout != null) {
                     emptyLayout.setErrorType(AppEmptyLayout.NO_DATA);
                 }
@@ -85,28 +85,28 @@ public class AppRecyclerViewExecuteListenerImpl implements AppRecyclerViewExecut
     @Override
     public void executeOnLoadDataError(String error) {
 //        if (mCurrentPage == 0 && !CacheManager.isExistDataCache(getActivity(), getCacheKey())) {
-        AppEmptyLayout emptyLayout = bbsRecyclerView.getEmptyLayout();
+        AppEmptyLayout emptyLayout = appRecyclerView.getEmptyLayout();
         if(emptyLayout != null) {
-            if (!bbsRecyclerView.needShowEmptyNoData()) {
+            if (!appRecyclerView.needShowEmptyNoData()) {
                 emptyLayout.setErrorType(AppEmptyLayout.HIDE_LAYOUT);
                 return;
             }
 
-            if (bbsRecyclerView.getCurrentPage() == bbsRecyclerView.getInitPage()) {
+            if (appRecyclerView.getCurrentPage() == appRecyclerView.getInitPage()) {
                 emptyLayout.setErrorType(AppEmptyLayout.NETWORK_ERROR);
             } else {
-                bbsRecyclerView.setCurrentPage(bbsRecyclerView.getCurrentPage() - 1);
+                appRecyclerView.setCurrentPage(appRecyclerView.getCurrentPage() - 1);
                 emptyLayout.setErrorType(AppEmptyLayout.HIDE_LAYOUT);
-                bbsRecyclerView.getAppRecyclerLoadMoreAdapter().setState(AdapterLoadDataState.STATE_NETWORK_ERROR);
-                bbsRecyclerView.getAppRecyclerLoadMoreAdapter().notifyDataSetChanged();
+                appRecyclerView.getAppRecyclerLoadMoreAdapter().setState(AdapterLoadDataState.STATE_NETWORK_ERROR);
+                appRecyclerView.getAppRecyclerLoadMoreAdapter().notifyDataSetChanged();
             }
         }
     }
 
     @Override
     public void executeOnLoadFinish() {
-        bbsRecyclerView.setSwipeRefreshLoadedState();
-        bbsRecyclerView.setState(AppLoadDataState.STATE_NONE);
+        appRecyclerView.setSwipeRefreshLoadedState();
+        appRecyclerView.setState(AppLoadDataState.STATE_NONE);
     }
 
 }
