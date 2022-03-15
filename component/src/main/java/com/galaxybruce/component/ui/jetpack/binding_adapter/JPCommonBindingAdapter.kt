@@ -69,7 +69,7 @@ object JPCommonBindingAdapter {
 
     @BindingAdapter(value = ["binding_setRecyclerViewListData"], requireAll = false)
     @JvmStatic
-    fun setAppRecyclerViewData(recyclerview: AppRecyclerView2<Any>, listData: JPListDataModel?){
+    fun <T> setAppRecyclerViewData(recyclerview: AppRecyclerView2<T>, listData: JPListDataModel<T>?){
         listData?.takeIf { it.isAvailable }?.let {
             if(it.isError) {
                 recyclerview.executeListener.executeOnLoadDataError(null)
@@ -78,11 +78,13 @@ object JPCommonBindingAdapter {
             }
             recyclerview.executeListener.executeOnLoadFinish()
         }
+
+        val a = JPListDataModel<T>()
     }
 
     @BindingAdapter(value = ["binding_notifyRecyclerViewListChanged"], requireAll = false)
     @JvmStatic
-    fun notifyAppRecyclerViewListChanged(recyclerView: AppRecyclerView2<Any>, notify: Boolean) {
+    fun <T> notifyAppRecyclerViewListChanged(recyclerView: AppRecyclerView2<T>, notify: Boolean) {
         if (notify) {
             recyclerView.notifyAdapterDataSetChanged()
         }

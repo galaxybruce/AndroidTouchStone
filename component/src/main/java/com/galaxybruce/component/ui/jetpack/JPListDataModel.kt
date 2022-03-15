@@ -30,13 +30,16 @@ package com.galaxybruce.component.ui.jetpack
  * <p>
  * modification history:
  */
-data class JPListDataModel(val list: List<Any>?, val isAvailable: Boolean = true) {
+data class JPListDataModel<T>(val list: List<T>? = null) {
 
     var isError: Boolean = false
+    var isAvailable: Boolean = true
 
-    constructor(list: List<Any>?, isAvailable: Boolean = true, isError: Boolean = false)
-            : this(list, isAvailable) {
+    constructor(list: List<T>?,
+                isAvailable: Boolean = true,
+                isError: Boolean = false)
+            : this(list) {
         this.isError = isError
+        this.isAvailable = isAvailable
     }
-
 }

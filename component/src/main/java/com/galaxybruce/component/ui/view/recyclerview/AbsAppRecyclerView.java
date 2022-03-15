@@ -196,6 +196,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
             }
         }
 
+        mAdapter.setLoadMoreParams(loadMoreParams);
         mRecyclerView.setLayoutManager(layoutManager == null ? new LinearLayoutManager(getContext()) : layoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -534,7 +535,9 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         /**
          * 加载更多请求
          * */
-        void sendRequestLoadMoreData(int page);
+        default void sendRequestLoadMoreData(int page) {
+
+        }
     }
 
     public interface AppLoadMoreParams {
