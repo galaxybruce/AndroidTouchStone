@@ -78,8 +78,6 @@ object JPCommonBindingAdapter {
             }
             recyclerview.executeListener.executeOnLoadFinish()
         }
-
-        val a = JPListDataModel<T>()
     }
 
     @BindingAdapter(value = ["binding_notifyRecyclerViewListChanged"], requireAll = false)
