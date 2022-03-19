@@ -44,7 +44,9 @@ public class AppRecyclerViewExecuteListenerImpl<T> implements AppRecyclerViewExe
         if (emptyLayout != null) {
             emptyLayout.setErrorType(AppEmptyLayout.HIDE_LAYOUT);
         }
-        if (appRecyclerView.getCurrentPage() == appRecyclerView.getInitPage()) {
+        if (appRecyclerView.getCurrentPage() == appRecyclerView.getInitPage()
+            // 强制加载更多时，currentPage是第一页，不能清理顶部数据
+            && adapter.getState() != AdapterLoadDataState.STATE_FORCE_LOAD_MORE) {
             adapter.clear(false);
         }
 
@@ -87,13 +89,12 @@ public class AppRecyclerViewExecuteListenerImpl<T> implements AppRecyclerViewExe
 //        if (mCurrentPage == 0 && !CacheManager.isExistDataCache(getActivity(), getCacheKey())) {
         AppEmptyLayout emptyLayout = appRecyclerView.getEmptyLayout();
         if(emptyLayout != null) {
-            if (!appRecyclerView.needShowEmptyNoData()) {
-                emptyLayout.setErrorType(AppEmptyLayout.HIDE_LAYOUT);
-                return;
-            }
-
             if (appRecyclerView.getCurrentPage() == appRecyclerView.getInitPage()) {
-                emptyLayout.setErrorType(AppEmptyLayout.NETWORK_ERROR);
+                if (appRecyclerView.needShowEmptyNoData()) {
+                    emptyLayout.setErrorType(AppEmptyLayout.NETWORK_ERROR);
+                } else {
+                    emptyLayout.setErrorType(AppEmptyLayout.HIDE_LAYOUT);
+                }
             } else {
                 appRecyclerView.setCurrentPage(appRecyclerView.getCurrentPage() - 1);
                 emptyLayout.setErrorType(AppEmptyLayout.HIDE_LAYOUT);

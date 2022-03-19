@@ -284,7 +284,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
                 mState = AppLoadDataState.STATE_LOAD_MORE;
                 requestListener.sendRequestLoadMoreData(getCurrentPage());
                 mAdapter.setState(AdapterLoadDataState.STATE_FORCE_LOAD_MORE);
-                if(loadMoreParams.needLoadMore()) {
+                if(loadMoreParams.showLoadMoreView() || loadMoreParams.showNoMoreView()) {
                     mAdapter.notifyItemChanged(mAdapter.getItemCount() - 1);
                     mAdapter.setFooterViewLoading();
                 }
