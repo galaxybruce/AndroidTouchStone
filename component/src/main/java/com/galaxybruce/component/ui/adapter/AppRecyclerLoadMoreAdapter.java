@@ -60,6 +60,7 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
                 count = showNoMoreView() ? getDataSize() + 1 : getDataSize();
                 break;
             case AdapterLoadDataState.STATE_LOAD_MORE:
+            case AdapterLoadDataState.STATE_FORCE_LOAD_MORE:
                 count = showLoadMoreView() ? getDataSize() + 1 : getDataSize();
                 break;
             default:
@@ -81,7 +82,7 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         if (mHeaderViews.get(viewType) != null) {
             return RecyclerViewHolder.createViewHolder(viewGroup.getContext(), mHeaderViews.get(viewType));
         } else if (viewType == ITEM_VIEW_TYPE_LOAD_MORE) {

@@ -53,7 +53,7 @@ public class AppRecyclerViewExecuteListenerImpl<T> implements AppRecyclerViewExe
         adapter.addData(data, false);
 
         if(data.size() == 0 && appRecyclerView.getCurrentPage() > appRecyclerView.getInitPage()) {
-            appRecyclerView.setCurrentPage(appRecyclerView.getCurrentPage()-1);
+            appRecyclerView.setCurrentPage(appRecyclerView.getCurrentPage() - 1);
         }
 
         if (appRecyclerView.getLoadMoreParams().needLoadMore()) {

@@ -58,6 +58,7 @@ public class ListFooterView extends LinearLayout {
 
         switch (state) {
             case AdapterLoadDataState.STATE_LOAD_MORE:
+            case AdapterLoadDataState.STATE_FORCE_LOAD_MORE:
                 setFooterViewLoading();
                 break;
             case AdapterLoadDataState.STATE_NO_MORE:

@@ -37,7 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
  *         .showBack2TopView(5)
  *         .setRequestDataIfViewCreated(false)
  *         .setNeedShowEmptyNoData(true)
- *         .setRequestListener(new AppRecyclerView.BBSRequestListener() {
+ *         .setRequestListener(new AppRecyclerView.AppRequestListener() {
  *             @Override
  *             public void sendRequestData(boolean refresh) {
  *                 BBSCoursePlayRecordActivity.this.sendRequestData();
@@ -52,6 +52,8 @@ import androidx.recyclerview.widget.RecyclerView;
  * 1. 下拉或者上拉触发接口
  * 2. 调用方法：requestDataWithLoading()
  * 3. 调用方法：requestDataWithoutLoading()
+ *
+ * 对于一个列表有多个接口的情况，可以强制加载更多。参考 {@link AbsAppRecyclerView#forceRequestMore()}
  *
  * modification history:
  */
@@ -249,6 +251,45 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
      */
     public void requestDataWithoutLoading() {
         requestData(false);
+    }
+
+    /**
+     * 强制加载更多
+     * 例如：有的页面不是标准的一个接口，可能是几个接口合成的列表，先请求上面部分接口，然后再请求最下面的接口。
+     * 这种场景就可以在上面的接口请求回来，再调用该方法强制接在更多，这样页面会立马在最下面展示"正在加载中"样式。
+     * .setRequestListener(new AppRecyclerView.AppRequestListener() {
+     *     @Override
+     *     public void sendRequestData(boolean refresh) {
+     *          // 这里是上面的接口请求
+     *     }
+     *     @Override
+     *     public void sendRequestLoadMoreData() {
+     *          // 这里是下面的接口请求
+     *     }
+     * })
+     *
+     * setLiveDataObserver(mPageViewModel.listDataTop) {
+     *     mPageViewModel.listData.value = it
+     *     binding.appRecyclerView.forceRequestMore()
+     * }
+     */
+    public void forceRequestMore() {
+        // 这里必须是post，因为mPageViewModel.listData.value = it内部是通过队列机制执行的，
+        // 必须按照顺序设置adapter的状态
+        postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // 强制加载跟过时，时当前页是第一页
+                mCurrentPage = mDefaultPage;
+                mState = AppLoadDataState.STATE_LOAD_MORE;
+                requestListener.sendRequestLoadMoreData(getCurrentPage());
+                mAdapter.setState(AdapterLoadDataState.STATE_FORCE_LOAD_MORE);
+                if(loadMoreParams.needLoadMore()) {
+                    mAdapter.notifyItemChanged(mAdapter.getItemCount() - 1);
+                    mAdapter.setFooterViewLoading();
+                }
+            }
+        }, 10);
     }
 
     public RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
