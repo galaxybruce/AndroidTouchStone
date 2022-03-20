@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ClickUtils;
 import com.galaxybruce.component.R;
-import com.galaxybruce.component.util.RxLifecycleUtils;
+import com.galaxybruce.component.util.rx.RxLifecycleUtils;
 
 import java.util.concurrent.TimeUnit;
 
