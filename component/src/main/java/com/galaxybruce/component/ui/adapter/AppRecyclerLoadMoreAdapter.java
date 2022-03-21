@@ -120,11 +120,11 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
         setFooterViewLoading("");
     }
 
-    protected boolean isHeaderView(int position) {
+    public boolean isHeaderView(int position) {
         return position < mHeaderViews.size();
     }
 
-    protected boolean isFooterView(int position) {
+    public boolean isFooterView(int position) {
         return position == getItemCount() - 1
                 && getItemCount() > (getDataSize() + getHeaderViewCount())
                 && (showLoadMoreView() || showNoMoreView());

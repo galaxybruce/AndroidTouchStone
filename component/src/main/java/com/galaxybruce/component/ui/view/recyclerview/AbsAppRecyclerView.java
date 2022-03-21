@@ -255,6 +255,8 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
 
     /**
      * 强制加载更多
+     * 注意：接口失败后一定要执行 mPageViewModel.listData.value = JPListData(null, true)
+     *
      * 例如：有的页面不是标准的一个接口，可能是几个接口合成的列表，先请求上面部分接口，然后再请求最下面的接口。
      * 这种场景就可以在上面的接口请求回来，再调用该方法强制接在更多，这样页面会立马在最下面展示"正在加载中"样式。
      * .setRequestListener(new AppRecyclerView.AppRequestListener() {
@@ -284,8 +286,8 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
                 mState = AppLoadDataState.STATE_LOAD_MORE;
                 requestListener.sendRequestLoadMoreData(getCurrentPage());
                 mAdapter.setState(AdapterLoadDataState.STATE_FORCE_LOAD_MORE);
-                if(loadMoreParams.showLoadMoreView()) {
-                    if(loadMoreParams.showNoMoreView()) {
+                if(loadMoreParams.showLoadMoreView() || loadMoreParams.showNoMoreView()) {
+                    if(mAdapter.isFooterView(mAdapter.getItemCount() - 1)) {
                         mAdapter.notifyItemChanged(mAdapter.getItemCount() - 1);
                     } else {
                         mAdapter.notifyItemInserted(mAdapter.getItemCount() - 1);
