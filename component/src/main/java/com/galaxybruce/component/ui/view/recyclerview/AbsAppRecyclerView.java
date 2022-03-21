@@ -290,7 +290,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
                     if(mAdapter.isFooterView(mAdapter.getItemCount() - 1)) {
                         mAdapter.notifyItemChanged(mAdapter.getItemCount() - 1);
                     } else {
-                        mAdapter.notifyItemInserted(mAdapter.getItemCount() - 1);
+                        mAdapter.notifyDataSetChanged();
                     }
                     mAdapter.setFooterViewLoading();
                 }
