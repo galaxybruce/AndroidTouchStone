@@ -49,11 +49,11 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
         // todo 上报系统
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         // 系统的ExceptionHandler: com.android.internal.os.RuntimeInit$KillApplicationHandler
         if (mDefaultHandler != null && !mDefaultHandler.getClass().getName().startsWith("com.android.internal.os.RuntimeInit")) {
