@@ -22,15 +22,33 @@
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintGuide_end="80pt"
+            app:layout_constraintGuide_end="100pt"
             android:orientation="horizontal"
             />
+
+        <TextView
+            android:id="@+id/tv_show_device_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_clear"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            android:background="@android:color/holo_blue_dark"
+            android:padding="20pt"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:textSize="30pt"
+            android:textColor="@android:color/white"
+            android:onClick="@{() -> click.showDeviceInfoEvent()}"
+            android:text="device info"/>
 
         <TextView
             android:id="@+id/tv_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_show_device_info"
             app:layout_constraintEnd_toStartOf="@+id/tv_close"
             app:layout_constraintTop_toTopOf="@id/guideline"
             app:layout_constraintBottom_toBottomOf="parent"

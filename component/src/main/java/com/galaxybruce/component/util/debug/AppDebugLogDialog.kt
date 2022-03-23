@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.blankj.utilcode.util.ClickUtils
+import com.blankj.utilcode.util.ScreenUtils
 import com.galaxybruce.component.BR
 import com.galaxybruce.component.R
 import com.galaxybruce.component.databinding.AppDebugLogDialogBinding
@@ -104,6 +105,15 @@ class AppDebugLogDialog : JPBaseFragment<AppDebugLogDialogBinding>() {
      * 页面事件类，可以把所有事件都写在这里
      */
     inner class ClickProxy {
+
+        fun showDeviceInfoEvent() {
+            val screenWidth = ScreenUtils.getAppScreenWidth()
+            val screenHeight = ScreenUtils.getAppScreenHeight()
+            val density = ScreenUtils.getScreenDensity()
+            val densityDpi = ScreenUtils.getScreenDensityDpi()
+            AppDebugLogManager.pushLog("屏幕分辨率：$screenWidth x $screenHeight")
+            AppDebugLogManager.pushLog("屏幕密度：$density - $densityDpi")
+        }
 
         fun closeDebugEvent() {
             hide(context as BaseActivity)
