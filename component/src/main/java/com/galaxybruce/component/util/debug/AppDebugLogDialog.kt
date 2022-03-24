@@ -1,5 +1,6 @@
 package com.galaxybruce.component.util.debug
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -19,6 +20,7 @@ import com.galaxybruce.component.ui.jetpack.JPBaseFragment
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.ui.jetpack.adapter.JPRecyclerViewLoadMoreAdapter
+import com.galaxybruce.component.util.cache.AppBigDataCacheManager
 
 /**
  * @date
@@ -113,6 +115,16 @@ class AppDebugLogDialog : JPBaseFragment<AppDebugLogDialogBinding>() {
             val densityDpi = ScreenUtils.getScreenDensityDpi()
             AppDebugLogManager.pushLog("屏幕分辨率：$screenWidth x $screenHeight")
             AppDebugLogManager.pushLog("屏幕密度：$density - $densityDpi")
+        }
+
+        @SuppressLint("CheckResult")
+        fun showCrashLogEvent() {
+            AppBigDataCacheManager.loadCacheStringAsync(null, "app_crash_log", false)
+                .subscribe({
+                    AppDebugLogManager.pushLog("奔溃日志：\n\n $it")
+                }, {
+
+                })
         }
 
         fun closeDebugEvent() {

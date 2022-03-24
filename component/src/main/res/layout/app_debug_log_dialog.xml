@@ -18,67 +18,6 @@
         android:background="#50000000"
         >
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintGuide_end="100pt"
-            android:orientation="horizontal"
-            />
-
-        <TextView
-            android:id="@+id/tv_show_device_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/guideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/tv_clear"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            android:background="@android:color/holo_blue_dark"
-            android:padding="20pt"
-            android:includeFontPadding="false"
-            android:gravity="center"
-            android:textSize="30pt"
-            android:textColor="@android:color/white"
-            android:onClick="@{() -> click.showDeviceInfoEvent()}"
-            android:text="device info"/>
-
-        <TextView
-            android:id="@+id/tv_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/tv_show_device_info"
-            app:layout_constraintEnd_toStartOf="@+id/tv_close"
-            app:layout_constraintTop_toTopOf="@id/guideline"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            android:background="@android:color/holo_blue_dark"
-            android:padding="20pt"
-            android:includeFontPadding="false"
-            android:gravity="center"
-            android:textSize="30pt"
-            android:textColor="@android:color/white"
-            android:onClick="@{() -> click.clearLogEvent()}"
-            android:text="clear log"/>
-
-        <TextView
-            android:id="@+id/tv_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/tv_clear"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/guideline"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@android:color/holo_blue_dark"
-            android:padding="20pt"
-            android:includeFontPadding="false"
-            android:gravity="center"
-            android:textSize="30pt"
-            android:textColor="@android:color/white"
-            android:onClick="@{() -> click.closeDebugEvent()}"
-            android:text="close log"/>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
@@ -86,9 +25,76 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/guideline"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="20pt"
             />
+
+        <LinearLayout android:id="@+id/menu_layout"
+            android:layout_width="150pt"
+            android:layout_height="0pt"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/tv_close"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20pt"
+                android:background="#300099cc"
+                android:padding="20pt"
+                android:includeFontPadding="false"
+                android:gravity="center"
+                android:textSize="30pt"
+                android:textColor="#50FFFFFF"
+                android:onClick="@{() -> click.closeDebugEvent()}"
+                android:text="close"/>
+
+            <TextView
+                android:id="@+id/tv_show_device_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20pt"
+                android:background="#300099cc"
+                android:padding="20pt"
+                android:includeFontPadding="false"
+                android:gravity="center"
+                android:textSize="30pt"
+                android:textColor="#50FFFFFF"
+                android:onClick="@{() -> click.showDeviceInfoEvent()}"
+                android:text="device"/>
+
+            <TextView
+                android:id="@+id/tv_crash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20pt"
+                android:background="#300099cc"
+                android:padding="20pt"
+                android:includeFontPadding="false"
+                android:gravity="center"
+                android:textSize="30pt"
+                android:textColor="#50FFFFFF"
+                android:onClick="@{() -> click.showCrashLogEvent()}"
+                android:text="crash"/>
+
+            <TextView
+                android:id="@+id/tv_clear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20pt"
+                android:background="#300099cc"
+                android:padding="20pt"
+                android:includeFontPadding="false"
+                android:gravity="center"
+                android:textSize="30pt"
+                android:textColor="#50FFFFFF"
+                android:onClick="@{() -> click.clearLogEvent()}"
+                android:text="clear"/>
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

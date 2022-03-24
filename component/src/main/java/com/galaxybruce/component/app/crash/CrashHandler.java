@@ -3,6 +3,9 @@ package com.galaxybruce.component.app.crash;
 import android.app.Application;
 import android.content.Intent;
 
+import com.galaxybruce.component.util.cache.AppBigDataCacheManager;
+import com.galaxybruce.component.util.log.AppLogUtils;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -41,13 +44,14 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             stackTraceString = stackTraceString.substring(0, maxStackTraceSize - disclaimer.length()) + disclaimer;
         }
 
+        // todo 上报系统
+        AppBigDataCacheManager.saveCacheStringAsync(null, "app_crash_log", stackTraceString, false);
+
         Intent intent = new Intent(mApplication, ExceptionActivity.class);
         intent.putExtra("message", stackTraceString);
         intent.putExtra("isRestartApp", isRestartApp);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         mApplication.startActivity(intent);
-
-        // todo 上报系统
 
 //        try {
 //            Thread.sleep(2000);
