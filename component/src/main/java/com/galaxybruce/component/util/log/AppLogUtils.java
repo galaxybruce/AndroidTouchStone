@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.elvishew.xlog.LogConfiguration;
 import com.elvishew.xlog.LogLevel;
 import com.elvishew.xlog.XLog;
+import com.galaxybruce.component.util.debug.AppDebugLogDialog;
+import com.galaxybruce.component.util.debug.AppDebugLogManager;
 
 public class AppLogUtils {
     public static String customTagPrefix = "";
@@ -151,6 +153,7 @@ public class AppLogUtils {
         if (sCustomLogger != null) {
             sCustomLogger.d(tag, content);
         }
+        showOnUi(tag + "\n" + content);
     }
 
     public static void d(String content, Throwable tr) {
@@ -161,6 +164,7 @@ public class AppLogUtils {
         if (sCustomLogger != null) {
             sCustomLogger.d(tag, content, tr);
         }
+        showOnUi(tag + "\n" + content);
     }
 
     public static void e(String content) {
@@ -171,6 +175,7 @@ public class AppLogUtils {
         if (sCustomLogger != null) {
             sCustomLogger.e(tag, content);
         }
+        showOnUi(tag + "\n" + content);
     }
 
     public static void e(String content, Throwable tr) {
@@ -181,6 +186,7 @@ public class AppLogUtils {
         if (sCustomLogger != null) {
             sCustomLogger.e(tag, content, tr);
         }
+        showOnUi(tag + "\n" + content + "\n" + tr.getMessage());
     }
 
     public static void i(String content) {
@@ -191,6 +197,7 @@ public class AppLogUtils {
         if (sCustomLogger != null) {
             sCustomLogger.i(tag, content);
         }
+        showOnUi(tag + "\n" + content);
     }
 
     public static void i(String content, Throwable tr) {
@@ -201,6 +208,7 @@ public class AppLogUtils {
         if (sCustomLogger != null) {
             sCustomLogger.i(tag, content, tr);
         }
+        showOnUi(tag + "\n" + content + "\n" + tr.getMessage());
     }
 
     public static void v(String content) {
@@ -211,6 +219,7 @@ public class AppLogUtils {
         if (sCustomLogger != null) {
             sCustomLogger.v(tag, content);
         }
+        showOnUi(tag + "\n" + content);
     }
 
     public static void v(String content, Throwable tr) {
@@ -221,6 +230,7 @@ public class AppLogUtils {
         if (sCustomLogger != null) {
             sCustomLogger.v(tag, content, tr);
         }
+        showOnUi(tag + "\n" + content + "\n" + tr.getMessage());
     }
 
     public static void w(String content) {
@@ -231,6 +241,7 @@ public class AppLogUtils {
         if (sCustomLogger != null) {
             sCustomLogger.w(tag, content);
         }
+        showOnUi(tag + "\n" + content);
     }
 
     public static void w(String content, Throwable tr) {
@@ -241,6 +252,7 @@ public class AppLogUtils {
         if (sCustomLogger != null) {
             sCustomLogger.w(tag, content, tr);
         }
+        showOnUi(tag + "\n" + content + "\n" + tr.getMessage());
     }
 
     public static void w(Throwable tr) {
@@ -251,9 +263,14 @@ public class AppLogUtils {
         if (sCustomLogger != null) {
             sCustomLogger.w(tag, tr);
         }
+        showOnUi(tag + "\n" + tr.getMessage());
     }
 
     public static StackTraceElement getCallerStackTraceElement() {
         return Thread.currentThread().getStackTrace()[4];
+    }
+
+    public static void showOnUi(String log) {
+        AppDebugLogManager.INSTANCE.pushLog(log);
     }
 }

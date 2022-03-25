@@ -13,6 +13,7 @@ import com.blankj.utilcode.util.ClickUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.galaxybruce.component.BR
 import com.galaxybruce.component.R
+import com.galaxybruce.component.app.crash.AppCrashHandler
 import com.galaxybruce.component.databinding.AppDebugLogDialogBinding
 import com.galaxybruce.component.databinding.AppDebugLogDialogItemLayoutBinding
 import com.galaxybruce.component.ui.activity.BaseActivity
@@ -96,11 +97,16 @@ class AppDebugLogDialog : JPBaseFragment<AppDebugLogDialogBinding>() {
 
     override fun bindData(savedInstanceState: Bundle?) {
         setLiveDataObserver(AppDebugLogManager.newLog) { s ->
-            val listData = mPageViewModel.listData
-            listData.add(s)
-            binding.recyclerView.adapter!!.notifyItemInserted(listData.size - 1)
-            binding.recyclerView.scrollToPosition(listData.size - 1)
+            s?.let {
+                val listData = mPageViewModel.listData
+                listData.add(s)
+                binding.recyclerView.adapter!!.notifyItemInserted(listData.size - 1)
+                binding.recyclerView.scrollToPosition(listData.size - 1)
+            }
         }
+
+        mPageViewModel.listData.addAll(AppDebugLogManager.logList)
+        binding.recyclerView.adapter!!.notifyDataSetChanged()
     }
 
     /**
@@ -119,7 +125,7 @@ class AppDebugLogDialog : JPBaseFragment<AppDebugLogDialogBinding>() {
 
         @SuppressLint("CheckResult")
         fun showCrashLogEvent() {
-            AppBigDataCacheManager.loadCacheStringAsync(null, "app_crash_log", false)
+            AppBigDataCacheManager.loadCacheStringAsync(null, AppCrashHandler.APP_CRASH_LOG_KEY, false)
                 .subscribe({
                     AppDebugLogManager.pushLog("奔溃日志：\n\n $it")
                 }, {
@@ -134,6 +140,7 @@ class AppDebugLogDialog : JPBaseFragment<AppDebugLogDialogBinding>() {
         fun clearLogEvent() {
             mPageViewModel.listData.clear()
             binding.recyclerView.adapter!!.notifyDataSetChanged()
+            AppDebugLogManager.clear()
         }
     }
 

@@ -4,12 +4,13 @@ import android.app.Application;
 import android.content.Intent;
 
 import com.galaxybruce.component.util.cache.AppBigDataCacheManager;
-import com.galaxybruce.component.util.log.AppLogUtils;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class CrashHandler implements Thread.UncaughtExceptionHandler {
+public class AppCrashHandler implements Thread.UncaughtExceptionHandler {
+
+    public static final String APP_CRASH_LOG_KEY = "app_crash_log";
 
     private final Application mApplication;
     private final Thread.UncaughtExceptionHandler mDefaultHandler;
@@ -17,13 +18,13 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     public static void init(Application application, boolean isRestartApp) {
         Thread.UncaughtExceptionHandler exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
-        if (exceptionHandler instanceof CrashHandler) {
+        if (exceptionHandler instanceof AppCrashHandler) {
             return;
         }
-        Thread.setDefaultUncaughtExceptionHandler(new CrashHandler(application, exceptionHandler, isRestartApp));
+        Thread.setDefaultUncaughtExceptionHandler(new AppCrashHandler(application, exceptionHandler, isRestartApp));
     }
 
-    private CrashHandler(Application application, Thread.UncaughtExceptionHandler exceptionHandler, boolean isRestartApp) {
+    private AppCrashHandler(Application application, Thread.UncaughtExceptionHandler exceptionHandler, boolean isRestartApp) {
         mApplication = application;
         this.isRestartApp = isRestartApp;
         this.mDefaultHandler = exceptionHandler;
@@ -45,7 +46,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         }
 
         // todo 上报系统
-        AppBigDataCacheManager.saveCacheStringAsync(null, "app_crash_log", stackTraceString, false);
+        AppBigDataCacheManager.saveCacheStringAsync(
+                null, APP_CRASH_LOG_KEY, stackTraceString, false);
 
         Intent intent = new Intent(mApplication, ExceptionActivity.class);
         intent.putExtra("message", stackTraceString);
@@ -60,7 +62,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 //        }
 
         // 系统的ExceptionHandler: com.android.internal.os.RuntimeInit$KillApplicationHandler
-        if (mDefaultHandler != null && !mDefaultHandler.getClass().getName().startsWith("com.android.internal.os.RuntimeInit")) {
+        if (mDefaultHandler != null
+                && !mDefaultHandler.getClass().getName().startsWith("com.android.internal.os.RuntimeInit")) {
             mDefaultHandler.uncaughtException(thread, ex);
         }
 

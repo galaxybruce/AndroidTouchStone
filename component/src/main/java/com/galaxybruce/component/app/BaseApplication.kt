@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.multidex.MultiDexApplication
 import com.bumptech.glide.Glide
-import com.galaxybruce.component.app.crash.CrashHandler
+import com.galaxybruce.component.app.crash.AppCrashHandler
 import com.galaxybruce.component.app.privacy.PrivacyUtil
 
 
@@ -79,7 +79,7 @@ abstract class BaseApplication : MultiDexApplication(), ViewModelStoreOwner {
     }
 
     private fun initCrash() {
-        CrashHandler.init(this, true)
+        AppCrashHandler.init(this, true)
     }
 
     protected fun isMainProcess(): Boolean {
