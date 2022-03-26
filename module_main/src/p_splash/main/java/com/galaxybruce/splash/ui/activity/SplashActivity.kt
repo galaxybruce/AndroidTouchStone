@@ -28,6 +28,7 @@ class SplashActivity : AppBaseActivity<SplashLayoutBinding>() {
     private lateinit var mPageViewModel: SplashViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         // todo 没有同意隐私政策时，杀死进程
 //        if (!PrivacyUtil.checkPrivacyInLaunchActivity(this)) {
 //            return
@@ -37,7 +38,6 @@ class SplashActivity : AppBaseActivity<SplashLayoutBinding>() {
         if (ActivityUtil.handleSplashActivity(this)) {
             return
         }
-        super.onCreate(savedInstanceState)
     }
 
     override fun initViewModel(): JPBaseViewModel {
