@@ -38,23 +38,31 @@ import com.galaxybruce.component.util.cache.AppBigDataCacheManager
 class AppDebugLogDialog : JPBaseFragment<AppDebugLogDialogBinding>() {
 
     companion object {
-        fun show(activity: BaseActivity) {
-            activity.findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
-                .setOnClickListener(object: ClickUtils.OnMultiClickListener(5) {
-                    override fun onTriggerClick(v: View?) {
+        fun show(activity: BaseActivity, clickView: View, show: () -> Boolean) {
+            clickView.setOnClickListener(object: ClickUtils.OnMultiClickListener(5) {
+                override fun onTriggerClick(v: View?) {
+                    if (show()) {
                         val fragmentManager = activity.supportFragmentManager
                         val content = activity.findViewById<ViewGroup>(android.R.id.content)
-                        content.addView(FrameLayout(activity).apply {
-                            this.id = R.id.app_fragment_container
-                        }, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+                        content.addView(
+                            FrameLayout(activity).apply {
+                                this.id = R.id.app_fragment_container
+                            },
+                            ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
+                            )
+                        )
                         fragmentManager.beginTransaction().replace(
-                            R.id.app_fragment_container, AppDebugLogDialog(), "debug_log_fragment")
+                            R.id.app_fragment_container, AppDebugLogDialog(), "debug_log_fragment"
+                        )
                             .commitAllowingStateLoss()
                     }
+                }
 
-                    override fun onBeforeTriggerClick(v: View?, count: Int) {
-                    }
-                })
+                override fun onBeforeTriggerClick(v: View?, count: Int) {
+                }
+            })
         }
 
         fun hide(activity: BaseActivity) {
@@ -64,8 +72,9 @@ class AppDebugLogDialog : JPBaseFragment<AppDebugLogDialogBinding>() {
                 fragmentManager.beginTransaction().remove(fragment)
                     .commitAllowingStateLoss()
             }
-            val content = activity.findViewById<ViewGroup>(android.R.id.content)
-            content.removeView(content.findViewById(R.id.app_fragment_container))
+            activity.findViewById<ViewGroup>(android.R.id.content).let {
+                it.removeView(it.findViewById(R.id.app_fragment_container))
+            }
         }
     }
 

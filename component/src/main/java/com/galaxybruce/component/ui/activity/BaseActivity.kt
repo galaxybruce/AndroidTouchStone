@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -161,8 +162,7 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
     }
 
     override fun initView(view: View?) {
-        // 调试日志面板
-        AppDebugLogDialog.show(this@BaseActivity)
+        showDebugPanel()
     }
 
     override fun bindData(savedInstanceState: Bundle?) {
@@ -170,5 +170,16 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
 
     override fun finishAllActivity() {
         BaseApplication.instance.finishAllActivity()
+    }
+
+    /**
+     * 调试日志面板
+     */
+    open fun showDebugPanel() {
+        AppDebugLogDialog.show(this@BaseActivity,
+            findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
+        ) {
+            BaseApplication.DEBUG
+        }
     }
 }
