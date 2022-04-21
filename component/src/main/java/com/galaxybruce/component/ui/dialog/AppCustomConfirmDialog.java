@@ -131,7 +131,10 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
             cancelable = arguments.getBoolean("cancelable", true);
             isVisibleCancel = arguments.getBoolean("isVisibleCancel", true);
             isVisibleConfirm = arguments.getBoolean("isVisibleConfirm", true);
-            callback = arguments.getParcelable("callback");
+            AppConfirmDialogCallback tCallback = arguments.getParcelable("callback");
+            if(tCallback != null) {
+                this.callback = tCallback;
+            }
         }
     }
 

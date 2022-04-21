@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Selection;
@@ -127,6 +128,16 @@ public abstract class AppBaseInputDialog<B extends ViewDataBinding> extends AppC
 
         public Builder() {
             bundle = new Bundle();
+        }
+
+        /**
+         * 设置callback，可以是实现了Parcelable接口的任何类
+         * @param callback
+         * @return
+         */
+        public T setCallback(Parcelable callback) {
+            bundle.putParcelable("callback", callback);
+            return (T)this;
         }
 
         /**

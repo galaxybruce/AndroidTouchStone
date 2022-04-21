@@ -17,14 +17,16 @@ import org.jetbrains.annotations.Nullable;
  *      .tag("")
  *      .title("哈哈哈")
  *      .inputType4Integer()
- *      .build().show(getSupportFragmentManager(), "AppSimpleInputDialog");
+ *      .setCallback()
+ *      .build()
+ *      .show(getSupportFragmentManager(), "AppSimpleInputDialog");
  *
  * <p>
  * modification history:
  */
 public class AppSimpleInputDialog extends AppBaseInputDialog {
 
-    public interface ISimpleInputDialogCallback {
+    public interface ISimpleInputDialogCallback extends AppDialogCallback {
         void onInputDialogCallback(String tag, String content);
     }
 
@@ -55,6 +57,12 @@ public class AppSimpleInputDialog extends AppBaseInputDialog {
         super.initData(bundle, savedInstanceState);
         // 获取listener
         mCallback = getDialogListener(this, ISimpleInputDialogCallback.class);
+        if(bundle != null) {
+            ISimpleInputDialogCallback tCallback = bundle.getParcelable("callback");
+            if(tCallback != null) {
+                mCallback = tCallback;
+            }
+        }
     }
 
     @Override
