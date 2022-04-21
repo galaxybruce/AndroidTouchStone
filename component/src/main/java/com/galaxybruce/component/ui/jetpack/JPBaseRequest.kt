@@ -1,5 +1,6 @@
 package com.galaxybruce.component.ui.jetpack
 
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.ViewUtils.runOnUiThread
 import com.galaxybruce.component.net.exception.AppLoginExpiresException
@@ -96,7 +97,7 @@ import io.reactivex.schedulers.Schedulers
  *
  * modification history:
  */
-abstract class JPBaseRequest : IJPViewModelAction {
+abstract class JPBaseRequest : IJPViewModelAction, DefaultLifecycleObserver {
 
     // 这里为什么使用UnPeekLiveData，而不是普通的LiveData？是为了解决数据倒灌的问题。
     // 页面弹窗、加载框、登录的不像普通的数据重复设置不影响

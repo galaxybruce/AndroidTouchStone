@@ -132,6 +132,8 @@ public class JPPageDelegate<B extends ViewDataBinding> {
                 for (JPBaseRequest jpBaseRequest : requestList) {
                     if (jpBaseRequest != null) {
                         LifecycleOwner owner = getLifecycleOwner();
+                        // JpBaseRequest实现了DefaultLifecycleObserver
+                        owner.getLifecycle().addObserver(jpBaseRequest);
                         jpBaseRequest.getActionLiveData().observe(owner, jpPageActionObserver);
                     }
                 }
