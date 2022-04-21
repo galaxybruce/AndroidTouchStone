@@ -8,6 +8,7 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
+            android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/MainTheme">
 

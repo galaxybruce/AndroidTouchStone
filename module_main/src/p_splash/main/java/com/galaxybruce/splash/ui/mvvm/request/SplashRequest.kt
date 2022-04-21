@@ -1,6 +1,8 @@
 package com.galaxybruce.splash.ui.mvvm.request
 
 import android.annotation.SuppressLint
+import android.util.Log
+import androidx.lifecycle.LifecycleOwner
 import com.galaxybruce.component.ui.jetpack.JPBaseRequest
 import com.galaxybruce.splash.ui.mvvm.viewmodel.SplashViewModel
 
@@ -27,5 +29,11 @@ class SplashRequest(private val viewModel: SplashViewModel) : JPBaseRequest() {
 //                showToast(it.message)
 //                this.viewModel.title.set("返回数据失败")
 //            })
+    }
+
+    override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
+
+        Log.i("aaaaaaaaaaaa", "request.onCreate")
     }
 }

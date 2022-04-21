@@ -15,8 +15,10 @@ dependencies {
     api rootProject.ext.dep.retrofit2_converters
     api rootProject.ext.dep.retrofit2_adapter_rxjava2
     api rootProject.ext.dep.okhttp
-    implementation "org.reactivestreams:reactive-streams:1.0.2"
+    api "org.reactivestreams:reactive-streams:1.0.3"
     api "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+    api 'com.uber.autodispose:autodispose:1.4.0'
+    api 'com.uber.autodispose:autodispose-android-archcomponents:1.4.0'
 
     api rootProject.ext.dep.design
     api rootProject.ext.dep.androidx.appcompat_v7
@@ -38,17 +40,13 @@ dependencies {
     kapt rootProject.ext.dep.glide_compiler
 
     // room数据库
-    def room_version = "2.3.0"
+    def room_version = "2.4.2"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     api rootProject.ext.dep.fastjson
-    implementation 'com.elvishew:xlog:1.8.0'
-
+    api 'com.elvishew:xlog:1.8.0'
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
-
-    api 'com.uber.autodispose:autodispose:1.4.0'
-    api 'com.uber.autodispose:autodispose-android-archcomponents:1.4.0'
 }
 
 
