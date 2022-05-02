@@ -195,13 +195,11 @@ def configSigning(Project pro) {
 
 def configApkName(Project pro) {
     pro.android.applicationVariants.all { variant ->
-//        if (variant.buildType.name != "debug") {
-            // Android Studio 3.3
-//            variant.getPackageApplicationProvider().get().outputDirectory = new File("${rootDir.path}/apk")
+        if (variant.buildType.name != "debug") {
             variant.outputs.all { output ->
 //                outputFileName = rootProject.name + "_" + variant.versionName.replace(".", "_") + ".apk"
-                outputFileName = "app-" + variant.buildType.name + ".apk"
+//                outputFileName = "app-" + variant.buildType.name + ".apk"
             }
-//        }
+        }
     }
 }
