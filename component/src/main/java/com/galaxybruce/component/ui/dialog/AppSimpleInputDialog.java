@@ -71,11 +71,6 @@ public class AppSimpleInputDialog extends AppBaseInputDialog {
     }
 
     @Override
-    public void bindData(Bundle savedInstanceState) {
-
-    }
-
-    @Override
     protected void onConfirmClick() {
         if(mCallback != null) {
             mCallback.onInputDialogCallback(mTag == null ? "" : mTag,

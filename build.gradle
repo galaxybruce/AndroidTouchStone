@@ -56,6 +56,11 @@ subprojects {
 
 //            if (project.name == "app") {
 //                project.android.flavorDimensions "APP"
+//                project.android.productFlavors {
+//                    pc {
+//                        dimension "APP"
+//                    }
+//                }
 //                project.android.productFlavors.all {
 //                    flavor -> flavor.manifestPlaceholders = [InstallChannel_Value: name]
 //                }

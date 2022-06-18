@@ -31,16 +31,6 @@ import androidx.fragment.app.DialogFragment;
 public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends JPBaseDialogFragment<B>
         implements DialogInterface.OnKeyListener, DialogInterface.OnShowListener{
 
-    public interface AppConfirmDialogCallback extends AppDialogCallback {
-
-        default void onCancel() {
-        }
-
-        default void onConfirm() {
-
-        }
-    }
-
     public static class Builder<T extends Builder> {
         protected Bundle bundle;
 
@@ -85,14 +75,10 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
 
     }
 
-    protected AppConfirmDialogCallback callback;
-
     protected View vLine;
     protected TextView btnCancel;
     protected TextView btnConfirm;
 
-    private boolean isVisibleCancel;
-    private boolean isVisibleConfirm;
     private boolean cancelable;
 
     @Override
@@ -125,16 +111,9 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
     public void initData(@androidx.annotation.Nullable Bundle bundle, @androidx.annotation.Nullable Bundle savedInstanceState) {
         super.initData(bundle, savedInstanceState);
 
-        this.callback = getDialogListener(this, AppConfirmDialogCallback.class);
         Bundle arguments = getArguments();
         if(arguments != null) {
             cancelable = arguments.getBoolean("cancelable", true);
-            isVisibleCancel = arguments.getBoolean("isVisibleCancel", true);
-            isVisibleConfirm = arguments.getBoolean("isVisibleConfirm", true);
-            AppConfirmDialogCallback tCallback = arguments.getParcelable("callback");
-            if(tCallback != null) {
-                this.callback = tCallback;
-            }
         }
     }
 
@@ -174,9 +153,8 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
         if (bundle != null) {
             String cancelText = bundle.getString("cancelText");
             String confirmText = bundle.getString("confirmText");
-            cancelable = bundle.getBoolean("cancelable", true);
-            isVisibleCancel = bundle.getBoolean("isVisibleCancel", true);
-            isVisibleConfirm = bundle.getBoolean("isVisibleConfirm", true);
+            boolean isVisibleCancel = bundle.getBoolean("isVisibleCancel", true);
+            boolean isVisibleConfirm = bundle.getBoolean("isVisibleConfirm", true);
 
             if(!TextUtils.isEmpty(cancelText)) {
                 btnCancel.setText(cancelText);
@@ -206,16 +184,10 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
     }
 
     protected void onCancelClick() {
-        if(callback != null) {
-            callback.onCancel();
-        }
         dismiss();
     }
 
     protected void onConfirmClick() {
-        if(callback != null) {
-            callback.onConfirm();
-        }
         dismiss();
     }
 

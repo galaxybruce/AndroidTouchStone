@@ -215,8 +215,10 @@ public abstract class AppBaseInputDialog<B extends ViewDataBinding> extends AppC
 
     @Override
     public void initData(@Nullable Bundle bundle, Bundle savedInstanceState) {
-         Bundle arguments = getArguments();
-         if(arguments != null) {
+        super.initData(bundle, savedInstanceState);
+
+        Bundle arguments = getArguments();
+        if(arguments != null) {
             mTag = arguments.getString("tag");
             mTitle = arguments.getString("title");
             mContent = arguments.getString("content");
@@ -226,7 +228,7 @@ public abstract class AppBaseInputDialog<B extends ViewDataBinding> extends AppC
             mMaxValue = arguments.getDouble("maxValue", Double.MAX_VALUE);
             mMinValue = arguments.getDouble("minValue", Double.NEGATIVE_INFINITY);
             mInputHint = arguments.getString("inputHint");
-         }
+        }
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.galaxybruce.component.ui.jetpack.JPBaseFragment
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.ui.jetpack.adapter.JPRecyclerViewLoadMoreAdapter
+import com.galaxybruce.component.ui.view.recyclerview.ItemsPositionHelper
 import com.galaxybruce.component.util.cache.AppBigDataCacheManager
 
 /**
@@ -110,7 +111,10 @@ class AppDebugLogDialog : JPBaseFragment<AppDebugLogDialogBinding>() {
                 val listData = mPageViewModel.listData
                 listData.add(s)
                 binding.recyclerView.adapter!!.notifyItemInserted(listData.size - 1)
-                binding.recyclerView.scrollToPosition(listData.size - 1)
+                val lastVisibleItem = ItemsPositionHelper.getLastVisiblePosition(binding.recyclerView)
+                if (binding.recyclerView.adapter!!.itemCount - 1 == lastVisibleItem) {
+                    binding.recyclerView.scrollToPosition(listData.size - 1)
+                }
             }
         }
 

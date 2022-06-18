@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.galaxybruce.component.R;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
 /**
@@ -32,6 +33,18 @@ import androidx.fragment.app.FragmentManager;
  * modification history:
  */
 public class AppConfirmDialog extends AppCustomConfirmDialog {
+
+    public interface AppConfirmDialogCallback extends AppDialogCallback {
+
+        default void onCancel() {
+        }
+
+        default void onConfirm() {
+
+        }
+    }
+
+    private AppConfirmDialogCallback mCallback;
 
     @Override
     protected boolean supportMVVM() {
@@ -94,6 +107,20 @@ public class AppConfirmDialog extends AppCustomConfirmDialog {
     @Override
     public int bindContentLayoutId() {
         return R.layout.app_confirm_dialog;
+    }
+
+    @Override
+    public void initData(@Nullable Bundle bundle, @Nullable Bundle savedInstanceState) {
+        super.initData(bundle, savedInstanceState);
+
+        this.mCallback = getDialogListener(this, AppConfirmDialogCallback.class);
+        Bundle arguments = getArguments();
+        if(arguments != null) {
+            AppConfirmDialogCallback tCallback = arguments.getParcelable("callback");
+            if(tCallback != null) {
+                this.mCallback = tCallback;
+            }
+        }
     }
 
     @Override
@@ -194,4 +221,19 @@ public class AppConfirmDialog extends AppCustomConfirmDialog {
         }
     }
 
+    @Override
+    protected void onConfirmClick() {
+        if(mCallback != null) {
+            mCallback.onConfirm();
+        }
+        super.onConfirmClick();
+    }
+
+    @Override
+    protected void onCancelClick() {
+        if(mCallback != null) {
+            mCallback.onCancel();
+        }
+        super.onCancelClick();
+    }
 }
