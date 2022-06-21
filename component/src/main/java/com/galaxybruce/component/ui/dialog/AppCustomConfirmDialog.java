@@ -165,18 +165,24 @@ public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends 
 
             if (!isVisibleCancel) {
                 btnCancel.setVisibility(View.GONE);
-                vLine.setVisibility(View.GONE);
+                if(vLine != null) {
+                    vLine.setVisibility(View.GONE);
+                }
             } else {
                 btnCancel.setVisibility(View.VISIBLE);
             }
             if (!isVisibleConfirm) {
                 btnConfirm.setVisibility(View.GONE);
-                vLine.setVisibility(View.GONE);
+                if(vLine != null) {
+                    vLine.setVisibility(View.GONE);
+                }
             } else {
                 btnConfirm.setVisibility(View.VISIBLE);
             }
             if (isVisibleCancel && isVisibleConfirm) {
-                vLine.setVisibility(View.VISIBLE);
+                if(vLine != null) {
+                    vLine.setVisibility(View.VISIBLE);
+                }
             }
 
             setCancelable(cancelable);
