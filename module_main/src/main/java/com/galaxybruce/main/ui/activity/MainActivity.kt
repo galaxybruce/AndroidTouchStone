@@ -7,7 +7,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.blankj.utilcode.util.AdaptScreenUtils
 import com.galaxybruce.component.ui.activity.BaseTitleBarActivity
 import com.galaxybruce.component.ui.dialog.AppConfirmDialog
-import com.galaxybruce.component.ui.dialog.AppCustomConfirmDialog.AppConfirmDialogCallback
 import com.galaxybruce.main.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -34,7 +33,7 @@ class MainActivity : BaseTitleBarActivity(){
 //                .addParam("a", "a11").go(this)
 
             AppConfirmDialog.getInstance("提示", "哈哈哈哈", false,
-                object : AppConfirmDialogCallback {
+                object : AppConfirmDialog.AppConfirmDialogCallback {
                     override fun onCancel() {
                         showToast("cancel== ${++n}")
                     }

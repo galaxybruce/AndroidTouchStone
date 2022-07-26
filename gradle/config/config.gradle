@@ -67,7 +67,7 @@ ext {
 
             //-------------------第三方-----------------------
             leakcanary  : [
-                    android                 : "com.squareup.leakcanary:leakcanary-android:2.5",
+                    android                 : "com.squareup.leakcanary:leakcanary-android:2.9.1",
             ],
 
             //事件总线
