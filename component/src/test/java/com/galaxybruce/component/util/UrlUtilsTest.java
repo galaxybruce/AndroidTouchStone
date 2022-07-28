@@ -16,7 +16,7 @@ public class UrlUtilsTest {
     @Test
     public void getUriParamValue1() {
         String url = "https://www.google.com?a=b";
-        String value = UrlUtils.getUriParamValue(url, "a");
+        String value = AppURLUtil.getUriParamValue(url, "a");
         assertEquals("b", value);
     }
 

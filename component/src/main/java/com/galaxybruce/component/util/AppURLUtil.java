@@ -6,8 +6,12 @@ import android.text.TextUtils;
 
 import com.blankj.utilcode.util.StringUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.galaxybruce.component.util.AppConstants.EMPTY_STR;
 
@@ -15,7 +19,7 @@ import static com.galaxybruce.component.util.AppConstants.EMPTY_STR;
  * url处理
  * @author Administrator
  */
-public class UrlUtils {
+public class AppURLUtil {
 
     /**
      * 获取uri参数值
@@ -59,6 +63,33 @@ public class UrlUtils {
     }
 
     /**
+     * 获取不规则url中的参数
+     * 这个url可能是不完整的，比如url仅仅只有cmd: cmd=aaaa&a=1
+     * @param url
+     * @param key
+     * @return
+     */
+    public static String getInvalidUriParamValue(String url, String key) {
+        String value = "";
+        if (TextUtils.isEmpty(url)
+                || TextUtils.isEmpty(key)) {
+            return value;
+        }
+
+        Pattern pattern = Pattern.compile("(" + key +"=([^&#]*))", Pattern.CASE_INSENSITIVE);
+        Matcher m = pattern.matcher(url);
+        if (m.find()) {
+            try {
+                value = m.group(2);
+                return URLDecoder.decode(value, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                return value;
+            }
+        }
+        return "";
+    }
+
+    /**
      * 替换url参数
      *
      * @param url
@@ -87,7 +118,6 @@ public class UrlUtils {
             } else {
                 url += "&";
             }
-
             url += key + "=" + value;
         } catch (MalformedURLException e) {
         }
@@ -95,4 +125,22 @@ public class UrlUtils {
         return url;
     }
 
+    /**
+     * 删除url中的所有参数以及fragment
+     * @param url
+     * @return
+     */
+    public static String deleteAllParams(String url) {
+        if (TextUtils.isEmpty(url)) {
+            return url;
+        }
+        int queryIndex = url.indexOf("?");
+        if(queryIndex < 0) {
+            queryIndex = url.indexOf("#");
+        }
+        if(queryIndex <= 0) {
+            return url;
+        }
+        return url.substring(0, queryIndex);
+    }
 }
