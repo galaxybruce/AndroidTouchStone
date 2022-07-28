@@ -2,6 +2,7 @@ apply plugin: 'galaxybruce-pioneer'
 
 buildscript {
     apply from: rootProject.file('gradle/config/config.gradle')
+    apply from: rootProject.file('gradle/config/util.gradle')
 
     addRepos(repositories)
 
@@ -34,10 +35,10 @@ subprojects {
 
         resolutionStrategy {
 //            force 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:1.3.4'
-            int cacheTime = 24
+            int cacheTime = 10
             // hours minutes seconds
-            cacheChangingModulesFor cacheTime, 'hours'  // SNAPSHOT版本号
-            cacheDynamicVersionsFor cacheTime, 'hours'  // 采用动态版本声明的依赖缓存10分钟
+            cacheChangingModulesFor cacheTime, 'minutes'  // SNAPSHOT版本号
+            cacheDynamicVersionsFor cacheTime, 'minutes'  // 采用动态版本声明的依赖缓存10分钟
         }
 
         resolutionStrategy.dependencySubstitution {

@@ -1,3 +1,23 @@
+import java.util.function.Consumer
+
+///**
+// * 项目内部module依赖方式，便有local maven和源码间切换
+// * @param project
+// * @param moduleName
+// */
+//static void addModuleDependency(Project project, String moduleName, String configurationName = 'api') {
+//    if(project.name == moduleName) {
+//        return
+//    }
+//    def module = project.rootProject.findProject(":$moduleName")
+//    if (module) {
+//        println("========================== module依赖: $moduleName")
+//        project.dependencies.add(configurationName, module)
+//    } else {
+//        project.dependencies.add(configurationName,
+//                "${project.rootProject.mavenAppGroup}:$moduleName:${project.rootProject.library_version.kidBizVersion}")
+//    }
+//}
 
 /**
  * 公司内部通用library依赖方式，便有maven和源码间切换
@@ -5,7 +25,7 @@
  * @param dependencyNotation
  * @param configurationName
  */
-static void addCommonDependency(Project project, String dependencyNotation, String configurationName = 'api') {
+static void addMavenDependency(Project project, String dependencyNotation, String configurationName = 'api') {
     try {
         def moduleName = dependencyNotation.split(":")[1]
         if(project.name == moduleName) {
@@ -19,7 +39,7 @@ static void addCommonDependency(Project project, String dependencyNotation, Stri
             project.dependencies.add(configurationName, dependencyNotation)
         }
     } catch (Exception e) {
-        println("addCommonDependency failed: " + dependencyNotation)
+        println("addMavenDependency failed: " + dependencyNotation)
     }
 }
 
@@ -50,9 +70,62 @@ static boolean equalLocalValue(Object project, String key, String value) {
 }
 
 /**
+ * 获取参数，参数可能在local.proerties、gradle.properties、系统环境变量中
+ * @param project
+ * @param key
+ * @return
+ */
+static String getParameterAnyWhere(Object project, String key) {
+    def value = getLocalValue(project, key)
+    if(!value) {
+        value = System.getenv(key)
+    }
+    if(!value) {
+        value = System.properties[key]
+    }
+    if(!value) {
+        value = project.getProperties().get(key)
+    }
+    return value
+}
+
+/**
+ * 任何项目都可以使用该方法
+ * @param pathKey 环境变量中的key
+ * @param jenkinsPath   打包机器上的库路径
+ * @return
+ */
+static String getLibraryPathWithKey(Object project, final String pathKey, final String jenkinsPath) {
+    if(pathKey == null || '' == pathKey.trim()) {
+        throw new IllegalStateException('pathKey must not be empty')
+    }
+
+    def libraryPath = getLocalValue(project, pathKey)
+    if (!libraryPath) {
+        libraryPath = System.getenv(pathKey)
+        if (!libraryPath && jenkinsPath) {
+            libraryPath = jenkinsPath
+        }
+        if(libraryPath) {
+            Properties localProperties = new Properties()
+            def localPropertiesFile = new File(project.rootDir, 'local.properties')
+            if (localPropertiesFile.exists()) {
+                localPropertiesFile.withReader('UTF-8') { reader ->
+                    localProperties.load(reader)
+                }
+            }
+            localProperties.put(pathKey, libraryPath)
+            localProperties.store(localPropertiesFile.newWriter(), null)
+        }
+    }
+
+    return libraryPath
+}
+
+/**
  * 加载指定目录中的module
  * 调用方式： includeModule(settings, [settings.getRootDir().path], ['aopstat','plugin'])
- * @param libraryPaths
+ * @param libraryPaths module存放路径
  * @param excludeDirs
  * @return
  */
@@ -83,6 +156,24 @@ static includeModule(Settings settings, List<String> libraryPaths, List<String> 
     }
 }
 
+/**
+ * 在当前工程目录下查找业务module
+ * @param settings
+ * @return
+ */
+static findBusiModule(Project project, List<String> excludeDirs, Consumer<String> consumer) {
+    def rootDir = project.rootDir
+    rootDir.eachDir { dir ->
+        if (!isModule(dir)) {
+            return
+        }
+        if(excludeDirs != null && excludeDirs.contains(dir.name)) {
+            return
+        }
+        consumer.accept(dir.name)
+    }
+}
+
 static boolean isModule(File dir) {
     File[] files = dir.listFiles(new FilenameFilter() {
         @Override
@@ -90,14 +181,17 @@ static boolean isModule(File dir) {
             return name == 'build.gradle' || name == 'src'
         }
     })
-    return files.size() == 2
+    return files != null && files.size() == 2
 }
 
-
 ext{
-    addDependency = this.&addDependency
-    addCommonDependency = this.&addCommonDependency
+    addModuleDependency = this.&addModuleDependency
+    addMavenDependency = this.&addMavenDependency
     equalLocalValue = this.&equalLocalValue
     getLocalValue = this.&getLocalValue
     includeModule = this.&includeModule
+    findBusiModule = this.&findBusiModule
+    getParameterAnyWhere = this.&getParameterAnyWhere
+    getLibraryPathWithKey = this.&getLibraryPathWithKey
+    isModule = this.&isModule
 }

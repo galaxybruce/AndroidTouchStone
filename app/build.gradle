@@ -5,6 +5,11 @@ apply {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(':module_main')
+    // 自动查找项目根目录下的module并依赖
+    rootProject.findBusiModule(project,
+            ['app', 'module_packagedemo']) { moduleName ->
+//        rootProject.ext.addModuleDependency(project, moduleName, 'implementation')
+        implementation project(":$moduleName")
+    }
 }
 
