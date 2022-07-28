@@ -2,8 +2,8 @@ package com.galaxybruce.component.net.interceptor;
 
 import android.text.TextUtils;
 
-import com.galaxybruce.component.interal.AppInternal;
-import com.galaxybruce.component.interal.IAuthAccount;
+import com.galaxybruce.component.internal.AppInternal;
+import com.galaxybruce.component.internal.IAuthAccount;
 import com.galaxybruce.component.net.cookie.AppCookieManager;
 import com.galaxybruce.component.net.exception.AppLoginExpiresException;
 

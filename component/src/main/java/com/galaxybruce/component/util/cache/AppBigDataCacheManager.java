@@ -3,8 +3,8 @@ package com.galaxybruce.component.util.cache;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.galaxybruce.component.interal.AppInternal;
-import com.galaxybruce.component.interal.IAuthAccount;
+import com.galaxybruce.component.internal.AppInternal;
+import com.galaxybruce.component.internal.IAuthAccount;
 
 import java.io.IOException;
 import java.util.ArrayList;

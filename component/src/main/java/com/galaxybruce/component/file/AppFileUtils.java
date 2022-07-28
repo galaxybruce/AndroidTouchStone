@@ -25,7 +25,7 @@ import java.util.UUID;
 /**
  * @author bruce.zhang
  */
-public class FileUtils {
+public class AppFileUtils {
 
     /**
      * 是否有文件写入权限
@@ -50,7 +50,7 @@ public class FileUtils {
      * @return
      */
     public static String createUniqueDirName() {
-        return FileUtils.createUniqueFileName(null);
+        return AppFileUtils.createUniqueFileName(null);
     }
 
     /**
@@ -201,7 +201,7 @@ public class FileUtils {
 
                 os.flush();
             } catch (Exception var12) {
-                throw new RuntimeException(FileUtils.class.getClass().getName(), var12);
+                throw new RuntimeException(AppFileUtils.class.getClass().getName(), var12);
             } finally {
                 closeIO(new Closeable[]{is, os});
             }
@@ -279,7 +279,7 @@ public class FileUtils {
                     os = new FileOutputStream(to);
                     copyFileFast(is, os);
                 } catch (Exception var8) {
-                    throw new RuntimeException(FileUtils.class.getClass().getName(), var8);
+                    throw new RuntimeException(AppFileUtils.class.getClass().getName(), var8);
                 } finally {
                     closeIO(new Closeable[]{is, os});
                 }
@@ -306,7 +306,7 @@ public class FileUtils {
                         cb.close();
                     }
                 } catch (IOException var6) {
-                    throw new RuntimeException(FileUtils.class.getClass().getName(), var6);
+                    throw new RuntimeException(AppFileUtils.class.getClass().getName(), var6);
                 }
             }
 
@@ -319,7 +319,7 @@ public class FileUtils {
         try {
             is = new FileInputStream(filePath);
         } catch (Exception var3) {
-            throw new RuntimeException(FileUtils.class.getName() + "readFile---->" + filePath + " not found");
+            throw new RuntimeException(AppFileUtils.class.getName() + "readFile---->" + filePath + " not found");
         }
 
         return inputStream2String(is);
@@ -331,7 +331,7 @@ public class FileUtils {
         try {
             is = context.getResources().getAssets().open(name);
         } catch (Exception var4) {
-            throw new RuntimeException(FileUtils.class.getName() + ".readFileFromAssets---->" + name + " not found");
+            throw new RuntimeException(AppFileUtils.class.getName() + ".readFileFromAssets---->" + name + " not found");
         }
 
         return inputStream2String(is);

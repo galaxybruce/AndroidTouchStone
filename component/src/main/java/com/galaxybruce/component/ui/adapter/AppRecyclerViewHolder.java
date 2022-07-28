@@ -12,27 +12,25 @@ import androidx.recyclerview.widget.RecyclerView;
  * 通用ViewHolder
  * created by bruce.zhang
  */
-public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+public class AppRecyclerViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> mViews;
     private Context mContext;
 
-    public RecyclerViewHolder(Context context, View itemView) {
+    public AppRecyclerViewHolder(Context context, View itemView) {
         super(itemView);
         mContext = context;
         mViews = new SparseArray<View>();
     }
 
-    public static RecyclerViewHolder createViewHolder(Context context, View itemView) {
-        RecyclerViewHolder holder = new RecyclerViewHolder(context, itemView);
-        return holder;
+    public static AppRecyclerViewHolder createViewHolder(Context context, View itemView) {
+        return new AppRecyclerViewHolder(context, itemView);
     }
 
-    public static RecyclerViewHolder createViewHolder(Context context,
-                                                      ViewGroup parent, int layoutId) {
+    public static AppRecyclerViewHolder createViewHolder(Context context,
+                                                         ViewGroup parent, int layoutId) {
         View itemView = LayoutInflater.from(context).inflate(layoutId, parent,
                 false);
-        RecyclerViewHolder holder = new RecyclerViewHolder(context, itemView);
-        return holder;
+        return new AppRecyclerViewHolder(context, itemView);
     }
 
     /**

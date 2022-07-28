@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.View
 import com.galaxybruce.base.manager.AppSessionManager
 import com.galaxybruce.base.ui.activity.AppBaseActivity
-import com.galaxybruce.component.interal.AppInternal
-import com.galaxybruce.component.router.RouterUrlBuilder
+import com.galaxybruce.component.internal.AppInternal
+import com.galaxybruce.component.router.AppRouterUrlBuilder
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
-import com.galaxybruce.component.util.ActivityUtil
+import com.galaxybruce.component.util.AppActivityUtil
 import com.galaxybruce.component.util.AppConstants
 import com.galaxybruce.main.BR
 import com.galaxybruce.main.R
@@ -35,7 +35,7 @@ class SplashActivity : AppBaseActivity<SplashLayoutBinding>() {
 //        }
 
         // 避免从桌面启动程序后，会重新实例化入口类的activity
-        if (ActivityUtil.handleSplashActivity(this)) {
+        if (AppActivityUtil.handleSplashActivity(this)) {
             return
         }
     }
@@ -62,10 +62,10 @@ class SplashActivity : AppBaseActivity<SplashLayoutBinding>() {
         super.bindData(savedInstanceState)
 
         if(AppInternal.getInstance().mustLogin() && !AppSessionManager.getInstance().isLogin) {
-            RouterUrlBuilder.instance("/app/login")
+            AppRouterUrlBuilder.instance("/app/login")
                 .addParam(AppConstants.Login.KEY_LOGIN_SUCCESS_ROUTER, "/app/main").go(this)
         } else {
-            RouterUrlBuilder.instance("/app/main").go(this)
+            AppRouterUrlBuilder.instance("/app/main").go(this)
         }
         finish()
     }

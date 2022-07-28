@@ -10,7 +10,7 @@ import android.content.Intent;
  * <p>
  * modification history:
  */
-public class ActivityUtil {
+public class AppActivityUtil {
 
     /**
      * 处理启动Activity某些特殊情况

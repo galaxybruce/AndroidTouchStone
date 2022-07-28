@@ -26,9 +26,9 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
     protected static final int ITEM_VIEW_TYPE_LOAD_MORE = Integer.MAX_VALUE;          //底部加载更多viewType
 
     private final SparseArrayCompat<View> mHeaderViews = new SparseArrayCompat<>();
-    private ListFooterView mFooterView;
+    private AppListFooterView mFooterView;
 
-    protected int state = AdapterLoadDataState.STATE_DEFAULT;
+    protected int state = AppListAdapterLoadDataState.STATE_DEFAULT;
 
     private AbsAppRecyclerView.AppLoadMoreParams loadMoreParams;
 
@@ -52,15 +52,15 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
     public int getItemCount() {
         int count = 0;
         switch (getState()) {
-            case AdapterLoadDataState.STATE_EMPTY_ITEM:
+            case AppListAdapterLoadDataState.STATE_EMPTY_ITEM:
                 count = getDataSize();
                 break;
-            case AdapterLoadDataState.STATE_NETWORK_ERROR:
-            case AdapterLoadDataState.STATE_NO_MORE:
+            case AppListAdapterLoadDataState.STATE_NETWORK_ERROR:
+            case AppListAdapterLoadDataState.STATE_NO_MORE:
                 count = showNoMoreView() ? getDataSize() + 1 : getDataSize();
                 break;
-            case AdapterLoadDataState.STATE_LOAD_MORE:
-            case AdapterLoadDataState.STATE_FORCE_LOAD_MORE:
+            case AppListAdapterLoadDataState.STATE_LOAD_MORE:
+            case AppListAdapterLoadDataState.STATE_FORCE_LOAD_MORE:
                 count = showLoadMoreView() ? getDataSize() + 1 : getDataSize();
                 break;
             default:
@@ -81,12 +81,13 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
         }
     }
 
+    @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         if (mHeaderViews.get(viewType) != null) {
-            return RecyclerViewHolder.createViewHolder(viewGroup.getContext(), mHeaderViews.get(viewType));
+            return AppRecyclerViewHolder.createViewHolder(viewGroup.getContext(), mHeaderViews.get(viewType));
         } else if (viewType == ITEM_VIEW_TYPE_LOAD_MORE) {
-            mFooterView = new ListFooterView(mContext);
+            mFooterView = new AppListFooterView(mContext);
             return new FooterHolder(mFooterView);
         } else {
             return onCreateRealViewHolder(viewGroup, viewType);
@@ -101,7 +102,7 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
             final FooterHolder footerHolder = (FooterHolder) holder;
             footerHolder.footerView.setState(getState(), loadMoreBg());
         } else {
-            int dataPosition = translateRealDataPosition(position);
+            int dataPosition = translate2positionInList(position);
             onBindRealViewHolder(holder, dataPosition);
         }
     }
@@ -135,22 +136,22 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
     }
 
     /**
-     * 转化为真正的数据mDatas中的位置，需要去除头部数量
+     * adapter中的位置转化为真正的数据mDataList中的位置，需要去除头部数量
      *
      * @param position adapter中的位置
      * @return
      */
-    public int translateRealDataPosition(int position) {
+    public int translate2positionInList(int position) {
         return position - getHeaderViewCount();
     }
 
     /**
-     * 转化为adapter中的位置，需要加上头部数量
+     * mDataList中的位置转化为adapter中的位置，需要加上头部数量
      *
-     * @param dataPosition mDatas中的位置
+     * @param dataPosition mDataList中的位置
      * @return
      */
-    public int translateAdapterDataPosition(int dataPosition) {
+    public int translate2positionInAdapter(int dataPosition) {
         return dataPosition + getHeaderViewCount();
     }
 
@@ -176,15 +177,17 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
     }
 
     @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         handleHeaderFooterLayout(holder);
     }
 
     private void handleHeaderFooterLayout(RecyclerView.ViewHolder holder) {
         if (isStaggeredGridLayout(holder)) {
-            if (isHeaderView(holder.getLayoutPosition()) || isFooterView(holder.getLayoutPosition())) {
-                StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+            if (isHeaderView(holder.getLayoutPosition()) ||
+                    isFooterView(holder.getLayoutPosition())) {
+                StaggeredGridLayoutManager.LayoutParams p =
+                        (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
                 p.setFullSpan(true);
             }
         }
@@ -225,11 +228,11 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
 
     protected static class FooterHolder extends RecyclerView.ViewHolder {
 
-        public ListFooterView footerView;
+        public AppListFooterView footerView;
 
         public FooterHolder(View view) {
             super(view);
-            footerView = (ListFooterView) view;
+            footerView = (AppListFooterView) view;
         }
     }
 
@@ -237,7 +240,8 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
     /***************************************子类可以重写的部分start***************************************/
 
     /**
-     * 除开头和尾部，其他的ViewType；如果头部全部用addHeaderView方法，这个方法不用重写，DEFAULT_REAL_ITEM_VIEW_TYPE就是默认列表的的type
+     * 除开头和尾部，其他的ViewType；如果头部全部用addHeaderView方法，
+     * 这个方法不用重写，DEFAULT_REAL_ITEM_VIEW_TYPE就是默认列表的的type
      *
      * @param position
      * @return
@@ -257,7 +261,8 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
     }
 
     /**
-     * 如果头部不是全部用addHeaderView方法添加的，子类中应该是mHeaderViews.size() + 另外在onCreateRealViewHolder方法中new的个数
+     * 如果头部不是全部用addHeaderView方法添加的，
+     * 子类中应该是mHeaderViews.size() + 另外在onCreateRealViewHolder方法中new的个数
      *
      * @return
      */

@@ -1,4 +1,4 @@
-package com.galaxybruce.component.interal;
+package com.galaxybruce.component.internal;
 
 import android.app.Application;
 

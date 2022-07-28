@@ -19,7 +19,7 @@ import com.galaxybruce.component.R;
 /**
  * Created by bruce.zhang on 2016/9/12.
  */
-public class ListFooterView extends LinearLayout {
+public class AppListFooterView extends LinearLayout {
 
     public ProgressBar progress;
     public  TextView text;
@@ -28,15 +28,15 @@ public class ListFooterView extends LinearLayout {
     private int _loadFinishText;
     private int _noDateText;
 
-    public ListFooterView(Context context) {
+    public AppListFooterView(Context context) {
         this(context, null);
     }
 
-    public ListFooterView(Context context, AttributeSet attrs) {
+    public AppListFooterView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public ListFooterView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public AppListFooterView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
@@ -57,11 +57,11 @@ public class ListFooterView extends LinearLayout {
         setBackground(loadMoreBg);
 
         switch (state) {
-            case AdapterLoadDataState.STATE_LOAD_MORE:
-            case AdapterLoadDataState.STATE_FORCE_LOAD_MORE:
+            case AppListAdapterLoadDataState.STATE_LOAD_MORE:
+            case AppListAdapterLoadDataState.STATE_FORCE_LOAD_MORE:
                 setFooterViewLoading();
                 break;
-            case AdapterLoadDataState.STATE_NO_MORE:
+            case AppListAdapterLoadDataState.STATE_NO_MORE:
                 setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
                 text.setVisibility(View.VISIBLE);
@@ -73,13 +73,13 @@ public class ListFooterView extends LinearLayout {
                         .appendImage(R.drawable.icon_nore_more_right, SpanUtils.ALIGN_CENTER)
                         .create();
                 break;
-            case AdapterLoadDataState.STATE_EMPTY_ITEM:
+            case AppListAdapterLoadDataState.STATE_EMPTY_ITEM:
                 setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
                 text.setVisibility(View.VISIBLE);
                 text.setText(_noDateText);
                 break;
-            case AdapterLoadDataState.STATE_NETWORK_ERROR:
+            case AppListAdapterLoadDataState.STATE_NETWORK_ERROR:
                 setVisibility(View.VISIBLE);
                 progress.setVisibility(View.GONE);
                 text.setVisibility(View.VISIBLE);

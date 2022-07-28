@@ -15,7 +15,7 @@ public class AppListViewLoadMoreAdapter<T> extends AppBaseListViewAdapter<T> {
     protected static final int DEFAULT_REAL_ITEM_VIEW_TYPE = 0;
     protected static final int ITEM_VIEW_TYPE_LOAD_MORE = Integer.MAX_VALUE;
 
-    protected int state = AdapterLoadDataState.STATE_DEFAULT;
+    protected int state = AppListAdapterLoadDataState.STATE_DEFAULT;
 
     public void setState(int state) {
         this.state = state;
@@ -32,12 +32,12 @@ public class AppListViewLoadMoreAdapter<T> extends AppBaseListViewAdapter<T> {
     @Override
     public int getCount() {
         switch (getState()) {
-            case AdapterLoadDataState.STATE_EMPTY_ITEM:
+            case AppListAdapterLoadDataState.STATE_EMPTY_ITEM:
                 return getDataSize();
-            case AdapterLoadDataState.STATE_NETWORK_ERROR:
-            case AdapterLoadDataState.STATE_NO_MORE:
+            case AppListAdapterLoadDataState.STATE_NETWORK_ERROR:
+            case AppListAdapterLoadDataState.STATE_NO_MORE:
                 return showNoMoreView() ? getDataSize() + 1 : getDataSize();
-            case AdapterLoadDataState.STATE_LOAD_MORE:
+            case AppListAdapterLoadDataState.STATE_LOAD_MORE:
                 return showLoadMoreView() ? getDataSize() + 1 : getDataSize();
             default:
                 break;
@@ -72,7 +72,7 @@ public class AppListViewLoadMoreAdapter<T> extends AppBaseListViewAdapter<T> {
         final int viewType = getItemViewType(position);
         if (viewType == ITEM_VIEW_TYPE_LOAD_MORE) {
             if (convertView == null) {
-                this.mFooterView = new ListFooterView(mContext);
+                this.mFooterView = new AppListFooterView(mContext);
             }
             mFooterView.setState(getState(), loadMoreBg());
             return mFooterView;
@@ -116,7 +116,7 @@ public class AppListViewLoadMoreAdapter<T> extends AppBaseListViewAdapter<T> {
         return true;
     }
 
-    private ListFooterView mFooterView;
+    private AppListFooterView mFooterView;
 
     public View getFooterView() {
         return this.mFooterView;

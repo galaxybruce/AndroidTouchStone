@@ -6,8 +6,8 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
 import com.blankj.utilcode.util.StringUtils;
-import com.galaxybruce.component.interal.AppInternal;
-import com.galaxybruce.component.interal.IHttpRequestOptions;
+import com.galaxybruce.component.internal.AppInternal;
+import com.galaxybruce.component.internal.IHttpRequestOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;

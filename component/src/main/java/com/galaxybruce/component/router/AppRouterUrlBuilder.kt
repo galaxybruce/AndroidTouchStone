@@ -12,11 +12,11 @@ import com.alibaba.android.arouter.launcher.ARouter
  *
  * modification history:
  */
-class RouterUrlBuilder {
+class AppRouterUrlBuilder {
 
     companion object {
-        fun instance(url: String): RouterUrlBuilder {
-            val instance = RouterUrlBuilder()
+        fun instance(url: String): AppRouterUrlBuilder {
+            val instance = AppRouterUrlBuilder()
             instance.mUrl = ARouter.getInstance().build(url)
             return instance
         }
@@ -24,7 +24,7 @@ class RouterUrlBuilder {
 
     lateinit var mUrl: Postcard
 
-    fun addParam(key: String, value: String): RouterUrlBuilder {
+    fun addParam(key: String, value: String): AppRouterUrlBuilder {
         mUrl.withString(key, value)
         return this
     }

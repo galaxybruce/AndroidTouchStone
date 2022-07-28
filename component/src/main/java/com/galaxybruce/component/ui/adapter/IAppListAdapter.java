@@ -7,7 +7,7 @@ package com.galaxybruce.component.ui.adapter;
  * <p>
  * Modification  History:
  */
-public interface IListAdapter {
+public interface IAppListAdapter {
 
     void notifyDataSetChanged();
 

@@ -2,8 +2,8 @@ package com.galaxybruce.component.net.cookie;
 
 import android.text.TextUtils;
 
-import com.galaxybruce.component.interal.AppInternal;
-import com.galaxybruce.component.interal.IHttpRequestOptions;
+import com.galaxybruce.component.internal.AppInternal;
+import com.galaxybruce.component.internal.IHttpRequestOptions;
 
 import java.util.HashMap;
 import java.util.Map;

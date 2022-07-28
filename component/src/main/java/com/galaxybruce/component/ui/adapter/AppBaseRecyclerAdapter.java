@@ -13,8 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
  * RecyclerView base adapter
  * created by bruce.zhang
  */
-public abstract class AppBaseRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements IListAdapter {
+public abstract class AppBaseRecyclerAdapter<T>
+        extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements IAppListAdapter {
 
     protected Context mContext;
     protected LayoutInflater mInflater;
@@ -51,7 +52,6 @@ public abstract class AppBaseRecyclerAdapter<T> extends RecyclerView.Adapter<Rec
         if (mDataList != null) {
             mDataList.add(data);
         }
-//		notifyDataSetChanged();
         notifyItemInserted(position + getHeaderViewCount());
     }
 
@@ -59,7 +59,6 @@ public abstract class AppBaseRecyclerAdapter<T> extends RecyclerView.Adapter<Rec
         if (mDataList != null) {
             mDataList.add(index, data);
         }
-//		notifyDataSetChanged();
         notifyItemInserted(index + getHeaderViewCount());
     }
 
@@ -119,6 +118,5 @@ public abstract class AppBaseRecyclerAdapter<T> extends RecyclerView.Adapter<Rec
     public List<T> getData() {
         return mDataList == null ? (mDataList = new ArrayList<T>()) : mDataList;
     }
-
 
 }

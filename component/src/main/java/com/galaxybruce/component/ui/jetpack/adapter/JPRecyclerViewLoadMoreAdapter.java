@@ -10,7 +10,7 @@ import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.galaxybruce.component.ui.adapter.AppRecyclerLoadMoreAdapter;
-import com.galaxybruce.component.ui.adapter.RecyclerViewHolder;
+import com.galaxybruce.component.ui.adapter.AppRecyclerViewHolder;
 
 /**
  * @date 2020/8/14  4:54 PM
@@ -32,7 +32,7 @@ public abstract class JPRecyclerViewLoadMoreAdapter<T> extends AppRecyclerLoadMo
     public RecyclerView.ViewHolder onCreateRealViewHolder(ViewGroup viewGroup, int viewType) {
         ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
                 getLayoutId(viewType), viewGroup, false);
-        return new RecyclerViewHolder(mContext, binding.getRoot());
+        return new AppRecyclerViewHolder(mContext, binding.getRoot());
     }
 
     @Override

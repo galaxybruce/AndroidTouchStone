@@ -16,6 +16,7 @@
 
 package com.galaxybruce.component.file;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -45,8 +46,8 @@ import java.util.Comparator;
  * @author paulburke (ipaulpro)
  */
 @TargetApi(Build.VERSION_CODES.KITKAT)
-public class UriFileUtils {
-    private UriFileUtils() {} //private constructor to enforce Singleton pattern
+public class AppUriFileUtils {
+    private AppUriFileUtils() {} //private constructor to enforce Singleton pattern
     
     /** TAG for log messages. */
     static final String TAG = "FileUtils";
@@ -165,11 +166,11 @@ public class UriFileUtils {
 
     /**
      * @param uri The Uri to check.
-     * @return Whether the Uri authority is {@link LocalStorageProvider}.
+     * @return Whether the Uri authority is {@link AppLocalStorageProvider}.
      * @author paulburke
      */
     public static boolean isLocalStorageDocument(Uri uri) {
-        return LocalStorageProvider.AUTHORITY.equals(uri.getAuthority());
+        return AppLocalStorageProvider.AUTHORITY.equals(uri.getAuthority());
     }
 
     /**
@@ -476,6 +477,7 @@ public class UriFileUtils {
         return getThumbnailPath(context, uri, getMimeType(context, uri));
     }
     
+    @SuppressLint("Range")
     public static String getThumbnailPath(Context context, Uri uri, String mimeType) {
         if (DEBUG)
             Log.d(TAG, "Attempting to get thumbnail");

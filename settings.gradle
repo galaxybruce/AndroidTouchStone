@@ -1,4 +1,3 @@
-
 buildscript {
     apply from: './gradle/config/util.gradle'
 }

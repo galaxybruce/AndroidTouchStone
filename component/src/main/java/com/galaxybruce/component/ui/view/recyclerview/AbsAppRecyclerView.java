@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.galaxybruce.component.R;
-import com.galaxybruce.component.ui.adapter.AdapterLoadDataState;
+import com.galaxybruce.component.ui.adapter.AppListAdapterLoadDataState;
 import com.galaxybruce.component.ui.adapter.AppRecyclerLoadMoreAdapter;
 import com.galaxybruce.component.ui.view.AppEmptyLayout;
-import com.galaxybruce.component.ui.view.BackToTopView;
+import com.galaxybruce.component.ui.view.AppBackToTopView;
 import com.galaxybruce.component.util.ToastUtils;
 
 import java.util.ArrayList;
@@ -203,7 +203,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         mRecyclerView.setAdapter(mAdapter);
 
         if(back2TopViewVisiblePosition > 0) {
-            BackToTopView backToTop = (BackToTopView) findViewById(R.id.back_to_top);
+            AppBackToTopView backToTop = (AppBackToTopView) findViewById(R.id.back_to_top);
             if (backToTop != null) {
                 backToTop.setRecyclerView(mRecyclerView, back2TopViewVisiblePosition);
             }
@@ -285,7 +285,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
                 mCurrentPage = mDefaultPage;
                 mState = AppLoadDataState.STATE_LOAD_MORE;
                 requestListener.sendRequestLoadMoreData(getCurrentPage());
-                mAdapter.setState(AdapterLoadDataState.STATE_FORCE_LOAD_MORE);
+                mAdapter.setState(AppListAdapterLoadDataState.STATE_FORCE_LOAD_MORE);
                 if(loadMoreParams.showLoadMoreView() || loadMoreParams.showNoMoreView()) {
                     if(mAdapter.isFooterView(mAdapter.getItemCount() - 1)) {
                         mAdapter.notifyItemChanged(mAdapter.getItemCount() - 1);
@@ -327,8 +327,8 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
             }
 
             if (mState == AppLoadDataState.STATE_NONE && scrollEnd) {
-                if (mAdapter.getState() == AdapterLoadDataState.STATE_LOAD_MORE
-                        || mAdapter.getState() == AdapterLoadDataState.STATE_NETWORK_ERROR) {
+                if (mAdapter.getState() == AppListAdapterLoadDataState.STATE_LOAD_MORE
+                        || mAdapter.getState() == AppListAdapterLoadDataState.STATE_NETWORK_ERROR) {
                     mCurrentPage++;
                     mState = AppLoadDataState.STATE_LOAD_MORE;
                     requestListener.sendRequestLoadMoreData(getCurrentPage());
@@ -568,7 +568,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
     public void reset() {
         mCurrentPage = mDefaultPage;
         mState = AppLoadDataState.STATE_NONE;
-        mAdapter.setState(AdapterLoadDataState.STATE_DEFAULT);
+        mAdapter.setState(AppListAdapterLoadDataState.STATE_DEFAULT);
         mAdapter.clear();
         hideLoading();
     }

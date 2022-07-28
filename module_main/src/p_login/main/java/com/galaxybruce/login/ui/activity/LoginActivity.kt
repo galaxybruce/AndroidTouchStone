@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.galaxybruce.base.manager.AppSessionManager
 import com.galaxybruce.base.ui.activity.AppBaseActivity
-import com.galaxybruce.component.router.RouterUrlBuilder
+import com.galaxybruce.component.router.AppRouterUrlBuilder
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.util.AppConstants
@@ -74,7 +74,7 @@ class LoginActivity : AppBaseActivity<LoginLayoutBinding>() {
                 if(routePath.isNullOrBlank()) {
                     finish()
                 } else {
-                    RouterUrlBuilder.instance(routePath).go(this)
+                    AppRouterUrlBuilder.instance(routePath).go(this)
                     finishAllActivity()
                 }
             }

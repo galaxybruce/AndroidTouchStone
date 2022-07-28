@@ -13,7 +13,7 @@ import java.util.List;
  * created by bruce.zhang
  */
 public abstract class AppBaseListViewAdapter<T> extends BaseAdapter
-        implements IListAdapter {
+        implements IAppListAdapter {
 
     protected Context mContext;
     protected LayoutInflater mInflater;

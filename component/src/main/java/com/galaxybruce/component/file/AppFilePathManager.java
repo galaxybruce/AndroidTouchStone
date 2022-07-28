@@ -106,7 +106,7 @@ public class AppFilePathManager {
      */
     private static String getFilePath(Context context, String type, String subBusinessFolderName, String suffix) {
         File dir = AppFilePathManager.getFileDir(context, type, subBusinessFolderName);
-        String path = dir.getAbsolutePath() + File.separator + FileUtils.createUniqueFileName(suffix);
+        String path = dir.getAbsolutePath() + File.separator + AppFileUtils.createUniqueFileName(suffix);
         return path;
     }
 
@@ -118,16 +118,16 @@ public class AppFilePathManager {
      * @return
      */
     public static File getFileDir(Context context, String type, String subBusinessFolderName) {
-        if(!FileUtils.hasSDCard()) {
+        if(!AppFileUtils.hasSDCard()) {
             return null;
         }
 
-        if(!FileUtils.hasExternalStoragePermission(context)) {
+        if(!AppFileUtils.hasExternalStoragePermission(context)) {
             return null;
         }
 
         //TODO 包名简化策略，可以考虑用配置的方式，从外面传进来
-        File dir = FileUtils.getExternalPublicDir(type);
+        File dir = AppFileUtils.getExternalPublicDir(type);
         String subFolderName = context.getPackageName();
         dir = new File(dir,  subFolderName);
         if(!TextUtils.isEmpty(subBusinessFolderName)) {
@@ -181,7 +181,7 @@ public class AppFilePathManager {
                                         String subFolderName, String suffix) {
         File dir = AppFilePathManager.getAppFileDir(context, businessFolderName, subFolderName);
 
-        String path = dir.getAbsolutePath() + File.separator + FileUtils.createUniqueFileName(suffix);
+        String path = dir.getAbsolutePath() + File.separator + AppFileUtils.createUniqueFileName(suffix);
         return path;
     }
 
@@ -194,9 +194,9 @@ public class AppFilePathManager {
      * @return
      */
     public static File getAppFileDir(Context context, String businessFolderName, String subFolderName) {
-        File dir = FileUtils.getExternalFilesDir(context);
+        File dir = AppFileUtils.getExternalFilesDir(context);
         if(dir == null) {
-            dir = FileUtils.getInternalFilesDir(context);
+            dir = AppFileUtils.getInternalFilesDir(context);
         }
 
         if(!TextUtils.isEmpty(businessFolderName)) {
@@ -225,7 +225,7 @@ public class AppFilePathManager {
                                              String subFolderName, String suffix) {
         File dir = AppFilePathManager.getAppCacheFileDir(context, businessFolderName, subFolderName);
 
-        String path = dir.getAbsolutePath() + File.separator + FileUtils.createUniqueFileName(suffix);
+        String path = dir.getAbsolutePath() + File.separator + AppFileUtils.createUniqueFileName(suffix);
         return path;
     }
 
@@ -238,9 +238,9 @@ public class AppFilePathManager {
      * @return
      */
     public static File getAppCacheFileDir(Context context, String businessFolderName, String subFolderName) {
-        File dir = FileUtils.getExternalCacheDir(context);
+        File dir = AppFileUtils.getExternalCacheDir(context);
         if(dir == null) {
-            dir = FileUtils.getInternalCacheDir(context);
+            dir = AppFileUtils.getInternalCacheDir(context);
         }
 
         if(!TextUtils.isEmpty(businessFolderName)) {
@@ -266,7 +266,7 @@ public class AppFilePathManager {
         if(parent == null) {
             throw new IllegalArgumentException("KWAppPathManager getFilePath parent is null");
         }
-        String path = parent.getAbsolutePath() + File.separator + FileUtils.createUniqueFileName(suffix);
+        String path = parent.getAbsolutePath() + File.separator + AppFileUtils.createUniqueFileName(suffix);
         return path;
     }
 

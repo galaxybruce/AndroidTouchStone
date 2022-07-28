@@ -1,7 +1,7 @@
 package com.galaxybruce.component.ui.view.recyclerview;
 
 import com.galaxybruce.component.net.model.AppBaseBean;
-import com.galaxybruce.component.ui.adapter.AdapterLoadDataState;
+import com.galaxybruce.component.ui.adapter.AppListAdapterLoadDataState;
 import com.galaxybruce.component.ui.adapter.AppRecyclerLoadMoreAdapter;
 import com.galaxybruce.component.ui.view.AppEmptyLayout;
 import com.galaxybruce.component.util.ToastUtils;
@@ -46,7 +46,7 @@ public class AppRecyclerViewExecuteListenerImpl<T> implements AppRecyclerViewExe
         }
         if (appRecyclerView.getCurrentPage() == appRecyclerView.getInitPage()
             // 强制加载更多时，currentPage是第一页，不能清理顶部数据
-            && adapter.getState() != AdapterLoadDataState.STATE_FORCE_LOAD_MORE) {
+            && adapter.getState() != AppListAdapterLoadDataState.STATE_FORCE_LOAD_MORE) {
             adapter.clear(false);
         }
 
@@ -59,18 +59,18 @@ public class AppRecyclerViewExecuteListenerImpl<T> implements AppRecyclerViewExe
         }
 
         if (appRecyclerView.getLoadMoreParams().needLoadMore()) {
-            int adapterState = AdapterLoadDataState.STATE_DEFAULT;
+            int adapterState = AppListAdapterLoadDataState.STATE_DEFAULT;
             if (adapter.getDataSize() == 0) {
-                adapterState = AdapterLoadDataState.STATE_EMPTY_ITEM;
+                adapterState = AppListAdapterLoadDataState.STATE_EMPTY_ITEM;
             } else if (data.size() < appRecyclerView.getPageSize()) {
-                adapterState = AdapterLoadDataState.STATE_NO_MORE;
+                adapterState = AppListAdapterLoadDataState.STATE_NO_MORE;
             } else {
-                adapterState = AdapterLoadDataState.STATE_LOAD_MORE;
+                adapterState = AppListAdapterLoadDataState.STATE_LOAD_MORE;
             }
             adapter.setState(adapterState);
         } else {
             // 不分页情况，也展示"没有更多了"提示
-            int adapterState = AdapterLoadDataState.STATE_NO_MORE;
+            int adapterState = AppListAdapterLoadDataState.STATE_NO_MORE;
             adapter.setState(adapterState);
         }
         adapter.notifyDataSetChanged();
@@ -98,7 +98,7 @@ public class AppRecyclerViewExecuteListenerImpl<T> implements AppRecyclerViewExe
             } else {
                 appRecyclerView.setCurrentPage(appRecyclerView.getCurrentPage() - 1);
                 emptyLayout.setErrorType(AppEmptyLayout.HIDE_LAYOUT);
-                appRecyclerView.getAppRecyclerLoadMoreAdapter().setState(AdapterLoadDataState.STATE_NETWORK_ERROR);
+                appRecyclerView.getAppRecyclerLoadMoreAdapter().setState(AppListAdapterLoadDataState.STATE_NETWORK_ERROR);
                 appRecyclerView.getAppRecyclerLoadMoreAdapter().notifyDataSetChanged();
             }
         }

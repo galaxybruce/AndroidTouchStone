@@ -3,7 +3,7 @@ package com.galaxybruce.component.ui.adapter;
 /**
  * Created by bruce.zhang on 2015/12/29.
  */
-public interface AdapterLoadDataState {
+public interface AppListAdapterLoadDataState {
 
     int STATE_DEFAULT = 0;
     int STATE_LOAD_MORE = 1;            //正在加载更多

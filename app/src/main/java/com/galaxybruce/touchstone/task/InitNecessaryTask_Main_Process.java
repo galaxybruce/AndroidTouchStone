@@ -6,10 +6,10 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.effective.android.anchors.Process;
 import com.effective.android.anchors.Task;
 import com.galaxybruce.base.manager.AppSessionManager;
-import com.galaxybruce.component.interal.AppInternal;
-import com.galaxybruce.component.interal.IAppInternal;
-import com.galaxybruce.component.interal.IAuthAccount;
-import com.galaxybruce.component.interal.IHttpRequestOptions;
+import com.galaxybruce.component.internal.AppInternal;
+import com.galaxybruce.component.internal.IAppInternal;
+import com.galaxybruce.component.internal.IAuthAccount;
+import com.galaxybruce.component.internal.IHttpRequestOptions;
 import com.galaxybruce.component.proguard.IProguardKeeper;
 import com.galaxybruce.touchstone.BuildConfig;
 

@@ -28,7 +28,7 @@
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-    <com.galaxybruce.component.ui.view.BackToTopView
+    <com.galaxybruce.component.ui.view.AppBackToTopView
         android:id="@+id/back_to_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
