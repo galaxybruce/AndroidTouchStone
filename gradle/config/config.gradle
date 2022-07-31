@@ -15,9 +15,9 @@
  * [Kotlin + buildSrc：更好的管理Gadle依赖](https://juejin.cn/post/6844903615346245646)
  */
 ext {
-    applicationId = 'com.mpaas.app.demo'
-    appName = 'mpass'
-    appCode = 'mpass'
+    applicationId = 'com.galaxybruce.touchstone'
+    appName = 'AndroidTouchStone'
+    appCode = 'appTouchStone'
     versionCode = 1
     versionName = '1.0.0'
 
