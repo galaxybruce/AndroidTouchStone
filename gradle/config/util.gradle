@@ -167,6 +167,9 @@ static findBusiModule(Project project, List<String> excludeDirs, Consumer<String
         if (!isModule(dir)) {
             return
         }
+        if(!project.rootProject.findProject(":${dir.name}")) {
+            return
+        }
         if(excludeDirs != null && excludeDirs.contains(dir.name)) {
             return
         }
