@@ -7,7 +7,7 @@ dependencies {
 
     // 自动查找项目根目录下的module并依赖
     rootProject.findBusiModule(project,
-            ['app']) { moduleName ->
+            [project.name]) { moduleName ->
 //        rootProject.ext.addModuleDependency(project, moduleName, 'implementation')
         implementation project(":$moduleName")
     }
