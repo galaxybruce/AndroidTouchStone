@@ -118,6 +118,7 @@ public abstract class AppBaseInputDialog<B extends ViewDataBinding> extends AppC
     protected int mInputType;
     protected int mMaxLength;
     protected int mMinLength;
+    private int mLines;
     protected double mMaxValue;
     protected double mMinValue;
 
@@ -185,11 +186,12 @@ public abstract class AppBaseInputDialog<B extends ViewDataBinding> extends AppC
         }
 
         /**
-         * 文本键盘
+         * 文本键盘，文本时可以允许多行
          * @return
          */
-        public T inputType4Text() {
+        public T inputType4Text(int lines) {
             bundle.putInt("inputType", 1);
+            bundle.putInt("lines", lines);
             return (T)this;
         }
 
@@ -225,6 +227,7 @@ public abstract class AppBaseInputDialog<B extends ViewDataBinding> extends AppC
             mInputType = arguments.getInt("inputType", 1);
             mMaxLength = arguments.getInt("maxLength", Integer.MAX_VALUE);
             mMinLength = arguments.getInt("minLength", 0);
+            mLines = arguments.getInt("lines", 1);
             mMaxValue = arguments.getDouble("maxValue", Double.MAX_VALUE);
             mMinValue = arguments.getDouble("minValue", Double.NEGATIVE_INFINITY);
             mInputHint = arguments.getString("inputHint");
@@ -246,8 +249,19 @@ public abstract class AppBaseInputDialog<B extends ViewDataBinding> extends AppC
         } else if (mInputType == 3) {
             mEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         } else {
-            mEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+            if(mLines > 1) {
+                mEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                // 必须设置成false，否则不会换行
+                mEditText.setSingleLine(false);
+                mEditText.setGravity(Gravity.START | Gravity.TOP);
+            } else {
+                mEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+                mEditText.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+            }
         }
+        // 必须放在setInputType后面，否则setMaxLines没有效果
+        mEditText.setLines(mLines);
+        mEditText.setMaxLines(mLines);
     }
 
     /**

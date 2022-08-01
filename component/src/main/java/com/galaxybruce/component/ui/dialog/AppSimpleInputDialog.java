@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
  *      .tag("")
  *      .title("哈哈哈")
  *      .inputType4Integer()
- *      .setCallback()
+ *      .setCallback(ISimpleInputDialogCallback)
  *      .build()
  *      .show(getSupportFragmentManager(), "AppSimpleInputDialog");
  *

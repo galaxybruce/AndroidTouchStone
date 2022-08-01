@@ -22,7 +22,6 @@
     <EditText android:id="@+id/et_content"
         android:layout_width="0pt"
         android:layout_height="wrap_content"
-        android:minHeight="80pt"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,10 +31,11 @@
         android:layout_marginEnd="40pt"
         android:paddingStart="20pt"
         android:paddingEnd="20pt"
+        android:paddingTop="15pt"
+        android:paddingBottom="15pt"
         android:gravity="start|center_vertical"
         android:textSize="36pt"
         android:textColor="@color/theme_text_color_1"
-        android:maxLines="1"
         tools:text="20"
         />
 
