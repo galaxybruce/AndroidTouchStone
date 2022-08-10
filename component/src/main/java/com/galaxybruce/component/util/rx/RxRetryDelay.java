@@ -18,8 +18,6 @@ import io.reactivex.schedulers.Schedulers;
  * .retryWhen(new RxRetryDelay(3, 1000))
  * .subscribe(...)
  *
- *
- *
  * <p>
  * modification history:
  */
