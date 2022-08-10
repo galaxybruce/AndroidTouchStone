@@ -11,5 +11,8 @@ dependencies {
 //        rootProject.ext.addModuleDependency(project, moduleName, 'implementation')
         implementation project(":$moduleName")
     }
+
+    implementation "com.bytedance.tools.codelocator:codelocator-core:2.0.0"
+
 }
 
