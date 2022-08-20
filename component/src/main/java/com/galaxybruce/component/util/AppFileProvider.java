@@ -11,8 +11,5 @@ import androidx.core.content.FileProvider;
  */
 public class AppFileProvider extends FileProvider {
 
-    @Override
-    public boolean onCreate() {
-        return true;
-    }
+   public static final String PROVIDER = ".galaxybruce.provider";
 }

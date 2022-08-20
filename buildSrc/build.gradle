@@ -1,12 +1,23 @@
-//repositories {
-//    maven {
-//        url = 'http://10.250.14.9:8083/repository/maven-public'
-//        allowInsecureProtocol = true
-//    }
-//}
+apply {
+    plugin 'groovy'
+    plugin 'java-gradle-plugin'
+}
+
 apply from: '../gradle/config/config.gradle'
 addRepos(repositories)
 
 dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation "commons-io:commons-io:2.6"
+
 //    compileOnly 'com.galaxybruce.android:pioneer-gradle-plugin:0.0.42'
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs += 'src/main/java'
+        }
+    }
 }

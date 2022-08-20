@@ -12,7 +12,7 @@ dependencies {
         implementation project(":$moduleName")
     }
 
-    implementation "com.bytedance.tools.codelocator:codelocator-core:2.0.0"
+//    implementation "com.bytedance.tools.codelocator:codelocator-core:2.0.0"
 
 }
 

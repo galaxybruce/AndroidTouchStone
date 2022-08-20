@@ -1,10 +1,20 @@
 package com.galaxybruce.component.file;
 
+import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.blankj.utilcode.util.AppUtils;
+import com.galaxybruce.component.util.AppActivityResultUtil;
+import com.galaxybruce.component.util.AppFileProvider;
+
 import java.io.File;
+
+import androidx.annotation.NonNull;
+import kotlin.jvm.functions.Function2;
 
 /**
  * Date: 2017/10/27 16:06
@@ -45,15 +55,13 @@ public class AppFilePathManager {
     public static final String BUSINESS_VIDEO_FOLDER = "video";
     public static final String BUSINESS_MUSIC_FOLDER = "music";
 
-    public static String getPictureFilePath(Context context, String suffix) {
-        return AppFilePathManager.getPictureFilePath(context, null, suffix);
-    }
-
     /**
      * 获取app独立的图片路径，app卸载了，图片依然存在 sdcard/Pictures
      * @param suffix 文件后缀名，如.jpg  .gif; 默认值.jpg
      * @return
+     * @deprecated 使用 {@link #getSaveFilePath}
      */
+    @Deprecated
     public static String getPictureFilePath(Context context, String subBusinessFolderName, String suffix) {
         if(TextUtils.isEmpty(suffix)) {
             suffix = ".jpg";
@@ -62,15 +70,13 @@ public class AppFilePathManager {
         return AppFilePathManager.getFilePath(context, Environment.DIRECTORY_PICTURES, subBusinessFolderName, suffix);
     }
 
-    public static String getVideoFilePath(Context context, String suffix) {
-        return AppFilePathManager.getVideoFilePath(context, null, suffix);
-    }
-
     /**
      * 获取app独立的视频路径，app卸载了，视频依然存在 sdcard/Movies
      *  @param suffix 文件后缀名，如.mp4  .flv; 默认值.mp4
      * @return
+     * @deprecated 使用 {@link #getSaveFilePath}
      */
+    @Deprecated
     public static String getVideoFilePath(Context context, String subBusinessFolderName, String suffix) {
         if(TextUtils.isEmpty(suffix)) {
             suffix = ".mp4";
@@ -79,15 +85,13 @@ public class AppFilePathManager {
         return AppFilePathManager.getFilePath(context, Environment.DIRECTORY_MOVIES, subBusinessFolderName, suffix);
     }
 
-    public static String getMusicFilePath(Context context, String suffix) {
-        return AppFilePathManager.getMusicFilePath(context, null, suffix);
-    }
-
     /**
      * 获取app独立的音频路径，app卸载了，音乐依然存在 sdcard/Music
      * @param suffix 文件后缀名，如.mp3 ; 默认值.mp3
      * @return
+     * @deprecated 使用 {@link #getSaveFilePath}
      */
+    @Deprecated
     public static String getMusicFilePath(Context context, String subBusinessFolderName, String suffix) {
         if(TextUtils.isEmpty(suffix)) {
             suffix = ".mp3";
@@ -103,7 +107,9 @@ public class AppFilePathManager {
      * @param subBusinessFolderName 子业务文件夹
      * @param suffix    文件后缀名如.mp3
      * @return
+     * @deprecated 使用 {@link #getSaveFilePath}
      */
+    @Deprecated
     private static String getFilePath(Context context, String type, String subBusinessFolderName, String suffix) {
         File dir = AppFilePathManager.getFileDir(context, type, subBusinessFolderName);
         String path = dir.getAbsolutePath() + File.separator + AppFileUtils.createUniqueFileName(suffix);
@@ -116,7 +122,9 @@ public class AppFilePathManager {
      * @param type      Environment类中的常量，如Environment.DIRECTORY_PICTURES等，不能自己随便写
      * @param subBusinessFolderName 子业务文件夹
      * @return
+     * @deprecated 使用 {@link #getSaveFilePath}
      */
+    @Deprecated
     public static File getFileDir(Context context, String type, String subBusinessFolderName) {
         if(!AppFileUtils.hasSDCard()) {
             return null;
@@ -180,9 +188,7 @@ public class AppFilePathManager {
     public static String getAppFilePath(Context context, String businessFolderName,
                                         String subFolderName, String suffix) {
         File dir = AppFilePathManager.getAppFileDir(context, businessFolderName, subFolderName);
-
-        String path = dir.getAbsolutePath() + File.separator + AppFileUtils.createUniqueFileName(suffix);
-        return path;
+        return dir.getAbsolutePath() + File.separator + AppFileUtils.createUniqueFileName(suffix);
     }
 
     /**
@@ -224,9 +230,7 @@ public class AppFilePathManager {
     public static String getAppCacheFilePath(Context context, String businessFolderName,
                                              String subFolderName, String suffix) {
         File dir = AppFilePathManager.getAppCacheFileDir(context, businessFolderName, subFolderName);
-
-        String path = dir.getAbsolutePath() + File.separator + AppFileUtils.createUniqueFileName(suffix);
-        return path;
+        return dir.getAbsolutePath() + File.separator + AppFileUtils.createUniqueFileName(suffix);
     }
 
     /**
@@ -266,8 +270,47 @@ public class AppFilePathManager {
         if(parent == null) {
             throw new IllegalArgumentException("KWAppPathManager getFilePath parent is null");
         }
-        String path = parent.getAbsolutePath() + File.separator + AppFileUtils.createUniqueFileName(suffix);
-        return path;
+        return parent.getAbsolutePath() + File.separator + AppFileUtils.createUniqueFileName(suffix);
     }
 
+    /**
+     * 获取文件保存在sdcard上路径Uri，获取到文件的Uri后，可以查询文件相关信息，并且可以向文件写数据
+     * AndroidSdkVersion < 10 => /sdcard/Download/
+     * AndroidSdkVersion >= 10 => SAF选择目录
+     *
+     * 注意：使用之前必须申请sdcard读写权限
+     *
+     * @param activity
+     * @param fileName
+     * @param filePathCallback
+     */
+    public static void getSaveFilePath(Activity activity, String fileName,
+                                       @NonNull Function2<Uri, Boolean, Void> filePathCallback) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            AppActivityResultUtil.createDocument(activity, fileName,
+                    new AppActivityResultUtil.AppActivityResultCallback<Uri>() {
+                        @Override
+                        public void onActivityResult(Uri result) {
+                            filePathCallback.invoke(result, true);
+                        }
+                    });
+        } else {
+            File fileDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            fileDir = new File(fileDir, AppUtils.getAppName());
+            if(!fileDir.exists()) {
+                fileDir.mkdirs();
+            }
+            String filePath = fileDir.getAbsolutePath() + File.separator + fileName;
+
+            Uri uriForFile = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                uriForFile = AppFileProvider.getUriForFile(activity,
+                        activity.getPackageName() + AppFileProvider.PROVIDER,
+                        new File(filePath));
+            } else {
+                uriForFile = Uri.fromFile(new File(filePath));
+            }
+            filePathCallback.invoke(uriForFile, false);
+        }
+    }
 }

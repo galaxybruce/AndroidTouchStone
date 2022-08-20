@@ -127,7 +127,7 @@ ext {
 
             javassist                   : "org.javassist:javassist:3.24.0-GA",
             commons_io                  : "commons-io:commons-io:2.5",
-            androidUtilCode             : "com.blankj:utilcode:1.30.0",
+            androidUtilCode             : "com.blankj:utilcodex:1.31.0",
 
             anchors                     : "com.galaxybruce.android:anchors:1.1.4",
             arouter_api                 : "com.alibaba:arouter-api:$arouter_version",
