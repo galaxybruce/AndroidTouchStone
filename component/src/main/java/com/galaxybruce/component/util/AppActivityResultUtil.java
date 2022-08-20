@@ -159,27 +159,6 @@ public class AppActivityResultUtil {
       });
    }
 
-   public static void openCamera(Activity activity,
-                                     String fileName,
-                                     @NonNull final AppActivityResultCallback<Uri> callback) {
-      UtilsTransActivity.start(activity, new CallbackActivityImpl() {
-         @Override
-         public void onCreated(@NonNull UtilsTransActivity activity, @Nullable Bundle savedInstanceState) {
-            ActivityResultLauncher<String> launcher =
-                    activity.registerForActivityResult(
-                            new ActivityResultContracts.CreateDocument(),
-                            new AppActivityResultCallbackWrapper<Uri>(callback) {
-                               @Override
-                               public void onActivityResult(Uri result) {
-                                  activity.finish();
-                                  super.onActivityResult(result);
-                               }
-                            });
-            launcher.launch(fileName);
-         }
-      });
-   }
-
    /**
     * 自定义继承ActivityResultCallback主要是为了实现Serializable，
     * 因为UtilsTransActivity中传递的CallbackActivityImpl是Serializable，
