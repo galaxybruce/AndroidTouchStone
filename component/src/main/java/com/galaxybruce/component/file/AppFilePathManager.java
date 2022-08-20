@@ -301,15 +301,7 @@ public class AppFilePathManager {
                 fileDir.mkdirs();
             }
             String filePath = fileDir.getAbsolutePath() + File.separator + fileName;
-
-            Uri uriForFile = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                uriForFile = AppFileProvider.getUriForFile(activity,
-                        activity.getPackageName() + AppFileProvider.PROVIDER,
-                        new File(filePath));
-            } else {
-                uriForFile = Uri.fromFile(new File(filePath));
-            }
+            Uri uriForFile = AppFileProvider.getUriForFile(activity, new File(filePath));
             filePathCallback.invoke(uriForFile, false);
         }
     }
