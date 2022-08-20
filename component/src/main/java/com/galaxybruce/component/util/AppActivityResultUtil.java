@@ -39,7 +39,9 @@ import androidx.annotation.Nullable;
 public class AppActivityResultUtil {
 
    /**
-    * 打开 activity 通用回调方法
+    * 打开 activity 通用回调方法，适用场景：
+    * 1. 由调用方自定义打开activity的Intent
+    * 2. 返回值是 {@link ActivityResult}，调用方从中Intent中解析数据
     *
     * AppActivityCallbackUtil.openActivity(mActivity,
     *     object: AppActivityCallbackUtil.AppActivityResultCallbackWithIntent {
@@ -62,19 +64,19 @@ public class AppActivityResultUtil {
                                              @NonNull final AppActivityResultCallbackWithIntent callback) {
       UtilsTransActivity.start(activity, new CallbackActivityImpl() {
          @Override
-         public void onCreated(@NonNull UtilsTransActivity activity, @Nullable Bundle savedInstanceState) {
-            super.onCreated(activity, savedInstanceState);
+         public void onCreated(@NonNull UtilsTransActivity transActivity, @Nullable Bundle savedInstanceState) {
+            super.onCreated(transActivity, savedInstanceState);
             ActivityResultLauncher<Intent> launcher =
-                    activity.registerForActivityResult(
+                    transActivity.registerForActivityResult(
                               new ActivityResultContracts.StartActivityForResult(),
                               new ActivityResultCallback<ActivityResult>() {
                                     @Override
                                     public void onActivityResult(ActivityResult result) {
-                                       activity.finish();
+                                       transActivity.finish();
                                        callback.onActivityResult(result);
                                     }
                              });
-            Intent intent = callback.createIntent(activity);
+            Intent intent = callback.createIntent(transActivity);
             launcher.launch(intent);
          }
       });
@@ -103,15 +105,15 @@ public class AppActivityResultUtil {
                                     @NonNull final AppActivityResultCallback<Uri> callback) {
       UtilsTransActivity.start(activity, new CallbackActivityImpl() {
          @Override
-         public void onCreated(@NonNull UtilsTransActivity activity, @Nullable Bundle savedInstanceState) {
-            super.onCreated(activity, savedInstanceState);
+         public void onCreated(@NonNull UtilsTransActivity transActivity, @Nullable Bundle savedInstanceState) {
+            super.onCreated(transActivity, savedInstanceState);
             ActivityResultLauncher<String[]> launcher =
-                    activity.registerForActivityResult(
+                    transActivity.registerForActivityResult(
                             new ActivityResultContracts.OpenDocument(),
                             new AppActivityResultCallbackWrapper<Uri>(callback) {
                                @Override
                                public void onActivityResult(Uri result) {
-                                  activity.finish();
+                                  transActivity.finish();
                                   super.onActivityResult(result);
                                }
                             });
@@ -143,14 +145,14 @@ public class AppActivityResultUtil {
                                    @NonNull final AppActivityResultCallback<Uri> callback) {
       UtilsTransActivity.start(activity, new CallbackActivityImpl() {
          @Override
-         public void onCreated(@NonNull UtilsTransActivity activity, @Nullable Bundle savedInstanceState) {
+         public void onCreated(@NonNull UtilsTransActivity transActivity, @Nullable Bundle savedInstanceState) {
             ActivityResultLauncher<String> launcher =
-                    activity.registerForActivityResult(
+                    transActivity.registerForActivityResult(
                             new ActivityResultContracts.CreateDocument(),
                             new AppActivityResultCallbackWrapper<Uri>(callback) {
                                @Override
                                public void onActivityResult(Uri result) {
-                                  activity.finish();
+                                  transActivity.finish();
                                   super.onActivityResult(result);
                                }
                             });
