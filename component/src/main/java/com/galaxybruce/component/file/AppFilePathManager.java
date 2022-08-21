@@ -13,6 +13,7 @@ import com.galaxybruce.component.util.AppFileProvider;
 
 import java.io.File;
 
+import androidx.activity.result.ActivityResultCallback;
 import androidx.annotation.NonNull;
 import kotlin.jvm.functions.Function2;
 
@@ -288,7 +289,7 @@ public class AppFilePathManager {
                                        @NonNull Function2<Uri, Boolean, Void> filePathCallback) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             AppActivityResultUtil.createDocument(activity, fileName,
-                    new AppActivityResultUtil.AppActivityResultCallback<Uri>() {
+                    new ActivityResultCallback<Uri>() {
                         @Override
                         public void onActivityResult(Uri result) {
                             filePathCallback.invoke(result, true);

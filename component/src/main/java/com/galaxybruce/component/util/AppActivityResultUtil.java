@@ -6,13 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-import com.blankj.utilcode.util.UtilsTransActivity;
-
 import java.io.Serializable;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,8 +42,9 @@ public class AppActivityResultUtil {
     * 1. 由调用方自定义打开activity的Intent
     * 2. 返回值是 {@link ActivityResult}，调用方从中Intent中解析数据
     *
-    * AppActivityCallbackUtil.openActivity(mActivity,
-    *     object: AppActivityCallbackUtil.AppActivityResultCallbackWithIntent {
+    * 使用方式：
+    * AppActivityResultUtil.openActivity(mActivity,
+    *     object: AppActivityResultUtil.AppActivityResultCallbackInputIntent {
     *     override fun onActivityResult(result: ActivityResult?) {
     *         result?.let {
     *             AppLogUtils.i("uri: " + result.toString())
@@ -58,26 +58,60 @@ public class AppActivityResultUtil {
     * })
     *
     * @param activity
-    * @param callback {@link AppActivityResultCallbackWithIntent}
+    * @param callback {@link AppActivityResultCallbackInputIntent}
     */
    public static void openActivity(Activity activity,
-                                             @NonNull final AppActivityResultCallbackWithIntent callback) {
-      UtilsTransActivity.start(activity, new CallbackActivityImpl() {
+                                   @NonNull final AppActivityResultCallbackInputIntent callback) {
+      AppUtilsTransActivity.start(activity, new CallbackActivityImpl() {
          @Override
-         public void onCreated(@NonNull UtilsTransActivity transActivity, @Nullable Bundle savedInstanceState) {
-            super.onCreated(transActivity, savedInstanceState);
+         public void onCreated(@NonNull AppUtilsTransActivity activity, @Nullable Bundle savedInstanceState) {
+            super.onCreated(activity, savedInstanceState);
             ActivityResultLauncher<Intent> launcher =
-                    transActivity.registerForActivityResult(
-                              new ActivityResultContracts.StartActivityForResult(),
-                              new ActivityResultCallback<ActivityResult>() {
-                                    @Override
-                                    public void onActivityResult(ActivityResult result) {
-                                       transActivity.finish();
-                                       callback.onActivityResult(result);
-                                    }
-                             });
-            Intent intent = callback.createIntent(transActivity);
+                    activity.registerForActivityResult(
+                            new ActivityResultContracts.StartActivityForResult(),
+                            new ActivityResultCallback<ActivityResult>() {
+                               @Override
+                               public void onActivityResult(ActivityResult result) {
+                                  activity.finish();
+                                  callback.onActivityResult(result);
+                               }
+                            });
+            Intent intent = callback.createIntent(activity);
             launcher.launch(intent);
+         }
+      });
+   }
+
+   /**
+    * 打开 activity 通用回调方法，适用场景：
+    * 1. ActivityResultContract由调用方传入（一般是系统预定义的：new ActivityResultContracts.xxx()）
+    * 2. 返回值由泛型决定
+    *
+    * @param activity
+    * @param input
+    * @param activityResultContract
+    * @param activityResultCallback
+    * @param <I>
+    * @param <O>
+    */
+   public static <I, O> void openActivity(Activity activity, I input,
+                                          @NonNull final ActivityResultContract<I, O> activityResultContract,
+                                          @NonNull final ActivityResultCallback<O> activityResultCallback) {
+      AppUtilsTransActivity.start(activity, new CallbackActivityImpl() {
+         @Override
+         public void onCreated(@NonNull AppUtilsTransActivity transActivity, @Nullable Bundle savedInstanceState) {
+            super.onCreated(transActivity, savedInstanceState);
+            ActivityResultLauncher<I> launcher =
+                    transActivity.registerForActivityResult(
+                            activityResultContract,
+                            new AppActivityResultCallbackWrapper<O>(activityResultCallback) {
+                               @Override
+                               public void onActivityResult(O result) {
+                                  transActivity.finish();
+                                  super.onActivityResult(result);
+                               }
+                            });
+            launcher.launch(input);
          }
       });
    }
@@ -85,6 +119,12 @@ public class AppActivityResultUtil {
    /**
     * 通过SAF打开文件
     * [从共享存储空间访问文档和其他文件](https://developer.android.com/training/data-storage/shared/documents-files?hl=zh-cn#create-file)
+    * 使用方式：
+    * AppActivityResultUtil.openDocument(mActivity, arrayOf("application/pdf")) { uri ->
+    *     uri?.let {
+    *         AppLogUtils.i("uri: " + uri.toString())
+    *     }
+    * }
     *
     * 获取到文件的Uri后，可以查询文件相关信息，并且可以读取文件内容
     * if (uri != null) {
@@ -101,39 +141,28 @@ public class AppActivityResultUtil {
     * @param callback
     */
    public static void openDocument(Activity activity,
-                                    String[] mineTypes,
-                                    @NonNull final AppActivityResultCallback<Uri> callback) {
-      UtilsTransActivity.start(activity, new CallbackActivityImpl() {
-         @Override
-         public void onCreated(@NonNull UtilsTransActivity transActivity, @Nullable Bundle savedInstanceState) {
-            super.onCreated(transActivity, savedInstanceState);
-            ActivityResultLauncher<String[]> launcher =
-                    transActivity.registerForActivityResult(
-                            new ActivityResultContracts.OpenDocument(),
-                            new AppActivityResultCallbackWrapper<Uri>(callback) {
-                               @Override
-                               public void onActivityResult(Uri result) {
-                                  transActivity.finish();
-                                  super.onActivityResult(result);
-                               }
-                            });
-            launcher.launch(mineTypes);
-         }
-      });
+                                   String[] mineTypes,
+                                   @NonNull final ActivityResultCallback<Uri> callback) {
+      openActivity(activity, mineTypes, new ActivityResultContracts.OpenDocument(), callback);
    }
 
    /**
     * 通过SAF在sdcard上创建文件
     * [从共享存储空间访问文档和其他文件](https://developer.android.com/training/data-storage/shared/documents-files?hl=zh-cn#create-file)
     *
-    * 获取到文件的Uri后，可以根据Uri查询文件相关信息，并且可以向文件写数据
-    * if (uri != null) {
-    *   Cursor cursor = getContentResolver().query(uri, new String[]{OpenableColumns.DISPLAY_NAME}, null, null, null);
-    *   if (cursor.moveToFirst()) {
-    *     String name = cursor.getString(cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME));
-    *     toast(name);
-    *   }
-    *   cursor.close();
+    * 使用方式
+    * AppActivityResultUtil.createDocument(mActivity, "test.pdf") { uri ->
+    *    // 获取到文件的Uri后，可以根据Uri查询文件相关信息，并且可以向文件写数据
+    *     uri?.let {
+    *         AppLogUtils.i("uri: " + uri.toString())
+    *         val cursor: Cursor? = mActivity.contentResolver.query(uri,
+    *             null, null, null, null);
+    *         if (cursor?.moveToFirst() == true) {
+    *             val name: String = cursor?.getString(cursor.getColumnIndexOrThrow(
+    *                 OpenableColumns.DISPLAY_NAME))
+    *         }
+    *         cursor?.close();
+    *     }
     * }
     *
     * @param activity
@@ -141,37 +170,12 @@ public class AppActivityResultUtil {
     * @param callback
     */
    public static void createDocument(Activity activity,
-                                   String fileName,
-                                   @NonNull final AppActivityResultCallback<Uri> callback) {
-      UtilsTransActivity.start(activity, new CallbackActivityImpl() {
-         @Override
-         public void onCreated(@NonNull UtilsTransActivity transActivity, @Nullable Bundle savedInstanceState) {
-            ActivityResultLauncher<String> launcher =
-                    transActivity.registerForActivityResult(
-                            new ActivityResultContracts.CreateDocument(),
-                            new AppActivityResultCallbackWrapper<Uri>(callback) {
-                               @Override
-                               public void onActivityResult(Uri result) {
-                                  transActivity.finish();
-                                  super.onActivityResult(result);
-                               }
-                            });
-            launcher.launch(fileName);
-         }
-      });
+                                     String fileName,
+                                     @NonNull final ActivityResultCallback<Uri> callback) {
+      openActivity(activity, fileName, new ActivityResultContracts.CreateDocument(), callback);
    }
 
-   /**
-    * 自定义继承ActivityResultCallback主要是为了实现Serializable，
-    * 因为UtilsTransActivity中传递的CallbackActivityImpl是Serializable，
-    * 要求内部包含的对象也要实现Serializable
-    * @param <O>
-    */
-   public interface AppActivityResultCallback<O> extends ActivityResultCallback<O>, Serializable {
-
-   }
-
-   public static class AppActivityResultCallbackWrapper<O> implements AppActivityResultCallback<O>, Serializable {
+   public static class AppActivityResultCallbackWrapper<O> implements ActivityResultCallback<O>, Serializable {
       private final ActivityResultCallback<O> activityResultCallback;
 
       AppActivityResultCallbackWrapper(ActivityResultCallback<O> activityResultCallback) {
@@ -185,22 +189,24 @@ public class AppActivityResultUtil {
    }
 
    /**
-    * 可自定义打开页面的Intent
-    * 是 {@link #openActivity(Activity, AppActivityResultCallbackWithIntent)} 的参数
+    * 自定义打开页面的Intent
+    * 是 {@link #openActivity(Activity, AppActivityResultCallbackInputIntent)} 方法的参数
     */
-   public interface AppActivityResultCallbackWithIntent extends AppActivityResultCallback<ActivityResult> {
+   public interface AppActivityResultCallbackInputIntent extends ActivityResultCallback<ActivityResult> {
+
       @NonNull Intent createIntent(@NonNull Activity activity);
+
    }
 
-   private static class CallbackActivityImpl extends UtilsTransActivity.TransActivityDelegate {
+   private static class CallbackActivityImpl extends AppUtilsTransActivity.TransActivityDelegate {
       @Override
-      public boolean dispatchTouchEvent(@NonNull UtilsTransActivity activity, MotionEvent ev) {
+      public boolean dispatchTouchEvent(@NonNull AppUtilsTransActivity activity, MotionEvent ev) {
          activity.finish();
          return true;
       }
 
       @Override
-      public void onActivityResult(@NonNull UtilsTransActivity activity, int requestCode, int resultCode, Intent data) {
+      public void onActivityResult(@NonNull AppUtilsTransActivity activity, int requestCode, int resultCode, Intent data) {
          // 这里不能finish,否则AppActivityResultCallback不会执行
 //         activity.finish();
       }

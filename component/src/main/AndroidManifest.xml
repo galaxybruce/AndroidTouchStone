@@ -36,6 +36,15 @@
             android:name="com.galaxybruce.component.app.crash.ExceptionActivity"
             android:theme="@style/Theme_Window_Transparent"
             android:configChanges="orientation|navigation|keyboardHidden|keyboard" />
+
+        <activity
+            android:name="com.galaxybruce.component.util.AppUtilsTransActivity"
+            android:exported="false"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:multiprocess="true"
+            android:theme="@style/ActivityTranslucent"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+
     </application>
 
 </manifest>
