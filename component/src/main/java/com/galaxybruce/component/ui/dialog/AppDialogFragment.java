@@ -2,6 +2,7 @@ package com.galaxybruce.component.ui.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -12,6 +13,7 @@ import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AdaptScreenUtils;
 import com.galaxybruce.component.ui.IUiInit;
 
@@ -20,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -39,17 +42,27 @@ import androidx.fragment.app.FragmentTransaction;
  * modification history:
  */
 public abstract class AppDialogFragment extends DialogFragment implements IUiInit {
-    
+
+    public void show(Context context, String tag) {
+        Activity activity = ActivityUtils.getActivityByContext(context);
+        if (!(activity instanceof FragmentActivity)) {
+            return;
+        }
+        FragmentManager fm = ((FragmentActivity)activity).getSupportFragmentManager();
+        Fragment prev = fm.findFragmentByTag(tag);
+        if (prev != null) {
+            fm.beginTransaction().remove(prev);
+        }
+        show(fm, tag);
+    }
+
     @Override
-    public void show(FragmentManager manager, String tag) {
+    public void show(@NonNull FragmentManager manager, String tag) {
         try {
             // add by bruce.zhang  在每个add事务前增加一个remove事务，防止连续的add
             manager.beginTransaction().remove(this).commitAllowingStateLoss();
             super.show(manager, tag);
         } catch (Exception e) {
-            if (manager == null) {
-                return;
-            }
             FragmentTransaction ft = manager.beginTransaction();
             ft.add(this, tag);
             ft.commitAllowingStateLoss();

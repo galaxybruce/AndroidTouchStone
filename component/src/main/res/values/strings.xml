@@ -8,6 +8,7 @@
     <string name="loading">数据载入中，请稍候</string>
 
     <!-- 确定取消 -->
+    <string name="dialog_text_alert_title">注意</string>
     <string name="dialog_text_cancel">取消</string>
     <string name="dialog_text_confirm">确认</string>
 
@@ -16,5 +17,10 @@
     <string name="app_error_view_loading">加载中…</string>
     <string name="app_error_view_load_error_click_to_refresh">内容加载失败\n点击重新加载</string>
     <string name="app_error_view_network_error_click_to_refresh">好像没有网络</string>
+
+    <string name="permission_rationale_message">您已拒绝我们授权申请，请同意授权，否则无法正常使用该功能！</string>
+    <string name="permission_explain_message">我们需要%s的权限来测试权限的用途。</string>
+    <string name="permission_denied_forever_message">我们需要您拒绝或系统申请失败的部分权限，请手动去设置页面授权，否则无法正常使用该功能！</string>
+    <string name="permission_denied_list">拒绝的权限:&#160;%s</string>
 
 </resources>
