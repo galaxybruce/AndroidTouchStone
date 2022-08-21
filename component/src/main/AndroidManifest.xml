@@ -27,7 +27,7 @@
         </provider>
 
         <provider
-            android:name=".util.crosssp.KWCrossProcessSPContentProvider"
+            android:name=".util.crosssp.AppProcessSPProvider"
             android:authorities="${applicationId}.sphelper"
             android:exported="false"
             android:initOrder="1000000" />

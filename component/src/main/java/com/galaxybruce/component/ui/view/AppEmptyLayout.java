@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -13,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.NetworkUtils;
 import com.galaxybruce.component.R;
-import com.galaxybruce.component.util.NetworkUtil;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -104,7 +103,7 @@ public class AppEmptyLayout extends FrameLayout {
 
         switch (state) {
             case NETWORK_ERROR:
-                if (NetworkUtil.hasInternet(getContext())) {
+                if (NetworkUtils.isConnected()) {
                     tvMsg.setText(R.string.app_error_view_load_error_click_to_refresh);
                 } else {
                     tvMsg.setText(R.string.app_error_view_network_error_click_to_refresh);

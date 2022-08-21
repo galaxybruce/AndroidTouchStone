@@ -9,7 +9,7 @@ import android.text.TextUtils
 import com.blankj.utilcode.util.ProcessUtils
 import com.galaxybruce.component.app.BaseApplication
 import com.galaxybruce.component.ui.activity.BaseActivity
-import com.galaxybruce.component.util.crosssp.KWCrossProcessSPHelper
+import com.galaxybruce.component.util.crosssp.AppProcessSPHelper
 import kotlin.system.exitProcess
 
 /**
@@ -46,7 +46,7 @@ object PrivacyUtil {
      */
     fun checkPrivacyPolicy(application: Application, privacyPolicyActivity: Class<*>): Boolean {
         // 如果没有同意过隐私政策，则启动隐私政策进程，其他进程等待用户操作
-        if (KWCrossProcessSPHelper.getInt(application, PRIVACY_STATUS_KEY, 0) == 0) {
+        if (AppProcessSPHelper.getInt(application, PRIVACY_STATUS_KEY, 0) == 0) {
             val currentProcess = ProcessUtils.getCurrentProcessName()
             if (TextUtils.equals(currentProcess, "${application.packageName}:privacyProcess")) {
                 // 当前进程是隐私政策进程，直接返回，不执行任何初始化
@@ -60,11 +60,11 @@ object PrivacyUtil {
 
                 // 当前进程不是隐私政策进程，都得等待用户同意进程才能继续执行
                 while (true) {
-                    val privacyAgreed = KWCrossProcessSPHelper.getInt(application, PRIVACY_STATUS_KEY, 0)
+                    val privacyAgreed = AppProcessSPHelper.getInt(application, PRIVACY_STATUS_KEY, 0)
                     if (privacyAgreed == 1) { // 用户同意
                         break
                     } else if (privacyAgreed == 2) { // 用户拒绝
-                        KWCrossProcessSPHelper.save(application, PRIVACY_STATUS_KEY, 0)
+                        AppProcessSPHelper.save(application, PRIVACY_STATUS_KEY, 0)
                         // 这段代码在鸿蒙系统上有问题，已经移到SplashActivity.onCreate中
 //                        registerActivityLifecycleCallbacks(object : KWSimpleActivityLifecycle() {
 //                            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle) {
@@ -93,7 +93,7 @@ object PrivacyUtil {
      */
     fun checkPrivacyInLaunchActivity(activity: BaseActivity): Boolean {
         // 没有同意隐私政策时，杀死进程
-        if (KWCrossProcessSPHelper.getInt(activity, PRIVACY_STATUS_KEY, 0) != 1) {
+        if (AppProcessSPHelper.getInt(activity, PRIVACY_STATUS_KEY, 0) != 1) {
             // 先回到桌面，在杀进程，因为不回到桌面，某些机型可能出现黑屏的情况
             val homeIntent = Intent(Intent.ACTION_MAIN)
             homeIntent.addCategory(Intent.CATEGORY_HOME)
