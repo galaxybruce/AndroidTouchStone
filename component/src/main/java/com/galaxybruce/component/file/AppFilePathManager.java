@@ -15,6 +15,7 @@ import java.io.File;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.annotation.NonNull;
+import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
 
 /**
@@ -281,12 +282,20 @@ public class AppFilePathManager {
      *
      * 注意：使用之前必须申请sdcard读写权限
      *
+     * 使用方式：
+     * AppFilePathManager.getSaveFilePath(mActivity, "test.xml",
+     *     object: Function2<Uri, Boolean, Unit> {
+     *         override fun invoke(p1: Uri, p2: Boolean) {
+     *             AppLogUtils.i("uri: $p1 - $p2")
+     *         }
+     *     })
+     *
      * @param activity
      * @param fileName
      * @param filePathCallback
      */
     public static void getSaveFilePath(Activity activity, String fileName,
-                                       @NonNull Function2<Uri, Boolean, Void> filePathCallback) {
+                                       @NonNull Function2<Uri, Boolean, Unit> filePathCallback) {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             AppActivityResultUtil.createDocument(activity, fileName,
                     new ActivityResultCallback<Uri>() {
