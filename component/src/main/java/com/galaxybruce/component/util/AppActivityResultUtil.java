@@ -2,10 +2,16 @@ package com.galaxybruce.component.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
+import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.PermissionUtils;
+import com.galaxybruce.component.util.helper.AppPermissionHelper;
+
+import java.io.File;
 import java.io.Serializable;
 
 import androidx.activity.result.ActivityResult;
@@ -23,10 +29,14 @@ import androidx.annotation.Nullable;
  *
  * {@link Activity#startActivityForResult}的简洁写法
  *
- * 1. {@link #openActivity}方法可以通过自定义Intent打开任何页面
+ * 1.  打开 activity 通用回调方法
+ *    1.1 {@link #openActivity(Activity, AppActivityResultCallbackInputIntent)} 方法可以通过自定义Intent打开任何页面
+ *    1.2 {@link AppActivityResultUtil#openActivity}方法可以通过自定义Intent打开任何页面
  * 2. 其他方法是封装的具体场景，比如打开SAF，打开相机、打开相册等
- * 2.1 SAF打开文档：openDocument
- * 2.2 SAF创建文档：createDocument
+ *    2.1 SAF打开文档：openDocument
+ *    2.2 SAF创建文档：createDocument
+ *    2.3 拍照：takePicture
+ *    2.4 录制视频: takeVideo
  *
  * 参考文章：
  * [获取 activity 的结果](https://developer.android.com/training/basics/intents/result?hl=zh-cn)
@@ -91,8 +101,8 @@ public class AppActivityResultUtil {
     * @param input
     * @param activityResultContract
     * @param activityResultCallback
-    * @param <I>
-    * @param <O>
+    * @param <I> input
+    * @param <O> output
     */
    public static <I, O> void openActivity(Activity activity, I input,
                                           @NonNull final ActivityResultContract<I, O> activityResultContract,
@@ -173,6 +183,72 @@ public class AppActivityResultUtil {
                                      String fileName,
                                      @NonNull final ActivityResultCallback<Uri> callback) {
       openActivity(activity, fileName, new ActivityResultContracts.CreateDocument(), callback);
+   }
+
+   /**
+    * 调用系统拍照
+    *
+    * val filePath = AppFilePathManager.getAppPictureFilePath(mActivity, null, ".jpg")
+    * AppActivityResultUtil.takePicture(mActivity, fileUri) { result ->
+    *     AppLogUtils.i("uri: $result")
+    * }
+    *
+    * @param activity
+    * @param outputPath
+    * @param callback
+    */
+   public static void takePicture(Activity activity,
+                                  @NonNull String outputPath,
+                                  @NonNull final ActivityResultCallback<Uri> callback) {
+      AppPermissionHelper.INSTANCE.request(activity, new PermissionUtils.SimpleCallback() {
+         @Override
+         public void onGranted() {
+            Uri outputUri = AppFileProvider.getUriForFile(activity, new File(outputPath));
+            openActivity(activity, outputUri, new ActivityResultContracts.TakePicture(),
+                    new ActivityResultCallback<Boolean>() {
+                       @Override
+                       public void onActivityResult(Boolean result) {
+                          if(result != null && result) {
+                             callback.onActivityResult(outputUri);
+                          }
+                       }
+                    });
+         }
+
+         @Override
+         public void onDenied() {
+
+         }
+      }, PermissionConstants.CAMERA);
+   }
+
+   /**
+    * 拍视频
+    * @param activity
+    * @param outputPath
+    * @param callback
+    */
+   public static void takeVideo(Activity activity,
+                                @NonNull String outputPath,
+                                @NonNull final ActivityResultCallback<Uri> callback) {
+      AppPermissionHelper.INSTANCE.request(activity, new PermissionUtils.SimpleCallback() {
+         @Override
+         public void onGranted() {
+            Uri outputUri = AppFileProvider.getUriForFile(activity, new File(outputPath));
+            openActivity(activity, outputUri, new ActivityResultContracts.TakeVideo(),
+                    new ActivityResultCallback<Bitmap>() {
+                       @Override
+                       public void onActivityResult(Bitmap result) {
+                          callback.onActivityResult(outputUri);
+                       }
+                    });
+         }
+
+         @Override
+         public void onDenied() {
+
+         }
+      }, PermissionConstants.CAMERA);
    }
 
    public static class AppActivityResultCallbackWrapper<O> implements ActivityResultCallback<O>, Serializable {
