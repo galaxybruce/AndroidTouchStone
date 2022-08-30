@@ -2,9 +2,9 @@ package com.galaxybruce.component.net;
 
 import com.galaxybruce.component.net.factory.DateToLongDeserializer;
 import com.galaxybruce.component.net.factory.KeepConverterFactory;
-import com.galaxybruce.component.net.interceptor.CookieInterceptor;
-import com.galaxybruce.component.net.interceptor.EncryptInterceptor;
-import com.galaxybruce.component.net.interceptor.HttpsInterceptor;
+import com.galaxybruce.component.net.interceptor.OkHttpCookieInterceptor;
+import com.galaxybruce.component.net.interceptor.OkHttpContentTypeInterceptor;
+import com.galaxybruce.component.net.interceptor.OkHttpConvertUrlInterceptor;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory;
 
@@ -92,9 +92,9 @@ public class AppServiceGenerator {
                 .setConnectTimeout(30)
                 .setReadTimeout(30)
                 .setWriteTimeout(30)
-                .addInterceptor(new CookieInterceptor())
-                .addInterceptor(new EncryptInterceptor())
-                .addInterceptor(new HttpsInterceptor());
+                .addInterceptor(new OkHttpCookieInterceptor())
+                .addInterceptor(new OkHttpContentTypeInterceptor())
+                .addInterceptor(new OkHttpConvertUrlInterceptor());
 
         if(sExternalInterceptors != null && !sExternalInterceptors.isEmpty()) {
             for (Interceptor externalInterceptor : sExternalInterceptors) {

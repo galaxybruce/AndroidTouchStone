@@ -39,4 +39,11 @@ public interface IHttpRequestOptions {
      * */
     List<String> getCookieDomains();
 
+    /**
+     * url转换
+     * @param url
+     * @return
+     */
+    String convertUrl(String url);
+
 }
