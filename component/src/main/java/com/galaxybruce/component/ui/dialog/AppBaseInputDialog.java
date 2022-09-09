@@ -25,6 +25,7 @@ import com.galaxybruce.component.util.ToastUtils;
 
 import org.jetbrains.annotations.Nullable;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 
 /**
@@ -55,32 +56,26 @@ public abstract class AppBaseInputDialog<B extends ViewDataBinding> extends AppC
      * v.setMinimumWidth(getResources().getDisplayMetrics().widthPixels);
      */
     @Override
-    public void resizeDialogFragment() {
-        Dialog dialog = getDialog();
-        if(dialog != null) {
-            Window win = dialog.getWindow();
-            if (win != null) {
-                WindowManager.LayoutParams params = win.getAttributes();
-                params.gravity = Gravity.CENTER;
-                params.width = Resources.getSystem().getDisplayMetrics().widthPixels * 80 / 100;
-                params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                win.setAttributes(params);
-//            dialog.onWindowAttributesChanged(params);
-                dialog.setCanceledOnTouchOutside(true);
+    protected void setDialogShowStyle(@NonNull Dialog dialog, @NonNull Window window) {
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.gravity = Gravity.CENTER;
+        params.width = Resources.getSystem().getDisplayMetrics().widthPixels * 80 / 100;
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        window.setAttributes(params);
+//                dialog.onWindowAttributesChanged(params);
+        dialog.setCanceledOnTouchOutside(true);
 
-                if(Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
-                    // android 11不用这个会闪动
-                    win.getDecorView().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            showKeyboard(win, mEditText);
-                        }
-                    });
-                } else {
-                    // android 11以下，放在post中键盘无法自动显示
-                    showKeyboard(win, mEditText);
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+            // android 11不用这个会闪动
+            window.getDecorView().post(new Runnable() {
+                @Override
+                public void run() {
+                    showKeyboard(window, mEditText);
                 }
-            }
+            });
+        } else {
+            // android 11以下，放在post中键盘无法自动显示
+            showKeyboard(window, mEditText);
         }
     }
 

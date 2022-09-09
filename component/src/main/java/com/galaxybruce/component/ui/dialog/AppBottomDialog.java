@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import com.galaxybruce.component.R;
 import com.galaxybruce.component.ui.jetpack.JPBaseDialogFragment;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.DialogFragment;
@@ -35,21 +36,8 @@ public abstract class AppBottomDialog<B extends ViewDataBinding> extends JPBaseD
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Dialog_Anim_Up_Down);
     }
 
-    /**
-     * 不能放在onCreateDialog方法中，不然不会生效，需要另外在onCreateView中设置布局宽度为屏幕宽度
-     * v.setMinimumWidth(getResources().getDisplayMetrics().widthPixels);
-     */
     @Override
-    protected void resizeDialogFragment() {
-        Dialog dialog = getDialog();
-        if (dialog == null) {
-            return;
-        }
-        Window window = dialog.getWindow();
-        if (window == null) {
-            return;
-        }
-
+    protected void setDialogShowStyle(@NonNull Dialog dialog, @NonNull Window window) {
         WindowManager.LayoutParams params = window.getAttributes();
         params.gravity = Gravity.BOTTOM;
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;

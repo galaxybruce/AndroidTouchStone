@@ -11,6 +11,7 @@ import com.galaxybruce.component.R;
 import com.galaxybruce.component.ui.jetpack.JPBaseDialogFragment;
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.DialogFragment;
 
@@ -29,15 +30,7 @@ public class AppCenterDialog<B extends ViewDataBinding> extends JPBaseDialogFrag
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.Theme_Dialog_NoFrame);
     }
 
-    protected void resizeDialogFragment() {
-        Dialog dialog = getDialog();
-        if (dialog == null) {
-            return;
-        }
-        Window window = dialog.getWindow();
-        if (window == null) {
-            return;
-        }
+    protected void setDialogShowStyle(@NonNull Dialog dialog, @NonNull Window window) {
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.gravity = Gravity.CENTER;
         lp.width = Resources.getSystem().getDisplayMetrics().widthPixels * 86 / 100;

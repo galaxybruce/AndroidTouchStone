@@ -73,7 +73,7 @@ public abstract class AppDialogFragment extends DialogFragment implements IUiIni
     public void onStart() {
         adapterScreen();
         super.onStart();
-        resizeDialogFragment();
+        setDialogShowStyle();
 
         // 禁用软键盘
         if(forbiddenSoftKeyboard()) {
@@ -184,7 +184,7 @@ public abstract class AppDialogFragment extends DialogFragment implements IUiIni
      *
      * 默认dialog显示在中间
      */
-    protected void resizeDialogFragment() {
+    private void setDialogShowStyle() {
         Dialog dialog = getDialog();
         if (dialog == null) {
             return;
@@ -193,9 +193,19 @@ public abstract class AppDialogFragment extends DialogFragment implements IUiIni
         if (window == null) {
             return;
         }
+        setDialogShowStyle(dialog, window);
+    }
+
+    /**
+     * 这里可以设置高度、宽度、以及自动弹出键盘
+     * @param dialog
+     * @param window
+     */
+    protected void setDialogShowStyle(@NonNull Dialog dialog, @NonNull Window window) {
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.gravity = Gravity.CENTER;
         lp.width = Resources.getSystem().getDisplayMetrics().widthPixels * 86 / 100;
+        lp.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         window.setLayout(lp.width, lp.height);
     }
 
