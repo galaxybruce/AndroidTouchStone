@@ -28,6 +28,17 @@ import androidx.fragment.app.FragmentManager;
  * @description 确认|取消dialog
  *
  * 使用方式：
+ * AppConfirmDialog.getInstance("提示",
+ *      "哈哈哈哈",
+ *      false,
+ *       object : AppConfirmDialog.AppConfirmDialogCallback {
+ *         override fun onCancel() {
+ *             showToast("cancel== ${++n}")
+ *         }
+ *         override fun onConfirm() {
+ *             showToast("ok== ${++n}")                    }
+ *     })
+ *     .show(mContext, "aaa")
  *
  * <p>
  * modification history:
