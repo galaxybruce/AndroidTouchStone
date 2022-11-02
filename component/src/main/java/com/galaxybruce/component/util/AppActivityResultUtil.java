@@ -189,7 +189,7 @@ public class AppActivityResultUtil {
     * 调用系统拍照
     *
     * val filePath = AppFilePathManager.getAppPictureFilePath(mActivity, null, ".jpg")
-    * AppActivityResultUtil.takePicture(mActivity, fileUri) { result ->
+    * AppActivityResultUtil.takePicture(mActivity, filePath) { result ->
     *     AppLogUtils.i("uri: $result")
     * }
     *
