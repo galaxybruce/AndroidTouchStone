@@ -1,6 +1,5 @@
 package com.galaxybruce.base.config
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 /**

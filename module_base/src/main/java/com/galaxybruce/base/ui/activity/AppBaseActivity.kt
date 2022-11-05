@@ -15,17 +15,6 @@ import com.galaxybruce.component.ui.jetpack.JPBaseActivity
  */
 abstract class AppBaseActivity<B: ViewDataBinding> : JPBaseActivity<B>() {
 
-    override fun applyStyle2ActivityTheme() {
-        super.applyStyle2ActivityTheme()
-        // 全屏透明状态栏基类
-//        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)//remove notification bar  即全屏
-    }
-
-//    override fun initStatusBar() {
-//        BBSStatusBarUtil.setTranslucentForImageView(this, 0,
-//            android.R.color.transparent, null)
-//    }
-
     /**
      * 以pt为单位适配，这里的宽度已设计稿的标准像素尺寸为准
      */

@@ -38,6 +38,10 @@ public abstract class JPBaseActivity<B extends ViewDataBinding> extends BaseActi
 
     /**
      * 每个页面对应的Page ViewModel
+     *
+     * 全局ViewModel获取
+     * mAppViewModel = getAppViewModelProvider().get(AppViewModel.class);
+     *
      * @return 返回 该页面对应的ViewModel
      */
     @Override
