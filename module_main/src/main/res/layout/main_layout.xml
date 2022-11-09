@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="vm"
+            type="com.galaxybruce.main.ui.mvvm.viewmodel.MainViewModel" />
+
+        <variable
+            name="click"
+            type="com.galaxybruce.main.ui.activity.MainActivity.ClickProxy" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.activity.MainActivity">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="200pt"
+            android:layout_height="200pt"
+            android:maxWidth="600pt"
+            android:maxHeight="500pt"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:background="#800000FF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="@{() -> click.onImageClick()}"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

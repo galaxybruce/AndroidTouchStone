@@ -37,11 +37,6 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
     protected var mContentView: View? = null
     protected var mPreviousDialog: AppDialogFragment? = null
 
-    /** 和页面相关的缓存，比如生命周期相关的代理 */
-    private val mCache: Map<String, Any> by lazy {
-        HashMap<String, Any>(4)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         mActivity = this
         addWindowFeatures()
@@ -65,21 +60,23 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
     }
 
     /**
-     * 添加window窗口特征
-     * 如设置全屏：window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)//remove notification bar  即全屏
+     * 设置window窗口特征
+     * 如设置全屏：
+     * window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
      *
      * @return boolean 是否有标题栏
      */
     open fun addWindowFeatures() {
-//        BBSWindowUtil.setScreenPortrait(this);
     }
 
+    /**
+     * 设置样式
+     * 如：AppAttrResolveUtil.applyStyle2ActivityTheme(this, false)
+     */
     open fun applyStyle2ActivityTheme() {
-//        AppAttrResolveUtil.applyStyle2ActivityTheme(this, false)
     }
 
     open fun initStatusBar() {
-
     }
 
     /**
@@ -92,8 +89,8 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         val manager: FragmentManager = supportFragmentManager
-        val fragments: List<Fragment>? = manager.fragments
-        if (fragments?.isEmpty() == false) {
+        val fragments: List<Fragment> = manager.fragments
+        if (fragments.isNotEmpty()) {
             for (fragment in fragments) {
                 if (fragment is BaseFragment && fragment.onKeyDown(keyCode, event)) {
                     return true
@@ -101,10 +98,6 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
             }
         }
         return super.onKeyDown(keyCode, event)
-    }
-
-    override fun provideCache(): Map<String, Any> {
-        return mCache
     }
 
     override fun provideContext(): Context {

@@ -1,6 +1,7 @@
 package com.galaxybruce.component.mvp;
 
-import com.trello.rxlifecycle2.LifecycleProvider;
+
+import com.trello.rxlifecycle3.LifecycleProvider;
 
 import java.lang.ref.WeakReference;
 

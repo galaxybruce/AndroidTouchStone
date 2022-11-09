@@ -87,7 +87,7 @@ public abstract class JPBaseDialogFragment<B extends ViewDataBinding> extends Ap
     protected View setRootLayout(int layoutId, @NonNull LayoutInflater inflater, ViewGroup container) {
         if(supportMVVM()) {
             mJPPageDelegate = new JPPageDelegate<>(this);
-            mDataBinding = mJPPageDelegate.setRootLayout(layoutId, inflater, container);
+            mDataBinding = mJPPageDelegate.setRootLayout(layoutId, inflater, container, false);
             if(mDataBinding != null) {
                 return mDataBinding.getRoot();
             }

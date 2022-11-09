@@ -84,13 +84,14 @@ public class AppAttrResolveUtil {
             } else {
                 // 当前activity theme获取不到，从application中获取
                 Resources.Theme theme = getApplicationTheme(context);
-                theme.resolveAttribute(attrRes, typedValue, true);
-
-                if (typedValue.resourceId != 0) {
-                    return context.getResources().getColor(typedValue.resourceId);
-                } else if(typedValue.data != 0){
-                    // this should work whether there was a resource id or not
-                    return typedValue.data;
+                if(theme != null) {
+                    theme.resolveAttribute(attrRes, typedValue, true);
+                    if (typedValue.resourceId != 0) {
+                        return context.getResources().getColor(typedValue.resourceId);
+                    } else if (typedValue.data != 0) {
+                        // this should work whether there was a resource id or not
+                        return typedValue.data;
+                    }
                 }
             }
         } catch (Exception e) {

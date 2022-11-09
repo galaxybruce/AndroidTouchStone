@@ -93,7 +93,8 @@ public class JPPageDelegate<B extends ViewDataBinding> {
         }
     };
 
-    public B setRootLayout(int layoutId, LayoutInflater inflater, ViewGroup container) {
+    public B setRootLayout(int layoutId, LayoutInflater inflater, ViewGroup container,
+                           boolean attachToParent) {
         JPBaseViewModel pageViewModel = mJPHost.initViewModel();
         JPBaseViewModel[] viewModels = mJPHost.initViewModels();
         observePageAction(pageViewModel);
@@ -106,10 +107,10 @@ public class JPPageDelegate<B extends ViewDataBinding> {
             final JPDataBindingConfig dataBindingConfig = mJPHost.initDataBindConfig();
             if(dataBindingConfig != null) {
                 ViewDataBinding binding;
-                if(mHostActivity) {
+                if(mHostActivity && !attachToParent) {
                     binding = DataBindingUtil.setContentView((AppCompatActivity)mJPHost, dataBindingConfig.getLayout());
                 } else {
-                    binding = DataBindingUtil.inflate(inflater, dataBindingConfig.getLayout(), container, false);
+                    binding = DataBindingUtil.inflate(inflater, dataBindingConfig.getLayout(), container, attachToParent);
                 }
                 binding.setLifecycleOwner(mHostActivity ? mActivity : mFragment);
                 SparseArray<Object> bindingParams = dataBindingConfig.getBindingParams();

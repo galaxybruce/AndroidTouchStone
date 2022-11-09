@@ -86,7 +86,7 @@ public abstract class JPBaseFragment<B extends ViewDataBinding> extends BaseFrag
     @Override
     public View setRootLayout(int layoutId, @NonNull LayoutInflater inflater, ViewGroup container) {
         mJPPageDelegate = new JPPageDelegate<>(this);
-        mDataBinding = mJPPageDelegate.setRootLayout(layoutId, inflater, container);
+        mDataBinding = mJPPageDelegate.setRootLayout(layoutId, inflater, container, false);
         if(mDataBinding != null) {
             return mDataBinding.getRoot();
         }

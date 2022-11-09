@@ -1,7 +1,6 @@
 apply {
     plugin "com.android.application"
     plugin "kotlin-android"
-    plugin "kotlin-android-extensions"
     plugin "kotlin-kapt"
     plugin "com.alibaba.arouter"
 }
@@ -193,7 +192,7 @@ def configSigning(Project pro) {
     println "$pro.name config sign end..."
 }
 
-def configApkName(Project pro) {
+static def configApkName(Project pro) {
     pro.android.applicationVariants.all { variant ->
         if (variant.buildType.name != "debug") {
             variant.outputs.all { output ->

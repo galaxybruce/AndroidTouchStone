@@ -33,8 +33,8 @@ import com.galaxybruce.component.ui.activity.BaseActivity;
  */
 public abstract class JPBaseActivity<B extends ViewDataBinding> extends BaseActivity implements JPHost {
 
-    private B mDataBinding;
-    private JPPageDelegate<B> mJPPageDelegate;
+    protected B mDataBinding;
+    protected JPPageDelegate<B> mJPPageDelegate;
 
     /**
      * 每个页面对应的Page ViewModel
@@ -85,7 +85,7 @@ public abstract class JPBaseActivity<B extends ViewDataBinding> extends BaseActi
 
     @Override
     public void setRootLayout(int layoutId) {
-        mDataBinding = mJPPageDelegate.setRootLayout(layoutId, null, null);
+        mDataBinding = mJPPageDelegate.setRootLayout(layoutId, null, null, false);
     }
 
     protected <T extends JPBaseViewModel> T getActivityViewModel(@NonNull Class<T> modelClass) {

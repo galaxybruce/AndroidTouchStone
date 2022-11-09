@@ -1,7 +1,6 @@
 apply {
     plugin "com.android.library"
     plugin "kotlin-android"
-    plugin "kotlin-android-extensions"
     plugin "kotlin-kapt"
 }
 
@@ -54,12 +53,6 @@ android {
 
     lintOptions {
         abortOnError false
-    }
-
-    // 这里是开放实验类型的features，比如从Kotlin 1.1.4起，Extensions加入了在ViewHolder中使用视图绑定的增强功能，由于这项功能还未正式发布，因此需要开启实验标志
-    // 建议不要这样做，新feature可能不稳定
-    androidExtensions {
-        experimental = true
     }
 
     buildFeatures {

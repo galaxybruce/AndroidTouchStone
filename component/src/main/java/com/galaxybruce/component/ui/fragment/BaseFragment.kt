@@ -15,7 +15,6 @@ import com.galaxybruce.component.ui.IUiDataProvider
 import com.galaxybruce.component.ui.IUiInit
 import com.galaxybruce.component.ui.IUiView
 import com.galaxybruce.component.ui.activity.BaseActivity
-import java.util.*
 
 /**
  * @date 2019-06-21 19:22
@@ -28,9 +27,6 @@ abstract class BaseFragment : Fragment(), IUiInit, IUiView, ILogin, IUiDataProvi
 
     protected lateinit var mActivity: Activity
     protected lateinit var mInflater: LayoutInflater
-
-    /** 和页面相关的缓存，比如生命周期相关的代理 */
-    private lateinit var mCache: Map<String, Any>
 
     /** view是否创建  */
     protected var mViewInited: Boolean = false
@@ -178,13 +174,6 @@ abstract class BaseFragment : Fragment(), IUiInit, IUiView, ILogin, IUiDataProvi
             }
         }
         return false
-    }
-
-    override fun provideCache(): Map<String, Any> {
-        if (!this::mCache.isInitialized) {
-            mCache = HashMap(4)
-        }
-        return mCache
     }
 
     override fun provideContext(): Context {
