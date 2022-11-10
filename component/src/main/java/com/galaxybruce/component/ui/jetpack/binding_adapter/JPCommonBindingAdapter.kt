@@ -2,6 +2,7 @@ package com.galaxybruce.component.ui.jetpack.binding_adapter
 
 import android.view.View
 import android.widget.ImageView
+import androidx.appcompat.app.ActionBar
 import androidx.databinding.BindingAdapter
 import com.blankj.utilcode.util.ClickUtils
 import com.galaxybruce.component.ui.jetpack.JPListDataModel
@@ -88,4 +89,12 @@ object JPCommonBindingAdapter {
         }
     }
 
+//    @BindingAdapter(value = ["binding_title", "binding_showHomeAsUp"], requireAll = false)
+//    @JvmStatic
+//    fun setToolbar(actionBar: ActionBar, title: String?, showHomeAsUp: Boolean = true){
+//        actionBar.apply {
+//            this.title = title
+//            this.setDisplayHomeAsUpEnabled(showHomeAsUp)
+//        }
+//    }
 }

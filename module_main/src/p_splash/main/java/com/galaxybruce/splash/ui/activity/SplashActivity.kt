@@ -7,7 +7,6 @@ import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.app.privacy.AppPrivacyUtil
 import com.galaxybruce.component.internal.AppInternal
 import com.galaxybruce.component.router.AppRouterUrlBuilder
-import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.util.AppActivityUtil
 import com.galaxybruce.component.util.AppConstants
@@ -24,9 +23,7 @@ import com.galaxybruce.splash.ui.mvvm.viewmodel.SplashViewModel
  * <p>
  * modification history:
  */
-class SplashActivity : AppBaseActivity<SplashLayoutBinding>() {
-
-    private lateinit var mPageViewModel: SplashViewModel
+class SplashActivity : AppBaseActivity<SplashLayoutBinding, SplashViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (!AppPrivacyUtil.checkPrivacyInLaunchActivity(this)) {
@@ -37,11 +34,6 @@ class SplashActivity : AppBaseActivity<SplashLayoutBinding>() {
         if (AppActivityUtil.handleSplashActivity(this)) {
             return
         }
-    }
-
-    override fun initViewModel(): JPBaseViewModel {
-        mPageViewModel = getActivityViewModel(SplashViewModel::class.java)
-        return mPageViewModel
     }
 
     override fun initDataBindConfig(): JPDataBindingConfig {

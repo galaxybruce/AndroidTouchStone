@@ -1,10 +1,12 @@
 package com.galaxybruce.main.ui.activity
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.blankj.utilcode.util.BarUtils
+import com.blankj.utilcode.util.ColorUtils
 import com.galaxybruce.base.ui.activity.AppBaseActivity
-import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.main.BR
 import com.galaxybruce.main.R
@@ -13,16 +15,7 @@ import com.galaxybruce.main.ui.mvvm.viewmodel.NetTestViewModel
 
 
 @Route(path = "/test/TestActivity")
-class NetTestActivity : AppBaseActivity<NetTestLayoutBinding>() {
-
-    private lateinit var mPageViewModel: NetTestViewModel
-
-    override fun initViewModel(): JPBaseViewModel {
-        mPageViewModel = getActivityViewModel(NetTestViewModel::class.java)
-        // todo tip: 这里还可能会初始化全局的ViewModel
-        // mSharedViewModel = getAppViewModelProvider().get(SharedViewModel::class.java);
-        return mPageViewModel
-    }
+class NetTestActivity : AppBaseActivity<NetTestLayoutBinding, NetTestViewModel>() {
 
     override fun initDataBindConfig(): JPDataBindingConfig {
         return JPDataBindingConfig(bindLayoutId())
@@ -39,6 +32,21 @@ class NetTestActivity : AppBaseActivity<NetTestLayoutBinding>() {
 
         // todo init data from Intent
 //        var a = intent.getStringExtra("xxx")
+    }
+
+    override fun initView(view: View?) {
+        super.initView(view)
+        initTitle()
+    }
+
+    open fun initTitle() {
+        BarUtils.setStatusBarColor(this, ColorUtils.getColor(com.galaxybruce.component.R.color.colorPrimaryDark))
+        BarUtils.addMarginTopEqualStatusBarHeight(binding.toolbar)
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.apply {
+            this.setDisplayHomeAsUpEnabled(true)
+            this.title = "NetTestActivity"
+        }
     }
 
     override fun bindData(savedInstanceState: Bundle?) {
@@ -65,4 +73,5 @@ class NetTestActivity : AppBaseActivity<NetTestLayoutBinding>() {
             performRequest()
         }
     }
+
 }

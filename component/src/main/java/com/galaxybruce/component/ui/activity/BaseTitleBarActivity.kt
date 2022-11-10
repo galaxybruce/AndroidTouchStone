@@ -17,6 +17,7 @@ import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
  * <p>
  * modification history:
  */
+@Deprecated(message = "已废弃，直接使用AppBaseActivity")
 abstract class BaseTitleBarActivity<B : ViewDataBinding, VM : JPBaseViewModel> : JPBaseActivityV2<B, VM>() {
 
     override fun setRootLayout(layoutId: Int) {
@@ -41,7 +42,10 @@ abstract class BaseTitleBarActivity<B : ViewDataBinding, VM : JPBaseViewModel> :
 
     override fun initView(view: View?) {
         super.initView(view)
+        initTitle()
+    }
 
+    open fun initTitle() {
         BarUtils.setStatusBarColor(this, ColorUtils.getColor(R.color.colorPrimaryDark))
         BarUtils.addMarginTopEqualStatusBarHeight(findViewById(R.id.root_layout))
         setSupportActionBar(findViewById(R.id.toolbar))
