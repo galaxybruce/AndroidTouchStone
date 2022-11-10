@@ -1,4 +1,5 @@
 apply plugin: 'galaxybruce-pioneer'
+apply plugin: 'galaxybruce-buildConfig'
 
 buildscript {
     apply from: rootProject.file('gradle/config/config.gradle')

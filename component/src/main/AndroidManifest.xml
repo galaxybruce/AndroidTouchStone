@@ -15,6 +15,10 @@
 
 
     <application>
+        <meta-data
+            android:name="BUILD_CONFIG"
+            android:value="${BUILD_CONFIG}"/>
+
         <provider
             android:name=".util.AppFileProvider"
             android:authorities="${applicationId}.galaxybruce.provider"
@@ -44,6 +48,15 @@
             android:multiprocess="true"
             android:theme="@style/ActivityTranslucent"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+
+        <activity
+            android:name="com.galaxybruce.component.app.privacy.AppPrivacyPolicyActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            android:theme="@style/AppPrivacyPolicyTheme"
+            android:process=":privacyProcess"
+            />
 
     </application>
 

@@ -3,6 +3,7 @@ package com.galaxybruce.touchstone.app
 import com.effective.android.anchors.AnchorsManager
 import com.effective.android.anchors.Project
 import com.galaxybruce.component.app.BaseApplication
+import com.galaxybruce.component.app.privacy.AppPrivacyUtil
 import com.galaxybruce.touchstone.BuildConfig
 import com.galaxybruce.touchstone.task.InitTaskFactory
 
@@ -40,8 +41,8 @@ class AppContext : BaseApplication() {
             .start(initTaskFactory, project)
     }
 
-    override fun checkPrivacyPolicy(): Boolean {
-        //        return PrivacyUtil.checkPrivacyPolicy(this)
-        return true
-    }
+//    override fun checkPrivacyPolicy(): Boolean {
+//        AppPrivacyUtil.NEED_CHECK_PRIVACY = false
+//        return true
+//    }
 }

@@ -1,0 +1,13 @@
+{
+  "build": {
+    "appName": "TouchStone",
+    "appCode": "appTouchStone",
+    "appScheme": "appTouchStone",
+    "applicationId": "com.galaxybruce.touchstone",
+    "versionName": "1.0.0",
+    "versionCode": 1
+  },
+
+  "appProtocolServer": "",
+  "appProtocolPrivacy": ""
+}

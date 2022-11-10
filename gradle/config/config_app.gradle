@@ -56,7 +56,7 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        applicationId rootProject.ext.applicationId
+        applicationId rootProject.applicationId
         applicationIdSuffix appIdSuffix()
         versionCode rootProject.versionCode
         versionName rootProject.versionName

@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.multidex.MultiDexApplication
 import com.bumptech.glide.Glide
 import com.galaxybruce.component.app.crash.AppCrashHandler
-import com.galaxybruce.component.app.privacy.PrivacyUtil
+import com.galaxybruce.component.app.privacy.AppPrivacyUtil
 
 
 abstract class BaseApplication : MultiDexApplication(), ViewModelStoreOwner {
@@ -84,7 +84,7 @@ abstract class BaseApplication : MultiDexApplication(), ViewModelStoreOwner {
 
     protected fun isMainProcess(): Boolean {
         val packageName = packageName
-        val processName = PrivacyUtil.getCurProcessName(this)
+        val processName = AppPrivacyUtil.getCurProcessName(this)
         return packageName == processName
     }
 
@@ -118,11 +118,16 @@ abstract class BaseApplication : MultiDexApplication(), ViewModelStoreOwner {
     /**
      * 隐私政策check
      * privacy_policy_agreed_type: 0: 默认状态 1-同意; 2-拒绝
+     * 注意：在SplashActivity.onCreate方法中要增加如下判断！！！
+     * super.onCreate(savedInstanceState);
+     * if(!PrivacyUtil.INSTANCE.checkPrivacyInLaunchActivity(this)) {
+     *      return;
+     * }
      *
      * 其他解决方案：[通过拦截 Activity的创建 实现APP的隐私政策改造](https://juejin.cn/post/6990643611130363917)
      */
     protected open fun checkPrivacyPolicy(): Boolean {
-        return true
+        return AppPrivacyUtil.checkPrivacyPolicy(this)
     }
 
     protected abstract fun onPreCreate()

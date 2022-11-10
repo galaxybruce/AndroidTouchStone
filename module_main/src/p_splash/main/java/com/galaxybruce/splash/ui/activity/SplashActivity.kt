@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.galaxybruce.base.manager.AppSessionManager
 import com.galaxybruce.base.ui.activity.AppBaseActivity
+import com.galaxybruce.component.app.privacy.AppPrivacyUtil
 import com.galaxybruce.component.internal.AppInternal
 import com.galaxybruce.component.router.AppRouterUrlBuilder
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
@@ -28,12 +29,10 @@ class SplashActivity : AppBaseActivity<SplashLayoutBinding>() {
     private lateinit var mPageViewModel: SplashViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (!AppPrivacyUtil.checkPrivacyInLaunchActivity(this)) {
+            return
+        }
         super.onCreate(savedInstanceState)
-        // todo 没有同意隐私政策时，杀死进程
-//        if (!PrivacyUtil.checkPrivacyInLaunchActivity(this)) {
-//            return
-//        }
-
         // 避免从桌面启动程序后，会重新实例化入口类的activity
         if (AppActivityUtil.handleSplashActivity(this)) {
             return

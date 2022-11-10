@@ -19,9 +19,14 @@ import kotlin.system.exitProcess
  *
  * modification history:
  */
-object PrivacyUtil {
+object AppPrivacyUtil {
 
     const val PRIVACY_STATUS_KEY = "privacy_policy_agreed_type"
+
+    /**
+     * 是否需要检查隐私政策，有的私有化部署app不用上应用市场，无需检查。
+     */
+    var NEED_CHECK_PRIVACY: Boolean = true
 
     fun getCurProcessName(context: Context): String? {
         val pid = android.os.Process.myPid()
@@ -44,9 +49,12 @@ object PrivacyUtil {
      *
      * 其他解决方案：[通过拦截 Activity的创建 实现APP的隐私政策改造](https://juejin.cn/post/6990643611130363917)
      */
-    fun checkPrivacyPolicy(application: Application, privacyPolicyActivity: Class<*>): Boolean {
+    fun checkPrivacyPolicy(application: Application,
+                           privacyPolicyActivity: Class<*> = AppPrivacyPolicyActivity::class.java,
+                           alertMsg: String? = null): Boolean {
         // 如果没有同意过隐私政策，则启动隐私政策进程，其他进程等待用户操作
-        if (AppProcessSPHelper.getInt(application, PRIVACY_STATUS_KEY, 0) == 0) {
+        if (NEED_CHECK_PRIVACY &&
+            AppProcessSPHelper.getInt(application, PRIVACY_STATUS_KEY, 0) == 0) {
             val currentProcess = ProcessUtils.getCurrentProcessName()
             if (TextUtils.equals(currentProcess, "${application.packageName}:privacyProcess")) {
                 // 当前进程是隐私政策进程，直接返回，不执行任何初始化
@@ -56,6 +64,7 @@ object PrivacyUtil {
                 val intent = Intent()
                 intent.setClass(application, privacyPolicyActivity)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.putExtra("alertMsg", alertMsg)
                 application.startActivity(intent)
 
                 // 当前进程不是隐私政策进程，都得等待用户同意进程才能继续执行
@@ -93,7 +102,8 @@ object PrivacyUtil {
      */
     fun checkPrivacyInLaunchActivity(activity: BaseActivity): Boolean {
         // 没有同意隐私政策时，杀死进程
-        if (AppProcessSPHelper.getInt(activity, PRIVACY_STATUS_KEY, 0) != 1) {
+        if (NEED_CHECK_PRIVACY &&
+            AppProcessSPHelper.getInt(activity, PRIVACY_STATUS_KEY, 0) != 1) {
             // 先回到桌面，在杀进程，因为不回到桌面，某些机型可能出现黑屏的情况
             val homeIntent = Intent(Intent.ACTION_MAIN)
             homeIntent.addCategory(Intent.CATEGORY_HOME)

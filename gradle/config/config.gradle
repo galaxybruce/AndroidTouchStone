@@ -15,14 +15,8 @@
  * [Kotlin + buildSrc：更好的管理Gadle依赖](https://juejin.cn/post/6844903615346245646)
  */
 ext {
-    applicationId = 'com.galaxybruce.touchstone'
-    appName = 'AndroidTouchStone'
-    appCode = 'appTouchStone'
-    versionCode = 1
-    versionName = '1.0.0'
-
     android = [compileSdkVersion: 31,
-               minSdkVersion    : 19,
+               minSdkVersion    : 21,
                targetSdkVersion : 31,
     ]
 
@@ -33,6 +27,7 @@ ext {
     dep = [
             plugin  : [
                     "com.galaxybruce.android:pioneer-gradle-plugin:0.0.44",
+                    "com.galaxybruce.android:buildConfig:1.0.0",
                     "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version",
                     "com.alibaba:arouter-register:1.0.2"
             ],
