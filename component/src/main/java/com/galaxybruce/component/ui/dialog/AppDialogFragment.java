@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AdaptScreenUtils;
 import com.galaxybruce.component.ui.IUiInit;
+import com.galaxybruce.component.util.AppConstants;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
@@ -222,6 +223,6 @@ public abstract class AppDialogFragment extends DialogFragment implements IUiIni
      * 需要在resizeDialogFragment前重新适配
      */
     protected void adapterScreen() {
-        AdaptScreenUtils.adaptWidth(super.getResources(), 750);
+        AdaptScreenUtils.adaptWidth(super.getResources(), AppConstants.DESIGN_UI_WIDTH);
     }
 }

@@ -4,6 +4,7 @@ import com.effective.android.anchors.AnchorsManager
 import com.effective.android.anchors.Project
 import com.galaxybruce.component.app.BaseApplication
 import com.galaxybruce.component.app.privacy.AppPrivacyUtil
+import com.galaxybruce.component.util.AppConstants
 import com.galaxybruce.touchstone.BuildConfig
 import com.galaxybruce.touchstone.task.InitTaskFactory
 
@@ -20,6 +21,7 @@ class AppContext : BaseApplication() {
     override fun onPreCreate() {
         BaseApplication.DEBUG = BuildConfig.DEBUG
         BaseApplication.DEBUG_ABLE = BuildConfig.DEBUG_ABLE
+        AppConstants.DESIGN_UI_WIDTH = 750
     }
 
     override fun initTask(isMainProcess: Boolean) {

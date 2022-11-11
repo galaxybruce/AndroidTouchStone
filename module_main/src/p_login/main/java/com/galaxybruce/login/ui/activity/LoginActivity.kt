@@ -6,7 +6,6 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.galaxybruce.base.manager.AppSessionManager
 import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.router.AppRouterUrlBuilder
-import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.util.AppConstants
 import com.galaxybruce.login.ui.mvvm.viewmodel.LoginViewModel
@@ -63,7 +62,7 @@ class LoginActivity : AppBaseActivity<LoginLayoutBinding, LoginViewModel>() {
             loginSuccess?.takeIf { it }?.let {
                 AppSessionManager.getInstance().updateLoginEvent(true)
 
-                val routePath = intent.getStringExtra(AppConstants.Login.KEY_LOGIN_SUCCESS_ROUTER)
+                val routePath = intent.getStringExtra(AppConstants.IntentKeys.KEY_LOGIN_SUCCESS_ROUTER)
                 if(routePath.isNullOrBlank()) {
                     finish()
                 } else {

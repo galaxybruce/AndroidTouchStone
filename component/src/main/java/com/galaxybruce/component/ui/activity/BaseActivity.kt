@@ -2,6 +2,7 @@ package com.galaxybruce.component.ui.activity
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -10,7 +11,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-
+import com.blankj.utilcode.util.AdaptScreenUtils
 import com.galaxybruce.component.app.BaseApplication
 import com.galaxybruce.component.ui.ILogin
 import com.galaxybruce.component.ui.IUiDataProvider
@@ -19,10 +20,9 @@ import com.galaxybruce.component.ui.IUiView
 import com.galaxybruce.component.ui.dialog.AppDialogFragment
 import com.galaxybruce.component.ui.dialog.AppLoadingDialog
 import com.galaxybruce.component.ui.fragment.BaseFragment
+import com.galaxybruce.component.util.AppConstants
 import com.galaxybruce.component.util.ToastUtils
 import com.galaxybruce.component.util.debug.AppDebugLogDialog
-import java.lang.Exception
-import java.util.*
 
 /**
  * @date 2019-06-21 17:29
@@ -33,17 +33,15 @@ import java.util.*
  */
 abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUiDataProvider {
 
-    protected lateinit var mActivity: Activity
-    protected var mContentView: View? = null
-    protected var mPreviousDialog: AppDialogFragment? = null
+    lateinit var mActivity: Activity
+    var mContentView: View? = null
+    var mPreviousDialog: AppDialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         mActivity = this
         addWindowFeatures()
         applyStyle2ActivityTheme()
-
         super.onCreate(savedInstanceState)
-
         setRootLayout(bindLayoutId())
         initData(intent.extras, savedInstanceState)
         initView(mContentView)
@@ -53,10 +51,21 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
         }
     }
 
+    /**
+     * 以pt为单位适配，这里的宽度已设计稿的标准像素尺寸为准
+     */
+    override fun getResources(): Resources {
+        return AdaptScreenUtils.adaptWidth(super.getResources(), AppConstants.DESIGN_UI_WIDTH)
+    }
+
+    override fun setContentView(view: View?) {
+        mContentView = view
+        super.setContentView(view)
+    }
+
     open fun setRootLayout(layoutId: Int) {
         if (layoutId <= 0) return
-        mContentView = LayoutInflater.from(this).inflate(layoutId, null)
-        setContentView(mContentView)
+        setContentView(LayoutInflater.from(this).inflate(layoutId, null))
     }
 
     /**
@@ -79,14 +88,6 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
     open fun initStatusBar() {
     }
 
-    /**
-     * 检测是否登录
-     */
-    open fun checkLogin(): Boolean {
-        // todo 添加是否登录逻辑
-        return true
-    }
-
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         val manager: FragmentManager = supportFragmentManager
         val fragments: List<Fragment> = manager.fragments
@@ -100,12 +101,37 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
         return super.onKeyDown(keyCode, event)
     }
 
+    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
+    }
+
+    override fun initView(view: View?) {
+        showDebugPanel()
+    }
+
+    override fun bindData(savedInstanceState: Bundle?) {
+    }
+
+    override fun finishAllActivity() {
+        BaseApplication.instance.finishAllActivity()
+    }
+
     override fun provideContext(): Context {
         return this
     }
 
     override fun provideIdentifier(): Int {
         return hashCode()
+    }
+
+    /**
+     * 检测是否登录
+     */
+    open fun checkLogin(): Boolean {
+        // todo 添加是否登录逻辑
+        return true
+    }
+
+    override fun login() {
     }
 
     /**
@@ -145,24 +171,6 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
             }
         } catch (e: Exception) {
         }
-    }
-
-    override fun login() {
-
-    }
-
-    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
-    }
-
-    override fun initView(view: View?) {
-        showDebugPanel()
-    }
-
-    override fun bindData(savedInstanceState: Bundle?) {
-    }
-
-    override fun finishAllActivity() {
-        BaseApplication.instance.finishAllActivity()
     }
 
     /**

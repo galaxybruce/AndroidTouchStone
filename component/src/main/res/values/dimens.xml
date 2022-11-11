@@ -2,5 +2,6 @@
 <resources>
     <dimen name="pic_size_small">120dp</dimen>
     <dimen name="pic_size_middle">200dp</dimen>
+    <dimen name="app_title_bar_height">92pt</dimen>
 
 </resources>

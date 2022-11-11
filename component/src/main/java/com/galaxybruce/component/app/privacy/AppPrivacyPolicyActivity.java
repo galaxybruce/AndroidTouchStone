@@ -10,6 +10,7 @@ import com.blankj.utilcode.util.AdaptScreenUtils;
 import com.blankj.utilcode.util.AppUtils;
 import com.galaxybruce.component.ui.dialog.AppConfirmDialog;
 import com.galaxybruce.component.util.AppBuildConfigUtils;
+import com.galaxybruce.component.util.AppConstants;
 import com.galaxybruce.component.util.crosssp.AppProcessSPHelper;
 
 import androidx.annotation.Nullable;
@@ -32,7 +33,7 @@ public class AppPrivacyPolicyActivity extends AppCompatActivity {
 
     @Override
     public Resources getResources() {
-        return AdaptScreenUtils.adaptWidth(super.getResources(), 750);
+        return AdaptScreenUtils.adaptWidth(super.getResources(), AppConstants.DESIGN_UI_WIDTH);
     }
 
     @Override

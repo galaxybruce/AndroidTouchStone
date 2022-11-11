@@ -1,12 +1,8 @@
 package com.galaxybruce.main.ui.activity
 
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.blankj.utilcode.util.AdaptScreenUtils
-import com.blankj.utilcode.util.BarUtils
-import com.blankj.utilcode.util.ColorUtils
 import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.ui.dialog.AppConfirmDialog
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
@@ -33,22 +29,8 @@ class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
         initTitle()
     }
 
-    open fun initTitle() {
-        BarUtils.setStatusBarColor(this, ColorUtils.getColor(com.galaxybruce.component.R.color.colorPrimaryDark))
-        BarUtils.addMarginTopEqualStatusBarHeight(binding.toolbar)
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.apply {
-            this.setDisplayHomeAsUpEnabled(true)
-            this.title = "首页"
-        }
-    }
-
-
-    /**
-     * 以pt为单位适配，这里的宽度已设计稿的标准像素尺寸为准
-     */
-    override fun getResources(): Resources {
-        return AdaptScreenUtils.adaptWidth(super.getResources(), 750)
+    override fun bindTitle(): String {
+        return "首页"
     }
 
     override fun bindData(savedInstanceState: Bundle?) {
@@ -82,4 +64,5 @@ class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
 
         }
     }
+
 }

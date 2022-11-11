@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.blankj.utilcode.util.BarUtils
-import com.blankj.utilcode.util.ColorUtils
 import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.main.BR
@@ -39,14 +37,8 @@ class NetTestActivity : AppBaseActivity<NetTestLayoutBinding, NetTestViewModel>(
         initTitle()
     }
 
-    open fun initTitle() {
-        BarUtils.setStatusBarColor(this, ColorUtils.getColor(com.galaxybruce.component.R.color.colorPrimaryDark))
-        BarUtils.addMarginTopEqualStatusBarHeight(binding.toolbar)
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.apply {
-            this.setDisplayHomeAsUpEnabled(true)
-            this.title = "NetTestActivity"
-        }
+    override fun bindTitle(): String {
+        return "NetTestActivity"
     }
 
     override fun bindData(savedInstanceState: Bundle?) {
