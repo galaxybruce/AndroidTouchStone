@@ -104,6 +104,11 @@ public abstract class JPPresentation<B extends ViewDataBinding>
         }
     }
 
+    @Override
+    public LifecycleOwner getLifecycleOwner() {
+        return this;
+    }
+
     /**
      * 多个"通用的ViewModel"的初始化
      * @return

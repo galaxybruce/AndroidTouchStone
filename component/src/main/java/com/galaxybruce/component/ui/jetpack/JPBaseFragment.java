@@ -11,6 +11,7 @@ import com.galaxybruce.component.ui.fragment.BaseFragment;
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -40,6 +41,11 @@ public abstract class JPBaseFragment<B extends ViewDataBinding> extends BaseFrag
 
     B mDataBinding;
     JPPageDelegate<B> mJPPageDelegate;
+
+    @Override
+    public LifecycleOwner getLifecycleOwner() {
+        return getViewLifecycleOwner();
+    }
 
     /**
      * 每个页面对应的Page ViewModel

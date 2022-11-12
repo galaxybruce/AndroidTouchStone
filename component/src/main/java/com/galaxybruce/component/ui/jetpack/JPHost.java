@@ -1,5 +1,8 @@
 package com.galaxybruce.component.ui.jetpack;
 
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ViewModelStoreOwner;
+
 /**
  * @author bruce.zhang
  * @date 2020/11/26 11:43
@@ -7,7 +10,9 @@ package com.galaxybruce.component.ui.jetpack;
  * <p>
  * modification history:
  */
-public interface JPHost {
+public interface JPHost extends LifecycleOwner, ViewModelStoreOwner {
+
+    LifecycleOwner getLifecycleOwner();
 
     /**
      * 每个页面对应的Page ViewModel

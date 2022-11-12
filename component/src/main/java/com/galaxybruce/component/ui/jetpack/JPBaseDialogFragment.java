@@ -10,6 +10,7 @@ import com.galaxybruce.component.ui.dialog.AppDialogFragment;
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -34,6 +35,11 @@ public abstract class JPBaseDialogFragment<B extends ViewDataBinding> extends Ap
      */
     protected boolean supportMVVM() {
         return true;
+    }
+
+    @Override
+    public LifecycleOwner getLifecycleOwner() {
+        return getViewLifecycleOwner();
     }
 
     /**

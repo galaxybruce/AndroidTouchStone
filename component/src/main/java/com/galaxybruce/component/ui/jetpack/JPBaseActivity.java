@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -35,6 +36,11 @@ public abstract class JPBaseActivity<B extends ViewDataBinding> extends BaseActi
 
     protected B mDataBinding;
     protected JPPageDelegate<B> mJPPageDelegate;
+
+    @Override
+    public LifecycleOwner getLifecycleOwner() {
+        return this;
+    }
 
     /**
      * 每个页面对应的Page ViewModel

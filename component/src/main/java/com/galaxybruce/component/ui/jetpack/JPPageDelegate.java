@@ -6,18 +6,6 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.galaxybruce.component.app.BaseApplication;
 import com.galaxybruce.component.ui.activity.BaseActivity;
 
@@ -26,6 +14,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 /**
  * @author bruce.zhang
@@ -37,9 +36,7 @@ import java.util.Map;
 public class JPPageDelegate<B extends ViewDataBinding> {
 
     private JPHost mJPHost;
-    private FragmentActivity mActivity;
-    private Fragment mFragment;
-    private boolean mHostActivity;
+    private final boolean mHostActivity;
 
     private ViewModelProvider mAppViewModelProvider;
     private ViewModelProvider mActivityViewModelProvider;
@@ -53,11 +50,8 @@ public class JPPageDelegate<B extends ViewDataBinding> {
     public JPPageDelegate(JPHost host) {
         mJPHost = host;
         if(host instanceof BaseActivity) {
-            mActivity = (BaseActivity)host;
             mHostActivity = true;
         } else if(host instanceof Fragment) {
-            mFragment = (Fragment)host;
-            mActivity = mFragment.getActivity();
             mHostActivity = false;
         } else {
             throw new IllegalArgumentException("init mvvm param host must be activity or fragment !!!");
@@ -68,10 +62,13 @@ public class JPPageDelegate<B extends ViewDataBinding> {
      * 页面上loading  relogin  toast等事件
      */
     private final Observer<JPPageActionEvent> jpPageActionObserver = jpPageActionEvent -> {
-        if(mActivity == null || mActivity.isFinishing() || !(mActivity instanceof BaseActivity)) {
+        BaseActivity activity = null;
+        if(mJPHost instanceof BaseActivity) {
+            activity = (BaseActivity)mJPHost;
+        }
+        if(activity == null || activity.isFinishing()) {
             return;
         }
-        BaseActivity activity = (BaseActivity)mActivity;
         switch (jpPageActionEvent.getAction()) {
             case JPPageActionEvent.SHOW_LOADING_DIALOG:
                 activity.showLoadingProgress(jpPageActionEvent.getMessage());
@@ -112,7 +109,7 @@ public class JPPageDelegate<B extends ViewDataBinding> {
                 } else {
                     binding = DataBindingUtil.inflate(inflater, dataBindingConfig.getLayout(), container, attachToParent);
                 }
-                binding.setLifecycleOwner(mHostActivity ? mActivity : mFragment);
+                binding.setLifecycleOwner(mJPHost);
                 SparseArray<Object> bindingParams = dataBindingConfig.getBindingParams();
                 for (int i = 0; i < bindingParams.size(); i++) {
                     binding.setVariable(bindingParams.keyAt(i), bindingParams.valueAt(i));
@@ -144,7 +141,7 @@ public class JPPageDelegate<B extends ViewDataBinding> {
 
     protected <T extends JPBaseViewModel> T getFragmentViewModel(@NonNull Class<T> modelClass) {
         if (mFragmentViewModelProvider == null) {
-            mFragmentViewModelProvider = new ViewModelProvider(mFragment);
+            mFragmentViewModelProvider = new ViewModelProvider(mJPHost);
         }
         return mFragmentViewModelProvider.get(modelClass);
     }
@@ -176,7 +173,7 @@ public class JPPageDelegate<B extends ViewDataBinding> {
 
     protected <T extends JPBaseViewModel> T getActivityViewModel(@NonNull Class<T> modelClass) {
         if (mActivityViewModelProvider == null) {
-            mActivityViewModelProvider = new ViewModelProvider(mActivity);
+            mActivityViewModelProvider = new ViewModelProvider(mJPHost);
         }
         return mActivityViewModelProvider.get(modelClass);
     }
@@ -189,14 +186,20 @@ public class JPPageDelegate<B extends ViewDataBinding> {
     }
 
     protected ViewModelProvider getAppViewModelProvider(){
-        return new ViewModelProvider((BaseApplication)mActivity.getApplicationContext()
-                , getAppFactory(mActivity));
+        Activity activity;
+        if(mHostActivity) {
+            activity = (Activity) mJPHost;
+        } else {
+            activity = ((Fragment)mJPHost).getActivity();
+            if (activity == null) {
+                throw new IllegalStateException("Can't create ViewModelProvider for detached fragment");
+            }
+        }
+        return new ViewModelProvider((BaseApplication)activity.getApplicationContext()
+                , getAppFactory(activity));
     }
 
-    protected ViewModelProvider.Factory getAppFactory(Activity activity){
-        if(!mHostActivity) {
-            checkActivity(mFragment);
-        }
+    private ViewModelProvider.Factory getAppFactory(Activity activity){
         Application application = checkApplication(activity);
         if (mFactory == null) {
             mFactory = ViewModelProvider.AndroidViewModelFactory.getInstance(application);
@@ -211,13 +214,6 @@ public class JPPageDelegate<B extends ViewDataBinding> {
                     + "Application. You can't request ViewModel before onCreate call.");
         }
         return application;
-    }
-
-    private void checkActivity(Fragment fragment) {
-        Activity activity = fragment.getActivity();
-        if (activity == null) {
-            throw new IllegalStateException("Can't create ViewModelProvider for detached fragment");
-        }
     }
 
     /**
@@ -236,7 +232,7 @@ public class JPPageDelegate<B extends ViewDataBinding> {
 
     @NotNull
     private LifecycleOwner getLifecycleOwner() {
-        return mHostActivity ? mActivity: mFragment.getViewLifecycleOwner();
+        return mJPHost.getLifecycleOwner();
     }
 
 }
