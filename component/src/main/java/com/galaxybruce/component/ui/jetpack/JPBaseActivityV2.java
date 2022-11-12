@@ -1,20 +1,21 @@
 package com.galaxybruce.component.ui.jetpack;
 
 import android.view.LayoutInflater;
-import android.view.View;
+import android.view.MenuItem;
 
-import com.galaxybruce.component.ui.activity.AppTitleBarView;
+import com.galaxybruce.component.ui.activity.AppDefaultTitleBarView;
+import com.galaxybruce.component.ui.activity.IAppTitleBarView;
 import com.galaxybruce.component.util.AppConstants;
 
 import java.lang.reflect.ParameterizedType;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 
 public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPBaseViewModel> extends JPBaseActivity<B> {
 
     protected VM mPageViewModel;
-    protected AppTitleBarView mAppTitleBarView;
+    protected IAppTitleBarView mAppTitleBarView;
 
     /**
      * 子类可以重写该方法
@@ -29,6 +30,33 @@ public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPB
         return mPageViewModel;
     }
 
+    @Override
+    public void setRootLayout(int layoutId) {
+        int titleMode = getTitleMode();
+        if(titleMode == AppConstants.TITLE_MODE_LINEAR || titleMode == AppConstants.TITLE_MODE_FLOAT) {
+            mAppTitleBarView = createAppTitleBarView( titleMode);
+            setContentView(mAppTitleBarView.getContentView());
+            // 业务布局
+            mDataBinding = mJPPageDelegate.setRootLayout(layoutId, LayoutInflater.from(mActivity),
+                    mAppTitleBarView.getContentLayout(), true);
+            initTitle();
+        } else if(titleMode == AppConstants.TITLE_MODE_CUSTOM){
+            super.setRootLayout(layoutId);
+            initTitle();
+        } else {
+            super.setRootLayout(layoutId);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
      * 获取标题栏模式
      * @return
@@ -37,29 +65,18 @@ public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPB
         return AppConstants.TITLE_MODE_LINEAR;
     }
 
-    @Override
-    public void setRootLayout(int layoutId) {
-        int titleMode = getTitleMode();
-        if(titleMode == AppConstants.TITLE_MODE_LINEAR) {
-            mAppTitleBarView = new AppTitleBarView(this, titleMode);
-            setContentView(mAppTitleBarView.getContentView());
-            // 业务布局
-            mDataBinding = mJPPageDelegate.setRootLayout(layoutId, LayoutInflater.from(mActivity),
-                    mAppTitleBarView.getContentLayout(), true);
-        } else {
-            super.setRootLayout(layoutId);
-        }
-    }
-
-    @Override
-    public void initView(@Nullable View view) {
-        super.initView(view);
-        initTitle();
+    /**
+     * 给外层app提供自定义标题栏的机会
+     * @param titleMode
+     * @return
+     */
+    protected IAppTitleBarView createAppTitleBarView(@AppConstants.TitleMode int titleMode) {
+        return new AppDefaultTitleBarView(this, titleMode);
     }
 
     protected void initTitle() {
-        if(mAppTitleBarView != null) {
-            mAppTitleBarView.initTitle(bindTitle());
+        if(mAppTitleBarView != null && mAppTitleBarView instanceof AppDefaultTitleBarView) {
+            ((AppDefaultTitleBarView)mAppTitleBarView).initTitle(bindTitle());
         }
     }
 

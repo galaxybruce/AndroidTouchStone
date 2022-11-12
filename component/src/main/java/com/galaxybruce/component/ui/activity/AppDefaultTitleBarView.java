@@ -21,19 +21,20 @@ import androidx.appcompat.widget.Toolbar;
  * <p>
  * modification history:
  */
-public class AppTitleBarView {
+public class AppDefaultTitleBarView implements IAppTitleBarView {
 
-    private AppCompatActivity mActivity;
-    private @AppConstants.TitleMode int mTitleMode;
+    private final AppCompatActivity mActivity;
+    private @AppConstants.TitleMode final int mTitleMode;
     private ViewGroup mRootLayout;
     private Toolbar mToolbar;
     private FrameLayout mContentLayout;
 
-    public AppTitleBarView(@NonNull AppCompatActivity activity, @AppConstants.TitleMode int titleMode) {
+    public AppDefaultTitleBarView(@NonNull AppCompatActivity activity, @AppConstants.TitleMode int titleMode) {
         mActivity = activity;
         mTitleMode = titleMode;
     }
 
+    @Override
     public ViewGroup getContentView() {
         final int titleBarHeight = mActivity.getResources().getDimensionPixelSize(R.dimen.app_title_bar_height);
         View view = LayoutInflater.from(mActivity).inflate(R.layout.activity_title, null);
@@ -49,6 +50,7 @@ public class AppTitleBarView {
      * 获取标题栏以外的实际内容根布局
      * @return
      */
+    @Override
     public ViewGroup getContentLayout() {
         return mContentLayout;
     }

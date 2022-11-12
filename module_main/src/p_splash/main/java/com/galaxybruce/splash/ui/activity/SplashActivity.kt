@@ -41,6 +41,10 @@ class SplashActivity : AppBaseActivity<SplashLayoutBinding, SplashViewModel>() {
             .addBindingParam(BR.vm, mPageViewModel)
     }
 
+    override fun getTitleMode(): Int {
+        return AppConstants.TITLE_MODE_NONE
+    }
+
     override fun bindLayoutId(): Int {
         return R.layout.splash_layout
     }

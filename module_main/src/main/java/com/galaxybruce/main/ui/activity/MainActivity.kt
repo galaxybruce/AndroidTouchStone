@@ -24,11 +24,6 @@ class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
         return R.layout.main_layout
     }
 
-    override fun initView(view: View?) {
-        super.initView(view)
-        initTitle()
-    }
-
     override fun bindTitle(): String {
         return "首页"
     }

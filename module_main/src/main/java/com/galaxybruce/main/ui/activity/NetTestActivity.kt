@@ -1,7 +1,6 @@
 package com.galaxybruce.main.ui.activity
 
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.galaxybruce.base.ui.activity.AppBaseActivity
@@ -30,11 +29,6 @@ class NetTestActivity : AppBaseActivity<NetTestLayoutBinding, NetTestViewModel>(
 
         // todo init data from Intent
 //        var a = intent.getStringExtra("xxx")
-    }
-
-    override fun initView(view: View?) {
-        super.initView(view)
-        initTitle()
     }
 
     override fun bindTitle(): String {

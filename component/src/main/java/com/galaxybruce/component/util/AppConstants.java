@@ -37,14 +37,22 @@ public class AppConstants {
     }
 
     /**
-     * 标题栏类型-自定义标题栏
+     * 标题栏类型-无标题栏
      */
-    public final static int TITLE_MODE_CUSTOM = 0;
+    public final static int TITLE_MODE_NONE = 0;
     /**
      * 标题栏类型-垂直排列
      */
     public final static int TITLE_MODE_LINEAR = 1;
-    @IntDef({TITLE_MODE_LINEAR, TITLE_MODE_CUSTOM})
+    /**
+     * 标题栏类型-悬浮在布局上面
+     */
+    public final static int TITLE_MODE_FLOAT = 2;
+    /**
+     * 标题栏类型-自定义标题栏
+     */
+    public final static int TITLE_MODE_CUSTOM = 3;
+    @IntDef({TITLE_MODE_NONE, TITLE_MODE_LINEAR, TITLE_MODE_FLOAT, TITLE_MODE_CUSTOM})
     @Retention(RetentionPolicy.SOURCE)
     public @interface TitleMode {
     }

@@ -48,6 +48,10 @@ class LoginActivity : AppBaseActivity<LoginLayoutBinding, LoginViewModel>() {
             .addBindingParam(BR.click, ClickProxy())
     }
 
+    override fun getTitleMode(): Int {
+        return AppConstants.TITLE_MODE_NONE
+    }
+
     override fun bindLayoutId(): Int {
         return R.layout.login_layout
     }

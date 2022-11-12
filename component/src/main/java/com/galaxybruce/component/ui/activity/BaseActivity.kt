@@ -42,8 +42,8 @@ abstract class BaseActivity : AppCompatActivity(), IUiInit, IUiView, ILogin, IUi
         addWindowFeatures()
         applyStyle2ActivityTheme()
         super.onCreate(savedInstanceState)
-        setRootLayout(bindLayoutId())
         initData(intent.extras, savedInstanceState)
+        setRootLayout(bindLayoutId())
         initView(mContentView)
         initStatusBar()
         if(checkLogin()) {
