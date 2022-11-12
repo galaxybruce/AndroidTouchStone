@@ -23,4 +23,10 @@ public interface IAppTitleBarView {
      */
     ViewGroup getContentLayout();
 
+    /**
+     * 获取标题栏
+     * @return
+     */
+    ViewGroup getTitleBarLayout();
+
 }

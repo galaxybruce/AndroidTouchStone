@@ -34,7 +34,7 @@ public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPB
     public void setRootLayout(int layoutId) {
         int titleMode = getTitleMode();
         if(titleMode == AppConstants.TITLE_MODE_LINEAR || titleMode == AppConstants.TITLE_MODE_FLOAT) {
-            mAppTitleBarView = createAppTitleBarView( titleMode);
+            mAppTitleBarView = createAppTitleBarView(titleMode);
             setContentView(mAppTitleBarView.getContentView());
             // 业务布局
             mDataBinding = mJPPageDelegate.setRootLayout(layoutId, LayoutInflater.from(mActivity),
@@ -76,7 +76,7 @@ public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPB
 
     protected void initTitle() {
         if(mAppTitleBarView != null && mAppTitleBarView instanceof AppDefaultTitleBarView) {
-            ((AppDefaultTitleBarView)mAppTitleBarView).initTitle(bindTitle(), false);
+            ((AppDefaultTitleBarView)mAppTitleBarView).initTitle(bindTitle(), true);
         }
     }
 

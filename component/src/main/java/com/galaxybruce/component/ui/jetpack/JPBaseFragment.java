@@ -1,5 +1,6 @@
 package com.galaxybruce.component.ui.jetpack;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,6 +78,12 @@ public abstract class JPBaseFragment<B extends ViewDataBinding> extends BaseFrag
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mJPPageDelegate = new JPPageDelegate<>(this);
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         addLifecycleObserves();
@@ -85,7 +92,6 @@ public abstract class JPBaseFragment<B extends ViewDataBinding> extends BaseFrag
 
     @Override
     public View setRootLayout(int layoutId, @NonNull LayoutInflater inflater, ViewGroup container) {
-        mJPPageDelegate = new JPPageDelegate<>(this);
         mDataBinding = mJPPageDelegate.setRootLayout(layoutId, inflater, container, false);
         if(mDataBinding != null) {
             return mDataBinding.getRoot();

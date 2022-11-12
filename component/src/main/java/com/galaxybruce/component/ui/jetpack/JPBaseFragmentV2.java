@@ -1,5 +1,6 @@
 package com.galaxybruce.component.ui.jetpack;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.galaxybruce.component.util.AppConstants;
 import java.lang.reflect.ParameterizedType;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.ViewDataBinding;
 
@@ -37,19 +39,26 @@ public abstract class JPBaseFragmentV2<B extends ViewDataBinding, VM extends JPB
         View view;
         int titleMode = getTitleMode();
         if(titleMode == AppConstants.TITLE_MODE_LINEAR || titleMode == AppConstants.TITLE_MODE_FLOAT) {
-            mAppTitleBarView = createAppTitleBarView( titleMode);
+            mAppTitleBarView = createAppTitleBarView(titleMode);
             view = mAppTitleBarView.getContentView();
             // 业务布局
             mDataBinding = mJPPageDelegate.setRootLayout(layoutId, inflater,
                     mAppTitleBarView.getContentLayout(), true);
-            initTitle();
         } else if(titleMode == AppConstants.TITLE_MODE_CUSTOM){
             view = super.setRootLayout(layoutId, inflater, container);
-            initTitle();
         } else {
             view = super.setRootLayout(layoutId, inflater, container);
         }
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        int titleMode = getTitleMode();
+        if(titleMode != AppConstants.TITLE_MODE_NONE) {
+            initTitle();
+        }
     }
 
     /**
