@@ -44,6 +44,11 @@ abstract class BaseFragment : Fragment(), IUiInit, IUiView, ILogin, IUiDataProvi
         mActivity = context as Activity
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initData(arguments, savedInstanceState)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mInflater = inflater
         if (bindLayoutId() <= 0) {
@@ -59,11 +64,6 @@ abstract class BaseFragment : Fragment(), IUiInit, IUiView, ILogin, IUiDataProvi
             }
         }
         return rootView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initData(arguments, savedInstanceState)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -149,7 +149,7 @@ abstract class BaseFragment : Fragment(), IUiInit, IUiView, ILogin, IUiDataProvi
         return mHidden
     }
 
-    open fun setRootLayout(layoutId: Int, inflater: LayoutInflater, container: ViewGroup?): View {
+    open fun setRootLayout(layoutId: Int, inflater: LayoutInflater, container: ViewGroup?): View? {
         return mInflater.inflate(layoutId, null)
     }
 

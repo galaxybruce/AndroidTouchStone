@@ -37,8 +37,8 @@ import androidx.lifecycle.ViewModelProvider;
  */
 public abstract class JPBaseFragment<B extends ViewDataBinding> extends BaseFragment implements JPHost {
 
-    private B mDataBinding;
-    private JPPageDelegate<B> mJPPageDelegate;
+    B mDataBinding;
+    JPPageDelegate<B> mJPPageDelegate;
 
     /**
      * 每个页面对应的Page ViewModel

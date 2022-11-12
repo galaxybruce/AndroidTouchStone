@@ -1,7 +1,8 @@
 package com.galaxybruce.component.ui.jetpack;
 
 import android.view.LayoutInflater;
-import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.galaxybruce.component.ui.activity.AppDefaultTitleBarView;
 import com.galaxybruce.component.ui.activity.IAppTitleBarView;
@@ -10,9 +11,10 @@ import com.galaxybruce.component.util.AppConstants;
 import java.lang.reflect.ParameterizedType;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.ViewDataBinding;
 
-public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPBaseViewModel> extends JPBaseActivity<B> {
+public abstract class JPBaseFragmentV2<B extends ViewDataBinding, VM extends JPBaseViewModel> extends JPBaseFragment<B> {
 
     protected VM mPageViewModel;
     protected IAppTitleBarView mAppTitleBarView;
@@ -31,30 +33,23 @@ public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPB
     }
 
     @Override
-    public void setRootLayout(int layoutId) {
+    public View setRootLayout(int layoutId, @NonNull LayoutInflater inflater, ViewGroup container) {
+        View view;
         int titleMode = getTitleMode();
         if(titleMode == AppConstants.TITLE_MODE_LINEAR || titleMode == AppConstants.TITLE_MODE_FLOAT) {
             mAppTitleBarView = createAppTitleBarView( titleMode);
-            setContentView(mAppTitleBarView.getContentView());
+            view = mAppTitleBarView.getContentView();
             // 业务布局
-            mDataBinding = mJPPageDelegate.setRootLayout(layoutId, LayoutInflater.from(mActivity),
+            mDataBinding = mJPPageDelegate.setRootLayout(layoutId, inflater,
                     mAppTitleBarView.getContentLayout(), true);
             initTitle();
         } else if(titleMode == AppConstants.TITLE_MODE_CUSTOM){
-            super.setRootLayout(layoutId);
+            view = super.setRootLayout(layoutId, inflater, container);
             initTitle();
         } else {
-            super.setRootLayout(layoutId);
+            view = super.setRootLayout(layoutId, inflater, container);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return view;
     }
 
     /**
@@ -71,7 +66,7 @@ public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPB
      * @return
      */
     protected IAppTitleBarView createAppTitleBarView(@AppConstants.TitleMode int titleMode) {
-        return new AppDefaultTitleBarView(this, titleMode);
+        return new AppDefaultTitleBarView((AppCompatActivity) mActivity, titleMode);
     }
 
     protected void initTitle() {

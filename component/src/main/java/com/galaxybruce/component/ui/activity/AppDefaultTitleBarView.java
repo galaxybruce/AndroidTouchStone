@@ -55,14 +55,14 @@ public class AppDefaultTitleBarView implements IAppTitleBarView {
         return mContentLayout;
     }
 
-    public void initTitle(String title) {
+    public void initTitle(String title, boolean showHomeAsUp) {
         BarUtils.setStatusBarColor(mActivity, ColorUtils.getColor(R.color.colorPrimaryDark));
         BarUtils.addMarginTopEqualStatusBarHeight(mRootLayout);
         Toolbar toolbar = mToolbar;
         if(toolbar != null) {
             toolbar.setBackgroundResource(R.color.colorPrimaryDark);
             mActivity.setSupportActionBar(toolbar);
-            mActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(showHomeAsUp);
             mActivity.getSupportActionBar().setTitle(title);
         }
     }
