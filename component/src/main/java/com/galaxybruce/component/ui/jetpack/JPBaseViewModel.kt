@@ -19,12 +19,12 @@ import androidx.lifecycle.ViewModel
  * Repository: 具体业务处理，比如网络请求
  *
  *
- * ViewModel中的属性是选择 ObservaleField 还是 LiveData 还是UnPeekLiveData???
+ * ViewModel中的属性是选择 ObservableField 还是 LiveData 还是UnPeekLiveData???
  *
- * "ObservaleField 有防抖的特点，要记住这个特点，然后根据情况选择使用。"
- * 比如 PureMusic 中通知抽屉打开，用 ObservaleField<Boolean> 不合适，而 LiveData 合适，
- * 因为 ObservaleField 防抖，第一次 set true，就有 true 为 value 了，第二次再 set true，就不 notify 视图刷新了（具体见 ObservaleBoolean 的 set 方法实现）
- * 防抖可以避免重复刷新 以减少不必要的性能开销，所以看情况选择 ObservaleField 或 LiveData。
+ * ObservableField 有防抖的特点, 防抖可以避免重复刷新 以减少不必要的性能开销，所以看情况选择 ObservableField 或 LiveData。
+ * 比如 PureMusic 中通知抽屉打开，用 ObservableField<Boolean> 不合适，而 LiveData 合适，
+ * 因为 ObservableField 防抖，第一次 set true，就有 true 为 value 了，第二次再 set true，就不 notify 视图刷新了（具体见 ObservaleBoolean 的 set 方法实现）
+ * 防抖可以避免重复刷新 以减少不必要的性能开销，所以看情况选择 ObservableField 或 LiveData。
  *
  * UnPeekLiveData可以防止数据倒灌，比如显示对话框、加载框、进入登录界面现在用的就是UnPeekLiveData
  *
