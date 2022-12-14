@@ -49,6 +49,10 @@ public abstract class JPBaseFragment<B extends ViewDataBinding> extends BaseFrag
 
     /**
      * 每个页面对应的Page ViewModel
+     *
+     * 全局ViewModel获取
+     * mAppViewModel = getAppViewModelProvider().get(AppViewModel.class);
+     *
      * @return 返回 该页面对应的ViewModel
      */
     @Override
@@ -131,6 +135,8 @@ public abstract class JPBaseFragment<B extends ViewDataBinding> extends BaseFrag
      * 只所以写这个方法，主要是activity和fragment中写法不一样，原因可以参考Fragment.getViewLifecycleOwner()方法的注释
      * 在activity中，LifecycleOwner owner参数传this
      * 在fragment中，LifecycleOwner owner参数传getViewLifecycleOwner()
+     *
+     * 注意：建议该方法在 bindData() 中调用
      *
      * @param liveData
      * @param observer

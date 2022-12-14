@@ -112,6 +112,8 @@ public abstract class JPBaseActivity<B extends ViewDataBinding> extends BaseActi
      * 在activity中，LifecycleOwner owner参数传this
      * 在fragment中，LifecycleOwner owner参数传getViewLifecycleOwner()
      *
+     * 注意：建议该方法在 bindData() 中调用
+     *
      * @param liveData
      * @param observer
      * @param <T>
