@@ -29,12 +29,12 @@ public class AppPauseGlideOnRecyclerScrollListener extends RecyclerView.OnScroll
                 false, true);
     }
 
-    public static AppPauseGlideOnRecyclerScrollListener createPauseOnOnScrollAndFling(Activity context) {
+    public static AppPauseGlideOnRecyclerScrollListener createPauseOnScrollAndFling(Activity context) {
         return new AppPauseGlideOnRecyclerScrollListener(Glide.with(context),
                 true, true);
     }
 
-    public static AppPauseGlideOnRecyclerScrollListener createPauseOnOnScrollAndFling(Fragment fragment) {
+    public static AppPauseGlideOnRecyclerScrollListener createPauseOnScrollAndFling(Fragment fragment) {
         return new AppPauseGlideOnRecyclerScrollListener(Glide.with(fragment),
                 true, true);
     }

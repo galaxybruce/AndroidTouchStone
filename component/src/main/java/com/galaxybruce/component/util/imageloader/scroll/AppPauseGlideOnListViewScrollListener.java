@@ -27,15 +27,15 @@ public class AppPauseGlideOnListViewScrollListener implements AbsListView.OnScro
         return new AppPauseGlideOnListViewScrollListener(Glide.with(fragment), false, true);
     }
 
-    public static AppPauseGlideOnListViewScrollListener createPauseOnOnScrollAndFling(Context context) {
+    public static AppPauseGlideOnListViewScrollListener createPauseOnScrollAndFling(Context context) {
         return new AppPauseGlideOnListViewScrollListener(Glide.with(context), true, true);
     }
 
-    public static AppPauseGlideOnListViewScrollListener createPauseOnOnScrollAndFling(Fragment fragment) {
+    public static AppPauseGlideOnListViewScrollListener createPauseOnScrollAndFling(Fragment fragment) {
         return new AppPauseGlideOnListViewScrollListener(Glide.with(fragment), true, true);
     }
 
-    public static AppPauseGlideOnListViewScrollListener createPauseOnOnScrollAndFling(Context context,
+    public static AppPauseGlideOnListViewScrollListener createPauseOnScrollAndFling(Context context,
                                                                                       AbsListView.OnScrollListener customListener) {
         return new AppPauseGlideOnListViewScrollListener(Glide.with(context), true,
                 true, customListener);

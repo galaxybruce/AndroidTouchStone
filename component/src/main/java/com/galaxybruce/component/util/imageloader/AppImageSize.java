@@ -7,8 +7,9 @@ package com.galaxybruce.component.util.imageloader;
  * <p>
  * Modification  History:
  */
-public enum AppImageSizeType {
+public enum AppImageSize {
     SMALL,  //小 200px以下
     MIDDLE, //中 200px-400px
-    LARGE   //大 400px以上
+    SCREEN, //屏幕大小
+    ORIGINAL   //原图
 }

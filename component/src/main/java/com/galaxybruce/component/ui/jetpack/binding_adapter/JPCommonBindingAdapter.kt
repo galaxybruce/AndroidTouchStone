@@ -6,7 +6,8 @@ import androidx.databinding.BindingAdapter
 import com.blankj.utilcode.util.ClickUtils
 import com.galaxybruce.component.ui.jetpack.JPListDataModel
 import com.galaxybruce.component.ui.view.recyclerview.AppRecyclerView2
-import com.galaxybruce.component.util.imageloader.AppImageLoaderUtilWrapper
+import com.galaxybruce.component.util.imageloader.AppImageLoader
+import com.galaxybruce.component.util.imageloader.AppImageSize
 
 
 /**
@@ -28,25 +29,25 @@ object JPCommonBindingAdapter {
     @BindingAdapter(value = ["binding_image_original_target", "binding_displayOriginalImage", "binding_placeholder"], requireAll = false)
     @JvmStatic
     fun displayOriginalImage(view: ImageView, target: Any?, url: String?, placeholder: Int = 0) {
-        AppImageLoaderUtilWrapper.displayOriginalImage(target, url, view, placeholder, null)
+        AppImageLoader.displayImage(target, view, url, placeholder, AppImageSize.ORIGINAL)
     }
 
     @BindingAdapter(value = ["binding_image_screen_size_target", "binding_displayScreenSizeImage", "binding_placeholder"], requireAll = false)
     @JvmStatic
     fun displayScreenSizeImage(view: ImageView, target: Any?, url: String?, placeholder: Int = 0) {
-        AppImageLoaderUtilWrapper.displayScreenSizeImage(target, url, view, placeholder, null)
+        AppImageLoader.displayImage(target, view, url, placeholder, AppImageSize.SCREEN)
     }
 
     @BindingAdapter(value = ["binding_image_small_target", "binding_displaySmallImage", "binding_placeholder"], requireAll = false)
     @JvmStatic
     fun displaySmallImage(view: ImageView, target: Any?, url: String?, placeholder: Int = 0) {
-        AppImageLoaderUtilWrapper.displaySmallImage(target, url, view, placeholder, null)
+        AppImageLoader.displayImage(target, view, url, placeholder, AppImageSize.SMALL)
     }
 
     @BindingAdapter(value = ["binding_image_middle_target", "binding_displayMiddleImage", "binding_placeholder"], requireAll = false)
     @JvmStatic
     fun displayMiddleImage(view: ImageView, target: Any?, url: String?, placeholder: Int = 0) {
-        AppImageLoaderUtilWrapper.displayMiddleImage(target, url, view, placeholder, null)
+        AppImageLoader.displayImage(target, view, url, placeholder, AppImageSize.MIDDLE)
     }
 
     @BindingAdapter(value = ["binding_selected"])
