@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -36,14 +37,13 @@ public class AppEmptyLayout extends FrameLayout {
     public @interface AppEmptyLayoutState {
     }
 
-    private final Context context;
-    private LinearLayout llContent;
-    private ImageView img;
-    private TextView tvMsg;
+    private LinearLayout contentLayout;
+    private ImageView imgError;
+    private TextView tvError;
     private ProgressBar animProgress;
-    private OnClickListener listener;
+    private OnClickListener retryListener;
 
-    private int mErrorState = HIDE_LAYOUT;
+    private int errorState = NETWORK_LOADING;
     private String strNoDataContent = "";
     private int noDataImage;
 
@@ -53,28 +53,35 @@ public class AppEmptyLayout extends FrameLayout {
 
     public AppEmptyLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
         setClickable(true);
         setBackgroundResource(R.color.windowBackground);
 
         View view = View.inflate(context, R.layout.app_view_error_layout, this);
-        llContent = (LinearLayout) view.findViewById(R.id.ll_content);
-        img = (ImageView) view.findViewById(R.id.img_error_layout);
-        tvMsg = (TextView) view.findViewById(R.id.tv_error_layout);
-        animProgress = (ProgressBar) view.findViewById(R.id.animProgress);
+        contentLayout = (LinearLayout) view.findViewById(R.id.content_layout);
+        imgError = (ImageView) view.findViewById(R.id.img_error);
+        tvError = (TextView) view.findViewById(R.id.tv_error);
+        animProgress = (ProgressBar) view.findViewById(R.id.anim_progress);
 
-        llContent.setOnClickListener(new OnClickListener() {
+        contentLayout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listener != null && !isLoading()) {
-                    listener.onClick(v);
+                if (retryListener != null && errorState != NETWORK_LOADING) {
+                    retryListener.onClick(v);
                 }
             }
         });
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        if (visibility == View.GONE) {
+            errorState = HIDE_LAYOUT;
+        }
+        super.setVisibility(visibility);
     }
 
     public void dismiss() {
@@ -82,65 +89,66 @@ public class AppEmptyLayout extends FrameLayout {
     }
 
     public int getErrorState() {
-        return mErrorState;
+        return errorState;
     }
 
     public boolean isLoadError() {
-        return mErrorState == NETWORK_ERROR;
+        return errorState == NETWORK_ERROR;
     }
 
     public boolean isLoading() {
-        return mErrorState == NETWORK_LOADING;
+        return errorState == NETWORK_LOADING;
     }
 
     public boolean isHide() {
-        return mErrorState == HIDE_LAYOUT;
+        return errorState == HIDE_LAYOUT;
     }
 
     public void setErrorType(@AppEmptyLayoutState int state) {
-        mErrorState = state;
+        errorState = state;
         animate().cancel();
 
         switch (state) {
             case NETWORK_ERROR:
                 if (NetworkUtils.isConnected()) {
-                    tvMsg.setText(R.string.app_error_view_load_error_click_to_refresh);
+                    tvError.setText(R.string.app_error_view_load_error_click_to_refresh);
                 } else {
-                    tvMsg.setText(R.string.app_error_view_network_error_click_to_refresh);
+                    tvError.setText(R.string.app_error_view_network_error_click_to_refresh);
                 }
 //            BBSAttrResolveUtil.resolveAttrBackgroundRes(getContext(), img, R.attr.bbs_load_icon_failed);
-                img.setBackgroundResource(R.drawable.app_data_error_icon);
+                imgError.setBackgroundResource(R.drawable.app_data_error_icon);
 
                 setVisibility(View.VISIBLE);
-                tvMsg.setVisibility(View.VISIBLE);
-                img.setVisibility(View.VISIBLE);
+                tvError.setVisibility(View.VISIBLE);
+                imgError.setVisibility(View.VISIBLE);
                 animProgress.setVisibility(View.GONE);
                 break;
 
             case NETWORK_LOADING:
                 setVisibility(View.VISIBLE);
                 animProgress.setVisibility(View.VISIBLE);
-                img.setVisibility(View.GONE);
-                tvMsg.setVisibility(View.GONE);
+                imgError.setVisibility(View.GONE);
+                tvError.setVisibility(View.GONE);
                 break;
 
             case NO_DATA:
                 setVisibility(View.VISIBLE);
-                img.setVisibility(View.VISIBLE);
-                tvMsg.setVisibility(View.VISIBLE);
+                imgError.setVisibility(View.VISIBLE);
+                tvError.setVisibility(View.VISIBLE);
                 animProgress.setVisibility(View.GONE);
-                setNoDataImage();
-                setTvNoDataContent();
+                updateNoDataImage();
+                updateNoDataContent();
                 break;
 
             case HIDE_LAYOUT:
-//            setVisibility(View.GONE);
                 if (getVisibility() != View.GONE) {
                     animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            setVisibility(View.GONE);
-                            setAlpha(1.0f);
+                            if(errorState == HIDE_LAYOUT) {
+                                setVisibility(View.GONE);
+                                setAlpha(1.0f);
+                            }
                         }
                     }).start();
                 }
@@ -150,21 +158,13 @@ public class AppEmptyLayout extends FrameLayout {
         }
     }
 
-    public void setMessage(String msg) {
-        tvMsg.setText(msg);
-    }
-
-    public void setImage(int imgResource) {
-        img.setBackgroundResource(imgResource);
-    }
-
     public void setNoDataContent(String noDataContent) {
         strNoDataContent = noDataContent;
     }
 
     public void setNoDataTextSize(float sp){
-        if (tvMsg != null) {
-            tvMsg.setTextSize(sp);
+        if (tvError != null) {
+            tvError.setTextSize(sp);
         }
     }
 
@@ -172,43 +172,51 @@ public class AppEmptyLayout extends FrameLayout {
         noDataImage = image;
     }
 
-    public void setOnLayoutClickListener(OnClickListener listener) {
-        this.listener = listener;
+    public void updateNoDataContent(String msg) {
+        tvError.setText(msg);
     }
 
-    public void setTvNoDataContent() {
+    public void updateNoDataContent() {
         if (!TextUtils.isEmpty(strNoDataContent)) {
-            tvMsg.setText(strNoDataContent);
+            tvError.setText(strNoDataContent);
         } else {
-            tvMsg.setText(R.string.app_error_view_no_data);
+            tvError.setText(R.string.app_error_view_no_data);
         }
     }
 
-    public void setNoDataImage() {
+    public void updateNoDataImage(int imgResource) {
+        imgError.setBackgroundResource(imgResource);
+    }
+
+    public void updateNoDataImage() {
         if (noDataImage > 0) {
-            img.setBackgroundResource(noDataImage);
+            imgError.setBackgroundResource(noDataImage);
         } else {
 //            BBSAttrResolveUtil.resolveAttrBackgroundRes(getContext(), img, R.attr.bbs_load_icon_noData);
-            img.setBackgroundResource(R.drawable.app_data_empty_icon);
+            imgError.setBackgroundResource(R.drawable.app_data_empty_icon);
         }
     }
 
-    @Override
-    public void setVisibility(int visibility) {
-        if (visibility == View.GONE) {
-            mErrorState = HIDE_LAYOUT;
-        }
-        super.setVisibility(visibility);
-    }
-
-    public void setContentGravity(int gravity, int topMargin) {
-        LayoutParams params = (LayoutParams) llContent.getLayoutParams();
-        params.gravity = gravity;
+    /**
+     * 设置内容距离顶部大小
+     * @param topMargin
+     */
+    public void setContentTopMargin(int topMargin) {
+        LayoutParams params = (LayoutParams) contentLayout.getLayoutParams();
+        params.gravity = Gravity.TOP;
         params.topMargin = topMargin;
     }
 
-    public void setContentClickable(boolean clickable) {
-        llContent.setClickable(clickable);
+    /**
+     * 设置内容居中
+     */
+    public void setContentCenter() {
+        LayoutParams params = (LayoutParams) contentLayout.getLayoutParams();
+        params.gravity = Gravity.CENTER;
+    }
+
+    public void setRetryClickListener(OnClickListener listener) {
+        this.retryListener = listener;
     }
 
 }

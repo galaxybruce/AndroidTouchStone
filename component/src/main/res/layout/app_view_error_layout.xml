@@ -4,32 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <LinearLayout android:id="@+id/ll_content"
+    <LinearLayout android:id="@+id/content_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="100pt"
         android:layout_gravity="center"
         tools:background="@android:color/white"
-        android:clickable="true"
         android:gravity="center"
         android:orientation="vertical" >
 
         <ImageView
-            android:id="@+id/img_error_layout"
+            android:id="@+id/img_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/app_data_error_icon"
-            tools:visibility="visible"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <ProgressBar
-            android:id="@+id/animProgress"
+            android:id="@+id/anim_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Style_Loading" />
 
         <TextView
-            android:id="@+id/tv_error_layout"
+            android:id="@+id/tv_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10pt"

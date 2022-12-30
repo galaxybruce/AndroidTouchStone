@@ -39,7 +39,7 @@ public class AppRecyclerView2<T> extends AbsAppRecyclerView<SmartRefreshLayout, 
 
     @Override
     protected void initRefreshView() {
-        mSwipeRefreshLayout = (SmartRefreshLayout)findViewById(R.id.srl_layout);
+        mSwipeRefreshLayout = (SmartRefreshLayout)findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setEnableLoadMore(false);
         if(mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.setOnRefreshListener(this);

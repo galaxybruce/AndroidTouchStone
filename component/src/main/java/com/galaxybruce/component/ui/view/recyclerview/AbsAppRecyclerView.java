@@ -130,7 +130,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         setPadding(0, 0, 0, 0);
 
         if (mErrorLayout != null) {
-            mErrorLayout.setOnLayoutClickListener(new OnClickListener() {
+            mErrorLayout.setRetryClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(clickRefreshEnable) {
@@ -509,9 +509,9 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         return this;
     }
 
-    public AbsAppRecyclerView<V, T> setEmptyLayoutGravity(int gravity, int topMargin) {
+    public AbsAppRecyclerView<V, T> setEmptyContentTopMargin(int topMargin) {
         if(mErrorLayout != null) {
-            mErrorLayout.setContentGravity(gravity, topMargin);
+            mErrorLayout.setContentTopMargin(topMargin);
         }
         return this;
     }
