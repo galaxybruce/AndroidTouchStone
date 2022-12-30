@@ -206,7 +206,7 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
      * @return
      */
     private boolean showLoadMoreView() {
-        return loadMoreParams != null && loadMoreParams.showLoadMoreView();
+        return loadMoreParams == null || loadMoreParams.showLoadMoreView();
     }
 
     /**
@@ -215,7 +215,7 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
      * @return
      */
     private boolean showNoMoreView() {
-        return loadMoreParams != null && loadMoreParams.showNoMoreView();
+        return loadMoreParams == null || loadMoreParams.showNoMoreView();
     }
 
     /**

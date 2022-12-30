@@ -22,7 +22,7 @@ interface IAppRecyclerView<T> {
 
     int getCurrentPage();
 
-    void setCurrentPage(int mCurrentPage);
+    void setCurrentPage(int currentPage);
 
     int getPageSize();
 
@@ -30,11 +30,11 @@ interface IAppRecyclerView<T> {
 
     void setSwipeRefreshLoadedState();
 
-    void setState(int mState);
-
-    AbsAppRecyclerView.AppRequestListener getRequestListener();
+    void setState(int state);
 
     AbsAppRecyclerView.AppLoadMoreParams getLoadMoreParams();
+
+    AbsAppRecyclerView.AppRequestListener getRequestListener();
 
     AppRecyclerViewExecuteListener<T> getExecuteListener();
 

@@ -41,8 +41,7 @@ public class AppListFooterView extends LinearLayout {
         init(context);
     }
 
-    private void init(final Context context)
-    {
+    private void init(final Context context) {
         _loadMoreText = R.string.loading_more;
         _loadFinishText = R.string.loading_no_more;
         _noDateText = R.string.loading_no_data;

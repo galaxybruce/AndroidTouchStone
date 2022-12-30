@@ -60,10 +60,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends RelativeLayout
         implements IAppRecyclerView<T> {
 
-    public int mState = AppLoadDataState.STATE_NONE;
-    protected int mCurrentPage = 0;
-    protected int mPageSize = 10;
-
     protected V mSwipeRefreshLayout;
 
     protected RecyclerView mRecyclerView;
@@ -71,6 +67,9 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
     protected AppRecyclerLoadMoreAdapter<T> mAdapter;
     protected AppEmptyLayout mErrorLayout;
 
+    protected int mState = AppLoadDataState.STATE_NONE;
+    protected int mCurrentPage = 0;
+    protected int mPageSize = 10;
     boolean requestDataIfViewCreated = true;
     boolean isTimeRefresh = false;
     boolean needShowEmptyNoData = true;
@@ -302,41 +301,45 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         @Override
         public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (mAdapter == null || mAdapter.getItemCount() == 0 || !loadMoreParams.needLoadMore()) {
-                return;
-            }
-            // 数据已经全部加载，或数据为空时，或正在加载，不处理滚动事件
-            if (mState == AppLoadDataState.STATE_LOAD_MORE || mState == AppLoadDataState.STATE_REFRESH) {
-                return;
-            }
-            // 判断是否滚动到底部
-            boolean scrollEnd = false;
-            try {
-                int lastVisibleItem = ItemsPositionHelper.getLastVisiblePosition(recyclerView);
-                if(loadMoreParams.showLoadMoreView()) {
-                    if (recyclerView.getChildAdapterPosition(mAdapter.getFooterView()) == lastVisibleItem) {
-                        scrollEnd = true;
-                    }
-                } else {
-                    if (mAdapter.getItemCount() - 3 >= 0 && lastVisibleItem > mAdapter.getItemCount() - 3) {
-                        scrollEnd = true;
-                    }
-                }
-            } catch (Exception e) {
-                scrollEnd = false;
-            }
-
-            if (mState == AppLoadDataState.STATE_NONE && scrollEnd) {
-                if (mAdapter.getState() == AppListAdapterLoadDataState.STATE_LOAD_MORE
-                        || mAdapter.getState() == AppListAdapterLoadDataState.STATE_NETWORK_ERROR) {
-                    mCurrentPage++;
-                    mState = AppLoadDataState.STATE_LOAD_MORE;
-                    requestListener.sendRequestLoadMoreData(getCurrentPage());
-                    mAdapter.setFooterViewLoading();
-                }
-            }
+            handleScrollListener(recyclerView);
         }
     };
+
+    public void handleScrollListener(RecyclerView recyclerView) {
+        if (mAdapter == null || mAdapter.getItemCount() == 0 || !loadMoreParams.needLoadMore()) {
+            return;
+        }
+        // 数据已经全部加载，或数据为空时，或正在加载，不处理滚动事件
+        if (mState == AppLoadDataState.STATE_LOAD_MORE || mState == AppLoadDataState.STATE_REFRESH) {
+            return;
+        }
+        // 判断是否滚动到底部
+        boolean scrollEnd = false;
+        try {
+            int lastVisibleItem = ItemsPositionHelper.getLastVisiblePosition(recyclerView);
+            if(loadMoreParams.showLoadMoreView()) {
+                if (recyclerView.getChildAdapterPosition(mAdapter.getFooterView()) == lastVisibleItem) {
+                    scrollEnd = true;
+                }
+            } else {
+                if (mAdapter.getItemCount() - 3 >= 0 && lastVisibleItem > mAdapter.getItemCount() - 3) {
+                    scrollEnd = true;
+                }
+            }
+        } catch (Exception e) {
+            scrollEnd = false;
+        }
+
+        if (mState == AppLoadDataState.STATE_NONE && scrollEnd) {
+            if (mAdapter.getState() == AppListAdapterLoadDataState.STATE_LOAD_MORE
+                    || mAdapter.getState() == AppListAdapterLoadDataState.STATE_NETWORK_ERROR) {
+                mCurrentPage++;
+                mState = AppLoadDataState.STATE_LOAD_MORE;
+                requestListener.sendRequestLoadMoreData(getCurrentPage());
+                mAdapter.setFooterViewLoading();
+            }
+        }
+    }
 
     public void onRefreshImpl(V refreshView) {
         if (mState == AppLoadDataState.STATE_REFRESH) {
@@ -417,12 +420,12 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
     }
 
     @Override
-    public void setState(int mState) {
-        this.mState = mState;
+    public void setState(int state) {
+        this.mState = state;
     }
 
-    public AbsAppRecyclerView<V, T> setPageSize(int mPageSize) {
-        this.mPageSize = mPageSize;
+    public AbsAppRecyclerView<V, T> setPageSize(int pageSize) {
+        this.mPageSize = pageSize;
         return this;
     }
 
@@ -532,13 +535,13 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         return this;
     }
 
-    public AbsAppRecyclerView<V, T> setRequestListener(AppRequestListener requestListener) {
-        this.requestListener = requestListener;
+    public AbsAppRecyclerView<V, T> setAppLoadMoreParams(AppLoadMoreParams loadMoreParams) {
+        this.loadMoreParams = loadMoreParams;
         return this;
     }
 
-    public AbsAppRecyclerView<V, T> setAppLoadMoreParams(AppLoadMoreParams loadMoreParams) {
-        this.loadMoreParams = loadMoreParams;
+    public AbsAppRecyclerView<V, T> setRequestListener(AppRequestListener requestListener) {
+        this.requestListener = requestListener;
         return this;
     }
 
@@ -548,13 +551,13 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
     }
 
     @Override
-    public AppRequestListener getRequestListener() {
-        return requestListener;
+    public AppLoadMoreParams getLoadMoreParams() {
+        return loadMoreParams;
     }
 
     @Override
-    public AppLoadMoreParams getLoadMoreParams() {
-        return loadMoreParams;
+    public AppRequestListener getRequestListener() {
+        return requestListener;
     }
 
     @Override
