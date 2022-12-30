@@ -23,8 +23,8 @@ import com.galaxybruce.component.R;
  */
 public class AppImageLoader {
 
-    public static void displayImage(Object target, ImageView imageView, String uri) {
-        displayImage(target, imageView, uri, R.drawable.app_default_placeholder, AppImageSize.ORIGINAL);
+    public static void displayImage(Object target, ImageView imageView, String uri, AppImageSize imageSize) {
+        displayImage(target, imageView, uri, R.drawable.app_default_placeholder, imageSize);
     }
 
     /**
