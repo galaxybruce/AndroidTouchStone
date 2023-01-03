@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.galaxybruce.component.ui.view.recyclerview.AbsAppRecyclerView;
+import com.galaxybruce.component.ui.view.recyclerview.AppLoadMoreParams;
 
 import androidx.annotation.NonNull;
 import androidx.collection.SparseArrayCompat;
@@ -30,7 +31,7 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
 
     protected int state = AppListAdapterLoadDataState.STATE_DEFAULT;
 
-    private AbsAppRecyclerView.AppLoadMoreParams loadMoreParams;
+    private AppLoadMoreParams loadMoreParams;
 
     public void setState(int state) {
         this.state = state;
@@ -40,7 +41,7 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
         return this.state;
     }
 
-    public void setLoadMoreParams(@NonNull AbsAppRecyclerView.AppLoadMoreParams loadMoreParams) {
+    public void setLoadMoreParams(@NonNull AppLoadMoreParams loadMoreParams) {
         this.loadMoreParams = loadMoreParams;
     }
 
@@ -205,8 +206,8 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
      * 分页加载是否显示"加载更多"View。有的分页是滑到快到底部时，自动加载更多，则不需要显示"加载更多"View
      * @return
      */
-    private boolean showLoadMoreView() {
-        return loadMoreParams == null || loadMoreParams.showLoadMoreView();
+    public boolean showLoadMoreView() {
+        return loadMoreParams == null || loadMoreParams.getShowLoadMoreView();
     }
 
     /**
@@ -214,16 +215,16 @@ public class AppRecyclerLoadMoreAdapter<T> extends AppBaseRecyclerAdapter<T> {
      *
      * @return
      */
-    private boolean showNoMoreView() {
-        return loadMoreParams == null || loadMoreParams.showNoMoreView();
+    public boolean showNoMoreView() {
+        return loadMoreParams == null || loadMoreParams.getShowNoMoreView();
     }
 
     /**
      * 加载更多的背景
      * @return
      */
-    private Drawable loadMoreBg() {
-        return loadMoreParams != null ? loadMoreParams.loadMoreBg() : null;
+    public Drawable loadMoreBg() {
+        return loadMoreParams != null ? loadMoreParams.getLoadMoreViewBg() : null;
     }
 
     protected static class FooterHolder extends RecyclerView.ViewHolder {

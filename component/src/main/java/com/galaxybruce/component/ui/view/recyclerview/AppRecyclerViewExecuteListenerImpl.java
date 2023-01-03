@@ -58,7 +58,7 @@ public class AppRecyclerViewExecuteListenerImpl<T> implements AppRecyclerViewExe
             appRecyclerView.setCurrentPage(appRecyclerView.getCurrentPage() - 1);
         }
 
-        if (appRecyclerView.getLoadMoreParams().needLoadMore()) {
+        if (appRecyclerView.getLoadMoreParams().getNeedLoadMore()) {
             int adapterState = AppListAdapterLoadDataState.STATE_DEFAULT;
             if (adapter.getDataSize() == 0) {
                 adapterState = AppListAdapterLoadDataState.STATE_EMPTY_ITEM;

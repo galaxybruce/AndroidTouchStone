@@ -151,22 +151,8 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
             return;
         }
         if(loadMoreParams == null) {
-            loadMoreParams = new AppLoadMoreParams() {
-                @Override
-                public boolean needLoadMore() {
-                    return AppLoadMoreParams.super.needLoadMore();
-                }
-
-                @Override
-                public boolean showLoadMoreView() {
-                    return AppLoadMoreParams.super.showLoadMoreView();
-                }
-
-                @Override
-                public boolean showNoMoreView() {
-                    return AppLoadMoreParams.super.showNoMoreView();
-                }
-            };
+            loadMoreParams = new AppLoadMoreParams(
+                    true, mAdapter.showLoadMoreView(), mAdapter.showNoMoreView(), mAdapter.loadMoreBg());
         }
         if(requestListener == null){
             requestListener = new AppRequestListener() {
@@ -285,7 +271,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
                 mState = AppLoadDataState.STATE_LOAD_MORE;
                 requestListener.sendRequestLoadMoreData(getCurrentPage());
                 mAdapter.setState(AppListAdapterLoadDataState.STATE_FORCE_LOAD_MORE);
-                if(loadMoreParams.showLoadMoreView() || loadMoreParams.showNoMoreView()) {
+                if(loadMoreParams.getShowLoadMoreView() || loadMoreParams.getShowNoMoreView()) {
                     if(mAdapter.isFooterView(mAdapter.getItemCount() - 1)) {
                         mAdapter.notifyItemChanged(mAdapter.getItemCount() - 1);
                     } else {
@@ -306,7 +292,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
     };
 
     public void handleScrollListener(RecyclerView recyclerView) {
-        if (mAdapter == null || mAdapter.getItemCount() == 0 || !loadMoreParams.needLoadMore()) {
+        if (mAdapter == null || mAdapter.getItemCount() == 0 || !loadMoreParams.getNeedLoadMore()) {
             return;
         }
         // 数据已经全部加载，或数据为空时，或正在加载，不处理滚动事件
@@ -317,7 +303,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         boolean scrollEnd = false;
         try {
             int lastVisibleItem = ItemsPositionHelper.getLastVisiblePosition(recyclerView);
-            if(loadMoreParams.showLoadMoreView()) {
+            if(loadMoreParams.getShowLoadMoreView()) {
                 if (recyclerView.getChildAdapterPosition(mAdapter.getFooterView()) == lastVisibleItem) {
                     scrollEnd = true;
                 }
@@ -424,11 +410,6 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         this.mState = state;
     }
 
-    public AbsAppRecyclerView<V, T> setPageSize(int pageSize) {
-        this.mPageSize = pageSize;
-        return this;
-    }
-
     @Override
     public boolean needShowEmptyNoData() {
         return needShowEmptyNoData;
@@ -467,6 +448,11 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
     public AbsAppRecyclerView<V, T> setInitPage(int initPage) {
         this.mDefaultPage = initPage;
         this.mCurrentPage = initPage;
+        return this;
+    }
+
+    public AbsAppRecyclerView<V, T> setPageSize(int pageSize) {
+        this.mPageSize = pageSize;
         return this;
     }
 
@@ -535,7 +521,7 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
         return this;
     }
 
-    public AbsAppRecyclerView<V, T> setAppLoadMoreParams(AppLoadMoreParams loadMoreParams) {
+    public AbsAppRecyclerView<V, T> setLoadMoreParams(AppLoadMoreParams loadMoreParams) {
         this.loadMoreParams = loadMoreParams;
         return this;
     }
@@ -587,38 +573,6 @@ public abstract class AbsAppRecyclerView<V extends ViewGroup, T> extends Relativ
          * */
         default void sendRequestLoadMoreData(int page) {
 
-        }
-    }
-
-    public interface AppLoadMoreParams {
-        /**
-         * 是否需要分页。分页时加载更多数据时，是否显示"加载更多"View通过showLoadMoreView()控制
-         *
-         * @return
-         */
-        default boolean needLoadMore() {
-            return true;
-        }
-
-        /**
-         * 分页加载是否显示"加载更多"View。有的分页是滑到快到底部时，自动加载更多，则不需要显示"加载更多"View
-         * @return
-         */
-        default boolean showLoadMoreView() {
-            return true;
-        }
-
-        /**
-         * 是否显示"没有更多数据"View
-         *
-         * @return
-         */
-        default boolean showNoMoreView() {
-            return true;
-        }
-
-        default Drawable loadMoreBg() {
-            return null;
         }
     }
 

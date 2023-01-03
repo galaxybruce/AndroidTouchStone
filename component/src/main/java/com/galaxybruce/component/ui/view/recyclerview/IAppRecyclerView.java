@@ -32,7 +32,7 @@ interface IAppRecyclerView<T> {
 
     void setState(int state);
 
-    AbsAppRecyclerView.AppLoadMoreParams getLoadMoreParams();
+    AppLoadMoreParams getLoadMoreParams();
 
     AbsAppRecyclerView.AppRequestListener getRequestListener();
 
