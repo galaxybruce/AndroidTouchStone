@@ -75,7 +75,7 @@ public class AppRecyclerViewExecuteListenerImpl<T> implements AppRecyclerViewExe
         }
         adapter.notifyDataSetChanged();
 
-        if (adapter.getItemCount() == 0) {
+        if ((adapter.getDataSize() + adapter.getHeaderViewCount()) == 0) {
             if (appRecyclerView.needShowEmptyNoData()) {
                 if (emptyLayout != null) {
                     emptyLayout.setErrorType(AppEmptyLayout.NO_DATA);
