@@ -18,10 +18,26 @@ import com.galaxybruce.component.ui.dialog.AppConfirmDialog
  */
 object AppPermissionHelper {
 
-    fun request(
+    /**
+     * 申请一类权限
+     * @param permissions PermissionConstants.PermissionGroup 自定义的常量
+     */
+    fun requestGroup(
         context: Context,
         callback: PermissionUtils.SimpleCallback,
         @PermissionConstants.PermissionGroup vararg permissions: String
+    ) {
+        request(context, callback, *permissions)
+    }
+
+    /**
+     * 申请具体某个权限
+     * @param permissions Manifest.permission.xxxx
+     */
+    fun request(
+        context: Context,
+        callback: PermissionUtils.SimpleCallback,
+        vararg permissions: String
     ) {
         PermissionUtils.permission(*permissions)
             .rationale { activity, shouldRequest -> showRationaleDialog(activity, shouldRequest) }

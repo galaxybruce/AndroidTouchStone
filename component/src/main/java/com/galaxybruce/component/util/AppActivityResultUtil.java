@@ -1,10 +1,12 @@
 package com.galaxybruce.component.util;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.MotionEvent;
 
 import com.blankj.utilcode.constant.PermissionConstants;
@@ -153,7 +155,19 @@ public class AppActivityResultUtil {
    public static void openDocument(Activity activity,
                                    String[] mineTypes,
                                    @NonNull final ActivityResultCallback<Uri> callback) {
-      openActivity(activity, mineTypes, new ActivityResultContracts.OpenDocument(), callback);
+      AppPermissionHelper.INSTANCE.request(activity,
+              new PermissionUtils.SimpleCallback() {
+                 @Override
+                 public void onGranted() {
+                    openActivity(activity, mineTypes, new ActivityResultContracts.OpenDocument(), callback);
+                 }
+
+                 @Override
+                 public void onDenied() {
+
+                 }
+              },
+              PermissionConstants.STORAGE);
    }
 
    /**
@@ -182,7 +196,19 @@ public class AppActivityResultUtil {
    public static void createDocument(Activity activity,
                                      String fileName,
                                      @NonNull final ActivityResultCallback<Uri> callback) {
-      openActivity(activity, fileName, new ActivityResultContracts.CreateDocument(), callback);
+       AppPermissionHelper.INSTANCE.request(activity,
+               new PermissionUtils.SimpleCallback() {
+                   @Override
+                   public void onGranted() {
+                       openActivity(activity, fileName, new ActivityResultContracts.CreateDocument(), callback);
+                   }
+
+                   @Override
+                   public void onDenied() {
+
+                   }
+               },
+               PermissionConstants.STORAGE);
    }
 
    /**
@@ -208,9 +234,7 @@ public class AppActivityResultUtil {
                     new ActivityResultCallback<Boolean>() {
                        @Override
                        public void onActivityResult(Boolean result) {
-                          if(result != null && result) {
-                             callback.onActivityResult(outputUri);
-                          }
+                           callback.onActivityResult(result != null && result ? outputUri : null);
                        }
                     });
          }
@@ -222,34 +246,57 @@ public class AppActivityResultUtil {
       }, PermissionConstants.CAMERA);
    }
 
-   /**
-    * 拍视频
-    * @param activity
-    * @param outputPath
-    * @param callback
-    */
-   public static void takeVideo(Activity activity,
-                                @NonNull String outputPath,
-                                @NonNull final ActivityResultCallback<Uri> callback) {
-      AppPermissionHelper.INSTANCE.request(activity, new PermissionUtils.SimpleCallback() {
-         @Override
-         public void onGranted() {
-            Uri outputUri = AppFileProvider.getUriForFile(activity, new File(outputPath));
-            openActivity(activity, outputUri, new ActivityResultContracts.TakeVideo(),
-                    new ActivityResultCallback<Bitmap>() {
-                       @Override
-                       public void onActivityResult(Bitmap result) {
-                          callback.onActivityResult(outputUri);
-                       }
-                    });
-         }
+    /**
+     * 拍视频
+     * @param activity
+     * @param outputPath
+     * @param callback
+     */
+    public static void takeVideo(Activity activity,
+                                 @NonNull String outputPath,
+                                 @NonNull final ActivityResultCallback<Uri> callback) {
+        takeVideo(activity, outputPath, Integer.MAX_VALUE, callback);
+    }
 
-         @Override
-         public void onDenied() {
+    /**
+     * 拍视频
+     * @param activity
+     * @param outputPath
+     * @param duration 时长，单位：秒
+     * @param callback
+     */
+    public static void takeVideo(Activity activity,
+                                 @NonNull String outputPath,
+                                 int duration,
+                                 @NonNull final ActivityResultCallback<Uri> callback) {
+        AppPermissionHelper.INSTANCE.request(activity, new PermissionUtils.SimpleCallback() {
+            @Override
+            public void onGranted() {
+                Uri outputUri = AppFileProvider.getUriForFile(activity, new File(outputPath));
+                openActivity(activity, outputUri,
+                        new ActivityResultContracts.TakeVideo() {
+                            @NonNull
+                            @Override
+                            public Intent createIntent(@NonNull Context context, @NonNull Uri input) {
+                                Intent intent = super.createIntent(context, input);
+                                intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, duration);
+                                return intent;
+                            }
+                        },
+                        new ActivityResultCallback<Bitmap>() {
+                            @Override
+                            public void onActivityResult(Bitmap result) {
+                                callback.onActivityResult(new File(outputPath).exists() ? outputUri : null);
+                            }
+                        });
+            }
 
-         }
-      }, PermissionConstants.CAMERA);
-   }
+            @Override
+            public void onDenied() {
+
+            }
+        }, PermissionConstants.CAMERA);
+    }
 
    public static class AppActivityResultCallbackWrapper<O> implements ActivityResultCallback<O>, Serializable {
       private final ActivityResultCallback<O> activityResultCallback;
