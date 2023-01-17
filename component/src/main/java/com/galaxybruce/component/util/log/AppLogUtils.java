@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.elvishew.xlog.LogConfiguration;
 import com.elvishew.xlog.LogLevel;
 import com.elvishew.xlog.XLog;
-import com.galaxybruce.component.util.debug.AppDebugLogDialog;
 import com.galaxybruce.component.util.debug.AppDebugLogManager;
 
 public class AppLogUtils {

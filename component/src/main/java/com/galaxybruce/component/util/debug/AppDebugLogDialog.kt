@@ -127,6 +127,18 @@ class AppDebugLogDialog : JPBaseFragment<AppDebugLogDialogBinding>() {
      */
     inner class ClickProxy {
 
+        fun expandCollapseEvent() {
+            if(binding.tvExpandCollapse.text == "expand") {
+                binding.tvExpandCollapse.text = "collapse"
+                binding.menuLayout.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.VISIBLE
+            } else {
+                binding.tvExpandCollapse.text = "expand"
+                binding.menuLayout.visibility = View.GONE
+                binding.recyclerView.visibility = View.GONE
+            }
+        }
+
         fun showDeviceInfoEvent() {
             val screenWidth = ScreenUtils.getAppScreenWidth()
             val screenHeight = ScreenUtils.getAppScreenHeight()
@@ -140,7 +152,7 @@ class AppDebugLogDialog : JPBaseFragment<AppDebugLogDialogBinding>() {
         fun showCrashLogEvent() {
             AppBigDataCacheManager.loadCacheStringAsync(null, AppCrashHandler.APP_CRASH_LOG_KEY, false)
                 .subscribe({
-                    AppDebugLogManager.pushLog("奔溃日志：\n\n $it")
+                    AppDebugLogManager.pushLog("crash日志：\n\n $it")
                 }, {
 
                 })
@@ -152,7 +164,7 @@ class AppDebugLogDialog : JPBaseFragment<AppDebugLogDialogBinding>() {
 
         fun clearLogEvent() {
             mPageViewModel.listData.clear()
-            binding.recyclerView.adapter!!.notifyDataSetChanged()
+            binding.recyclerView.adapter?.notifyDataSetChanged()
             AppDebugLogManager.clear()
         }
     }

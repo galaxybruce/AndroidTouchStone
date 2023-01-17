@@ -15,7 +15,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#A0000000"
         >
 
         <androidx.recyclerview.widget.RecyclerView
@@ -27,16 +26,41 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="20pt"
+            android:background="#A0000000"
             />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="100pt"
+            />
+
+        <TextView
+            android:id="@+id/tv_expand_collapse"
+            android:layout_width="150pt"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guide_h"
+            android:layout_marginEnd="10pt"
+            android:background="#300099cc"
+            android:paddingTop="20pt"
+            android:paddingBottom="20pt"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:textSize="30pt"
+            android:textColor="#50FFFFFF"
+            android:onClick="@{() -> click.expandCollapseEvent()}"
+            android:text="collapse"/>
 
         <LinearLayout android:id="@+id/menu_layout"
             android:layout_width="150pt"
-            android:layout_height="0pt"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="100pt"
+            app:layout_constraintTop_toBottomOf="@id/tv_expand_collapse"
+            android:layout_marginEnd="10pt"
             >
 
             <TextView
@@ -45,7 +69,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20pt"
                 android:background="#300099cc"
-                android:padding="20pt"
+                android:paddingTop="20pt"
+                android:paddingBottom="20pt"
                 android:includeFontPadding="false"
                 android:gravity="center"
                 android:textSize="30pt"
@@ -59,7 +84,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20pt"
                 android:background="#300099cc"
-                android:padding="20pt"
+                android:paddingTop="20pt"
+                android:paddingBottom="20pt"
                 android:includeFontPadding="false"
                 android:gravity="center"
                 android:textSize="30pt"
@@ -73,7 +99,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20pt"
                 android:background="#300099cc"
-                android:padding="20pt"
+                android:paddingTop="20pt"
+                android:paddingBottom="20pt"
                 android:includeFontPadding="false"
                 android:gravity="center"
                 android:textSize="30pt"
@@ -87,7 +114,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20pt"
                 android:background="#300099cc"
-                android:padding="20pt"
+                android:paddingTop="20pt"
+                android:paddingBottom="20pt"
                 android:includeFontPadding="false"
                 android:gravity="center"
                 android:textSize="30pt"

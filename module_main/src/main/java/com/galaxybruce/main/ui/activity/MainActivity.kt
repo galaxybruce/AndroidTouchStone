@@ -1,7 +1,6 @@
 package com.galaxybruce.main.ui.activity
 
 import android.os.Bundle
-import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.ui.dialog.AppConfirmDialog
@@ -44,7 +43,7 @@ class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
     inner class ClickProxy {
 
         fun onImageClick() {
-            AppConfirmDialog.getInstance("提示",
+            AppConfirmDialog.create("提示",
                 "哈哈哈哈",
                 false,
                 object : AppConfirmDialog.AppConfirmDialogCallback {

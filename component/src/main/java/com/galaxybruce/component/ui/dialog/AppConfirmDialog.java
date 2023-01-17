@@ -102,8 +102,8 @@ public class AppConfirmDialog extends AppCustomConfirmDialog {
         }
     }
 
-    public static AppConfirmDialog getInstance(String title, String message,
-                                               boolean cancelable, AppConfirmDialogCallback callback) {
+    public static AppConfirmDialog create(String title, String message,
+                                          boolean cancelable, AppConfirmDialogCallback callback) {
         return new AppConfirmDialog.Builder()
                 .setTitle(title)
                 .setMessage(message)
