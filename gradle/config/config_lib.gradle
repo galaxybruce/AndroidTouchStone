@@ -27,6 +27,11 @@ android {
                 arguments = [AROUTER_MODULE_NAME: project.getName()]
             }
         }
+
+        // 每个module可以单独设置manifestPlaceholders
+        manifestPlaceholders = [
+            "MODULE_NAME"                  : "${project.getName()}"
+        ]
     }
 
     buildTypes {

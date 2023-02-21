@@ -77,8 +77,9 @@ android {
         }
 
         manifestPlaceholders = [
-                "APP_NAME"                  : "${rootProject.appName}",
-                "APP_CODE"                  : "${rootProject.appCode}",
+            "APP_NAME"                  : "${rootProject.appName}",
+            "APP_CODE"                  : "${rootProject.appCode}",
+            "MODULE_NAME"               : "${project.getName()}"
         ]
     }
 
