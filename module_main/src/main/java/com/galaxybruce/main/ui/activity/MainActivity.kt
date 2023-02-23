@@ -2,6 +2,7 @@ package com.galaxybruce.main.ui.activity
 
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.billy.cc.core.component.CC
 import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.ui.dialog.AppConfirmDialog
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
@@ -55,7 +56,13 @@ class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
                         showToast("ok== ${mPageViewModel.n.set(mPageViewModel.n.get() ?: 0 + 1)}")                    }
                 })
                 .show(mActivity, "aaa")
+        }
 
+        fun onComponentClick() {
+            CC.obtainBuilder("SampleComponent")
+                .setActionName("showToast")
+                .build()
+                .call()
         }
     }
 

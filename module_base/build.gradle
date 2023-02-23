@@ -5,6 +5,7 @@ apply {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    api rootProject.ext.dep.cc
     api project(':component')
 }
 

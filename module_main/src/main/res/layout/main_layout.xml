@@ -37,5 +37,19 @@
             android:onClick="@{() -> click.onImageClick()}"
             />
 
+        <TextView
+            android:id="@+id/tv_component"
+            android:layout_width="200pt"
+            android:layout_height="200pt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image"
+            android:layout_marginTop="20pt"
+            android:includeFontPadding="false"
+            android:textSize="30pt"
+            android:textColor="@color/theme_text_color_1"
+            android:text="跨模块通信"
+            android:onClick="@{() -> click.onComponentClick()}"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

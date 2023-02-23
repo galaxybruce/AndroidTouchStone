@@ -5,7 +5,7 @@ apply {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(':component')
+    implementation project(':module_base')
 }
 
 

@@ -2,6 +2,9 @@ apply {
     from "${rootDir.path}/gradle/config/config_app.gradle"
 }
 
+//开启app内部多进程组件调用
+ccregister.multiProcessEnabled = true
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

@@ -2,6 +2,7 @@ package com.galaxybruce.touchstone.task;
 
 import android.app.Application;
 
+import com.billy.cc.core.component.CC;
 import com.effective.android.anchors.Process;
 import com.effective.android.anchors.Task;
 import com.galaxybruce.component.proguard.IProguardKeeper;
@@ -30,10 +31,35 @@ public class InitNecessaryTask_All_Process extends Task implements IProguardKeep
     @Override
     protected void run(String name, Application application) {
         initLog();
+        initCC();
     }
 
     private void initLog() {
         AppLogUtils.init(BuildConfig.DEBUG, null);
+    }
+
+    /**
+     * 初始化组件间通信库
+     */
+    private void initCC() {
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        // 半自动注册使用方法：
+        //  1. 需要注册的组件的module/build.gradle中添加
+        //        manifestPlaceholders = [
+        //                "MODULE_NAME"                  : "${project.getName()}"
+        //        ]
+        //  2. 创建模块内注册类：
+        //  如demo中的com.billy.cc.demo.register.DemoCCRegister
+        //  3. 在module/AndroidManifest.xml中把第二步创建的类注册到meta-data中
+        //  key都是一样的
+        //  <meta-data
+        //    android:name="com.galaxybruce.component.interface.${MODULE_NAME}"
+        //    android:value="com.billy.cc.demo.register.DemoCCRegister"/>
+        //
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        CC.enableVerboseLog(BuildConfig.DEBUG);
+        CC.enableDebug(BuildConfig.DEBUG);
+        CC.enableRemoteCC(false);
     }
 
 }
