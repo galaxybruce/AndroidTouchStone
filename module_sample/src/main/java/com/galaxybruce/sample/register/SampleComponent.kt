@@ -1,4 +1,4 @@
-package com.galaxybruce.sample.interface_register
+package com.galaxybruce.sample.register
 
 import com.billy.cc.core.component.CC
 import com.billy.cc.core.component.CCResult

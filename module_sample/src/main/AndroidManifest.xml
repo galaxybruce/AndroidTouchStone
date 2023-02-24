@@ -7,7 +7,7 @@
 
         <meta-data
             android:name="com.galaxybruce.component.interface.${MODULE_NAME}"
-            android:value="com.galaxybruce.sample.interface_register.SampleCCRegister"/>
+            android:value="com.galaxybruce.sample.register.SampleRegister"/>
 
     </application>
 
