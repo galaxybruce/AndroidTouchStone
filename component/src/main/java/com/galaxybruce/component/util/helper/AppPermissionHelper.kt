@@ -22,6 +22,7 @@ object AppPermissionHelper {
      * 申请一类权限
      * @param permissions PermissionConstants.PermissionGroup 自定义的常量
      */
+    @JvmStatic
     fun requestGroup(
         context: Context,
         callback: PermissionUtils.SimpleCallback,
@@ -34,6 +35,7 @@ object AppPermissionHelper {
      * 申请具体某个权限
      * @param permissions Manifest.permission.xxxx
      */
+    @JvmStatic
     fun request(
         context: Context,
         callback: PermissionUtils.SimpleCallback,
@@ -79,6 +81,7 @@ object AppPermissionHelper {
             .request()
     }
 
+    @JvmStatic
     fun showRationaleDialog(
         context: Context,
         shouldRequest: PermissionUtils.OnRationaleListener.ShouldRequest
@@ -99,6 +102,7 @@ object AppPermissionHelper {
             .show(context, null)
     }
 
+    @JvmStatic
     fun showExplainDialog(
         context: Context,
         denied: List<String>,
@@ -120,6 +124,7 @@ object AppPermissionHelper {
             .show(context, null)
     }
 
+    @JvmStatic
     fun showOpenAppSettingDialog(context: Context) {
         AppConfirmDialog.Builder()
             .setTitle(StringUtils.getString(R.string.dialog_text_alert_title))

@@ -28,11 +28,12 @@ object AppPrivacyUtil {
      */
     var NEED_CHECK_PRIVACY: Boolean = true
 
+    @JvmStatic
     fun getCurProcessName(context: Context): String? {
-        val pid = android.os.Process.myPid()
-        val activityManager: ActivityManager? = context
+        val pid = Process.myPid()
+        val activityManager: ActivityManager = context
             .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val runningAppProcessInfos = activityManager?.runningAppProcesses
+        val runningAppProcessInfos = activityManager.runningAppProcesses
         if (runningAppProcessInfos != null) {
             for (appProcess in runningAppProcessInfos) {
                 if (appProcess.pid == pid) {
@@ -49,6 +50,7 @@ object AppPrivacyUtil {
      *
      * 其他解决方案：[通过拦截 Activity的创建 实现APP的隐私政策改造](https://juejin.cn/post/6990643611130363917)
      */
+    @JvmStatic
     fun checkPrivacyPolicy(application: Application,
                            privacyPolicyActivity: Class<*> = AppPrivacyPolicyActivity::class.java,
                            alertMsg: String? = null): Boolean {
@@ -100,6 +102,7 @@ object AppPrivacyUtil {
     /**
      * 在app启动的Activity.onCreate方法中执行
      */
+    @JvmStatic
     fun checkPrivacyInLaunchActivity(activity: BaseActivity): Boolean {
         // 没有同意隐私政策时，杀死进程
         if (NEED_CHECK_PRIVACY &&

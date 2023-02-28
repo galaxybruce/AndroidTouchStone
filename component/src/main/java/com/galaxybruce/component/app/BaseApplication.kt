@@ -16,19 +16,13 @@ abstract class BaseApplication : MultiDexApplication(), ViewModelStoreOwner {
 
     companion object {
         lateinit var instance: BaseApplication
-        // 是否是degug版本
+        // 是否是debug版本
+        @JvmField
         var DEBUG: Boolean = false
 
         // 是否是可以debug
+        @JvmField
         var DEBUG_ABLE: Boolean = false
-
-        fun isDebug(): Boolean {
-            return DEBUG
-        }
-
-        fun debugAble(): Boolean {
-            return DEBUG_ABLE
-        }
     }
 
     private val appLifecycle = AppActivityLifecycle()

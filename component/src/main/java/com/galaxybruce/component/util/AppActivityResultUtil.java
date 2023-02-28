@@ -155,7 +155,7 @@ public class AppActivityResultUtil {
    public static void openDocument(Activity activity,
                                    String[] mineTypes,
                                    @NonNull final ActivityResultCallback<Uri> callback) {
-      AppPermissionHelper.INSTANCE.request(activity,
+      AppPermissionHelper.request(activity,
               new PermissionUtils.SimpleCallback() {
                  @Override
                  public void onGranted() {
@@ -196,7 +196,7 @@ public class AppActivityResultUtil {
    public static void createDocument(Activity activity,
                                      String fileName,
                                      @NonNull final ActivityResultCallback<Uri> callback) {
-       AppPermissionHelper.INSTANCE.request(activity,
+       AppPermissionHelper.request(activity,
                new PermissionUtils.SimpleCallback() {
                    @Override
                    public void onGranted() {
@@ -226,7 +226,7 @@ public class AppActivityResultUtil {
    public static void takePicture(Activity activity,
                                   @NonNull String outputPath,
                                   @NonNull final ActivityResultCallback<Uri> callback) {
-      AppPermissionHelper.INSTANCE.request(activity, new PermissionUtils.SimpleCallback() {
+      AppPermissionHelper.request(activity, new PermissionUtils.SimpleCallback() {
          @Override
          public void onGranted() {
             Uri outputUri = AppFileProvider.getUriForFile(activity, new File(outputPath));
@@ -269,7 +269,7 @@ public class AppActivityResultUtil {
                                  @NonNull String outputPath,
                                  int duration,
                                  @NonNull final ActivityResultCallback<Uri> callback) {
-        AppPermissionHelper.INSTANCE.request(activity, new PermissionUtils.SimpleCallback() {
+        AppPermissionHelper.request(activity, new PermissionUtils.SimpleCallback() {
             @Override
             public void onGranted() {
                 Uri outputUri = AppFileProvider.getUriForFile(activity, new File(outputPath));

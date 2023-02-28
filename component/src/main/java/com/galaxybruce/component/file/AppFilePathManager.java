@@ -297,7 +297,7 @@ public class AppFilePathManager {
      */
     public static void getSaveFilePath(Activity activity, String fileName,
                                        @NonNull Function2<Uri, Boolean, Unit> filePathCallback) {
-        AppPermissionHelper.INSTANCE.request(activity,
+        AppPermissionHelper.request(activity,
                 new PermissionUtils.SimpleCallback() {
                     @Override
                     public void onGranted() {
