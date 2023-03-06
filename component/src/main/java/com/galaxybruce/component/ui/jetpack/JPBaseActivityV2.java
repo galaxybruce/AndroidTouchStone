@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 
 import com.galaxybruce.component.ui.activity.AppDefaultTitleBarView;
+import com.galaxybruce.component.ui.activity.AppTitleInfo;
 import com.galaxybruce.component.ui.activity.IAppTitleBarView;
 import com.galaxybruce.component.util.AppConstants;
 
@@ -32,17 +33,18 @@ public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPB
 
     @Override
     public void setRootLayout(int layoutId) {
-        int titleMode = getTitleMode();
+        AppTitleInfo titleInfo = getTitleInfo();
+        int titleMode = titleInfo.getTitleMode();
         if(titleMode == AppConstants.TITLE_MODE_LINEAR || titleMode == AppConstants.TITLE_MODE_FLOAT) {
             mAppTitleBarView = createAppTitleBarView(titleMode);
             setContentView(mAppTitleBarView.getContentView());
             // 业务布局
             mDataBinding = mJPPageDelegate.setRootLayout(layoutId, LayoutInflater.from(mActivity),
                     mAppTitleBarView.getContentLayout(), true);
-            initTitle();
+            initTitle(titleInfo);
         } else if(titleMode == AppConstants.TITLE_MODE_CUSTOM){
             super.setRootLayout(layoutId);
-            initTitle();
+            initTitle(titleInfo);
         } else {
             super.setRootLayout(layoutId);
         }
@@ -58,11 +60,11 @@ public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPB
     }
 
     /**
-     * 获取标题栏模式
+     * 获取标题栏信息
      * @return
      */
-    protected @AppConstants.TitleMode int getTitleMode() {
-        return AppConstants.TITLE_MODE_LINEAR;
+    protected @NonNull AppTitleInfo getTitleInfo() {
+        return new AppTitleInfo(AppConstants.TITLE_MODE_LINEAR, null, true);
     }
 
     /**
@@ -74,13 +76,10 @@ public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPB
         return new AppDefaultTitleBarView(this, titleMode);
     }
 
-    protected void initTitle() {
+    protected void initTitle(@NonNull AppTitleInfo titleInfo) {
         if(mAppTitleBarView != null && mAppTitleBarView instanceof AppDefaultTitleBarView) {
-            ((AppDefaultTitleBarView)mAppTitleBarView).initTitle(bindTitle(), true);
+            mAppTitleBarView.initTitle(titleInfo);
         }
     }
 
-    protected String bindTitle() {
-        return null;
-    }
 }

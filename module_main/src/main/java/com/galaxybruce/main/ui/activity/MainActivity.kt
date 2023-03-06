@@ -4,8 +4,10 @@ import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.billy.cc.core.component.CC
 import com.galaxybruce.base.ui.activity.AppBaseActivity
+import com.galaxybruce.component.ui.activity.AppTitleInfo
 import com.galaxybruce.component.ui.dialog.AppConfirmDialog
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
+import com.galaxybruce.component.util.AppConstants
 import com.galaxybruce.main.BR
 import com.galaxybruce.main.R
 import com.galaxybruce.main.databinding.MainLayoutBinding
@@ -24,8 +26,12 @@ class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
         return R.layout.main_layout
     }
 
-    override fun bindTitle(): String {
-        return "首页"
+    override fun getTitleInfo(): AppTitleInfo {
+        return AppTitleInfo.build {
+            titleMode = AppConstants.TITLE_MODE_LINEAR
+            title = "首页"
+            showHomeAsUp = false
+        }
     }
 
     override fun bindData(savedInstanceState: Bundle?) {

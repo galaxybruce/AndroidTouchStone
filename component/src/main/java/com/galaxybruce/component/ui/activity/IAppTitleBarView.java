@@ -2,6 +2,8 @@ package com.galaxybruce.component.ui.activity;
 
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 /**
  * @author bruce.zhang
  * @date 2022/11/12 09:36
@@ -28,5 +30,17 @@ public interface IAppTitleBarView {
      * @return
      */
     ViewGroup getTitleBarLayout();
+
+    /**
+     * 设置标题栏信息
+     * @param titleInfo
+     */
+    void initTitle(@NonNull AppTitleInfo titleInfo);
+
+    /**
+     * 更新标题栏信息
+     * @param titleInfo
+     */
+    void updateTitle(@NonNull AppTitleInfo titleInfo);
 
 }

@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.galaxybruce.base.ui.activity.AppBaseActivity
+import com.galaxybruce.component.ui.activity.AppTitleInfo
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
+import com.galaxybruce.component.util.AppConstants
 import com.galaxybruce.main.BR
 import com.galaxybruce.main.R
 import com.galaxybruce.main.databinding.NetTestLayoutBinding
@@ -31,8 +33,12 @@ class NetTestActivity : AppBaseActivity<NetTestLayoutBinding, NetTestViewModel>(
 //        var a = intent.getStringExtra("xxx")
     }
 
-    override fun bindTitle(): String {
-        return "NetTestActivity"
+    override fun getTitleInfo(): AppTitleInfo {
+        return AppTitleInfo.build {
+            titleMode = AppConstants.TITLE_MODE_LINEAR
+            title = "NetTestActivity"
+            showHomeAsUp = true
+        }
     }
 
     override fun bindData(savedInstanceState: Bundle?) {
