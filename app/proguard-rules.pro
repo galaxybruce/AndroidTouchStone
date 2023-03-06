@@ -70,14 +70,24 @@
 -keep public class * extends android.preference.Preference
 -keep class com.google.android.material.** {*;}
 -keep class androidx.** {*;}
+-keep class android.support.** { *; }
 -keep public class * extends androidx.**
 -keep interface androidx.** {*;}
+-keep public class **.R$*{
+   public static final int *;
+}
 -dontwarn com.google.android.material.**
 -dontnote com.google.android.material.**
 -dontwarn androidx.**
+-dontwarn android.support.**
+
+# Keep native methods
+-keepclassmembers class * {
+    native <methods>;
+}
 
 #保护指定的类和类的成员的名称，如果所有指定的类成员出席（在压缩步骤之后）
- # 保持 native 方法不被混淆
+# 保持 native 方法不被混淆
 -keepclasseswithmembernames class * {
     native <methods>;
 }
@@ -105,18 +115,14 @@
   public static final android.os.Parcelable$Creator *;
 }
 
--keep  public class java.util.HashMap {
+-keep public class java.util.HashMap {
 	public <methods>;
 }
--keep  public class java.lang.String {
+-keep public class java.lang.String {
 	public <methods>;
 }
--keep  public class java.util.List {
+-keep public class java.util.List {
 	public <methods>;
-}
-
--keepclasseswithmembernames class * {
-    native <methods>;
 }
 
 -keep public class android.net.http.SslError
@@ -124,47 +130,9 @@
 -dontwarn android.net.http.SslError
 -dontwarn Android.webkit.WebViewClient
 
-#bugly
--dontwarn com.tencent.bugly.**
--keep public class com.tencent.bugly.**{*;}
-
-#wechat
--dontwarn com.tencent.mm.opensdk.**
--keep class com.tencent.mm.opensdk.** {
-   *;
-}
-
-#fastjson
--dontwarn com.alibaba.fastjson.**
--keep public class com.alibaba.fastjson.**{*;}
-
-#Eventbus
--keepattributes *Annotation*
--keepclassmembers class ** {
-    @org.greenrobot.eventbus.Subscribe <methods>;
-}
--keep enum org.greenrobot.eventbus.ThreadMode { *; }
-
--keepclassmembers class ** {
-    public void onEvent*(**);
-}
-
-#netty
--dontwarn io.netty.**
--keep class io.netty.** { *; }
-
-
-#imageloader
--dontwarn com.nostra13.universalimageloader.**
--keep class com.nostra13.universalimageloader.** { *; }
-
--dontwarn android.support.**
--keep class android.support.** { *; }
--dontwarn com.getkeepsafe.relinker.**
--keep class com.getkeepsafe.relinker.** { *; }
-
 
 -keep class * implements com.galaxybruce.component.proguard.IProguardKeeper {*;}
+
 
 -keepclassmembers class * {
     public void set*(***);
@@ -182,6 +150,28 @@
     public void onSuccess*(***);
 }
 
+
+#bugly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-keep class com.tencent.bugly.** {*; }
+
+#fastjson
+-dontwarn com.alibaba.fastjson.**
+-keep public class com.alibaba.fastjson.**{*;}
+
+
+#netty
+-dontwarn io.netty.**
+-keep class io.netty.** { *; }
+
+#imageloader
+-dontwarn com.nostra13.universalimageloader.**
+-keep class com.nostra13.universalimageloader.** { *; }
+
+-dontwarn com.getkeepsafe.relinker.**
+-keep class com.getkeepsafe.relinker.** { *; }
+
 #httpclient
 -dontwarn org.apache.http.**
 -keep public class org.apache.http.**{*;}
@@ -192,81 +182,6 @@
 -dontwarn com.loopj.android.http.**
 -keep class com.loopj.android.http.** { *; }
 
-#mqtt
--dontwarn  org.eclipse.paho.client.**
--keep class org.eclipse.paho.client.** { *; }
-
-#wechat
--dontwarn com.tencent.mm.opensdk.**
--keep class com.tencent.mm.opensdk.** {
-   *;
-}
-#qq
--dontwarn com.tencent.**
--keep class com.tencent.** {
-   *;
-}
-#sina
--dontwarn com.sina.**
--keep class com.sina.** {
-   *;
-}
-
-#umeng push start
--dontwarn com.umeng.**
--dontwarn com.taobao.**
--dontwarn anet.channel.**
--dontwarn anetwork.channel.**
--dontwarn org.android.**
--dontwarn org.apache.thrift.**
--dontwarn com.xiaomi.**
--dontwarn com.huawei.**
--dontwarn com.meizu.**
-
--keepattributes *Annotation*
-
--keep class com.taobao.** {*;}
--keep class org.android.** {*;}
--keep class anet.channel.** {*;}
--keep class com.umeng.** {*;}
--keep class com.xiaomi.** {*;}
--keep class com.huawei.** {*;}
--keep class com.meizu.** {*;}
--keep class org.apache.thrift.** {*;}
-
--keep class com.alibaba.sdk.android.** {*;}
--keep class com.ut.** {*;}
--keep class com.uc.** {*;}
--keep class com.ta.** {*;}
-
--keep public class **.R$* {
-    public static final int *;
-}
-#umeng push end
-
-
-#umeng 统计 start
--keep class com.umeng.** {*;}
-
--keepclassmembers class * {
-   public <init> (org.json.JSONObject);
-}
-
--keepclassmembers enum * {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
-#umeng 统计 end
-
-
-#linkme
--dontwarn com.mocroquation.linkedme.**
--keep class com.mocroquation.linkedme.** { *; }
-
--keep public class pl.droidsonroids.gif.GifIOException{
-    <init>(int, java.lang.String);
-}
-
 #RxJava
 -dontwarn rx.**
 -keep class rx.** { *; }
@@ -276,7 +191,6 @@
 #gson
 -dontwarn com.google.gson.**
 -keep class com.google.gson.** { *; }
-
 
 #Retrofit
 -dontwarn retrofit2.**
@@ -289,120 +203,15 @@
 -dontwarn okhttp3.**
 -dontwarn okio.**
 -dontwarn javax.annotation.**
+-dontwarn com.squareup.okhttp.**
 
 # glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
--keep class * extends com.bumptech.glide.module.AppGlideModule {
- <init>(...);
-}
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
 -keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
   **[] $VALUES;
   public *;
 }
--keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
-  *** rewind();
-}
-
-# for DexGuard only
-#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
-
-#招行
--dontwarn cmb.pb.**
--keep class cmb.pb.** { *; }
-
-#支付宝
--dontwarn com.alipay.**
--keep class com.alipay.**{*;}
-
--dontwarn org.json.alipay.**
--keep class org.json.alipay.**{*;}
-
-#UMENG PUSH START
--dontwarn com.taobao.**
--dontwarn anet.channel.**
--dontwarn anetwork.channel.**
--dontwarn org.android.**
--dontwarn org.apache.thrift.**
--dontwarn com.xiaomi.**
--dontwarn com.huawei.**
-
--keepattributes *Annotation*
-
--keep class com.taobao.** {*;}
--keep class org.android.** {*;}
--keep class anet.channel.** {*;}
--keep class com.xiaomi.** {*;}
--keep class com.huawei.** {*;}
--keep class org.apache.thrift.** {*;}
-
--keep class com.alibaba.sdk.android.**{*;}
--keep class com.ut.**{*;}
--keep class com.ta.**{*;}
-
--keep public class **.R$*{
-   public static final int *;
-}
-
--keepclassmembers class ** {
-    public void onEvent*(**);
-}
-
-#imageloader
--dontwarn com.nostra13.universalimageloader.**
--keep class com.nostra13.universalimageloader.** { *; }
-
--keepclassmembers class * {
-    public void onSuccess(***);
-    public void onSuccess*(***);
-}
-
-#httpclient
--dontwarn org.apache.http.**
--keep public class org.apache.http.**{*;}
--dontwarn org.apache.commons.logging.**
--keep public class org.apache.commons.logging.**{*;}
-
-#async-httpclient
--dontwarn com.loopj.android.http.**
--keep class com.loopj.android.http.** { *; }
-
-#kedaxunfei
--keep class com.iflytek.**{*;}
--keepattributes Signature
-
-#UMENG PUSH START
--dontwarn com.taobao.**
--dontwarn anet.channel.**
--dontwarn anetwork.channel.**
--dontwarn org.android.**
--dontwarn org.apache.thrift.**
--dontwarn com.xiaomi.**
--dontwarn com.huawei.**
-
--keepattributes *Annotation*
-
--keep class com.taobao.** {*;}
--keep class org.android.** {*;}
--keep class anet.channel.** {*;}
--keep class com.xiaomi.** {*;}
--keep class com.huawei.** {*;}
--keep class org.apache.thrift.** {*;}
-#start getui补充的
--keep class com.hianalytics.android.** { *; }
--keepattributes *Annotation*
--keepattributes Exceptions
--keepattributes InnerClasses
--keepattributes Signature
--keepattributes SourceFile,LineNumberTable
-
--keep class com.tencent.wxop.** {
-*;
-}
-
--keep class com.tencent.mm.sdk.** {
-*;
-}
-
 
 # flutter
 -keep class io.flutter.app.** { *; }
@@ -412,16 +221,6 @@
 -keep class io.flutter.**  { *; }
 -keep class io.flutter.plugins.**  { *; }
 
--dontwarn com.switfpass.pay.**
--keep class com.switfpass.pay.** { *;}
-
-# 快钱聚合支付混淆过滤
--dontwarn com.kuaiqian.**
--keep class com.kuaiqian.** {*;}
-
-# 微信混淆过滤
--dontwarn  com.tencent.**
--keep class com.tencent.** {*;}
 
 # 内部WebView混淆过滤
 -keepclassmembers class * {
@@ -438,24 +237,6 @@
 -keep class org.jetbrains.** { *; }
 
 
-#udesk
--keep class udesk.** {*;}
--keep class cn.udesk.**{*; }
-#百度语音(如果使用百度语音识别添加 不使用不用添加)
--keep class com.baidu.speech.**{*;}
-#smack
--keep class org.jxmpp.** {*;}
--keep class de.measite.** {*;}
--keep class org.jivesoftware.** {*;}
--keep class org.xmlpull.** {*;}
--dontwarn org.xbill.**
--keep class org.xbill.** {*;}
-
-# Only required if you use AsyncExecutor
--keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
-    <init>(java.lang.Throwable);
-}
-
 #freso
 -keep class com.facebook.** {*; }
 -keep class com.facebook.imagepipeline.** {*; }
@@ -466,60 +247,16 @@
 -keep class bolts.** {*; }
 -keep class me.relex.photodraweeview.** {*; }
 
--keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
--keep @com.facebook.common.internal.DoNotStrip class *
--keepclassmembers class * {
-    @com.facebook.common.internal.DoNotStrip *;
-}
-# Keep native methods
--keepclassmembers class * {
-    native <methods>;
-}
 
--dontwarn okio.**
--dontwarn com.squareup.okhttp.**
--dontwarn okhttp3.**
 -dontwarn javax.annotation.**
 -dontwarn com.android.volley.toolbox.**
 -dontwarn com.facebook.infer.**
 
 
-#bugly
--keep class com.tencent.bugly.** {*; }
-
-#agora
--keep class io.agora.**{*;}
-
-#七牛连麦
--keep class org.webrtc.** {*;}
--dontwarn org.webrtc.**
--keep class com.qiniu.droid.rtc.**{*;}
--keep interface com.qiniu.droid.rtc.**{*;}
-
--keep class com.tencent.** { *; }
-
-#在proguard文件中添加如下规则
--dontwarn com.unionpay.**
--keep class com.unionpay.** {*;}
--keep class org.simalliance.openmobileapi.** {*;}
-
-
-# 高德
--keep class com.amap.api.location.**{*;}
--keep class com.amap.api.fence.**{*;}
--keep class com.loc.**{*;}
-
--keep class androidx.recyclerview.widget.**{*;}
--keep class androidx.viewpager2.widget.**{*;}
-
-#  腾讯地图
--keepclassmembers class ** {
-    public void on*Event(...);
-}
--keep class c.t.**{*;}
--keep class com.tencent.map.geolocation.**{*;}
--dontwarn  org.eclipse.jdt.annotation.**
--dontwarn  c.t.**
+#greendao
+-keep class org.greenrobot.greendao.**{*;}
+-keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {     public static java.lang.String TABLENAME; }
+-keep class **$Properties{*;}
 
 
 #arouter
