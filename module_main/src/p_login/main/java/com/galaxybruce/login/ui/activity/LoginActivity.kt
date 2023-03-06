@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.galaxybruce.base.manager.AppSessionManager
 import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.router.AppRouterUrlBuilder
+import com.galaxybruce.component.ui.activity.AppTitleInfo
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.util.AppConstants
 import com.galaxybruce.login.ui.mvvm.viewmodel.LoginViewModel
@@ -48,8 +49,10 @@ class LoginActivity : AppBaseActivity<LoginLayoutBinding, LoginViewModel>() {
             .addBindingParam(BR.click, ClickProxy())
     }
 
-    override fun getTitleMode(): Int {
-        return AppConstants.TITLE_MODE_NONE
+    override fun getTitleInfo(): AppTitleInfo {
+        return AppTitleInfo.build {
+            titleMode = AppConstants.TITLE_MODE_NONE
+        }
     }
 
     override fun bindLayoutId(): Int {

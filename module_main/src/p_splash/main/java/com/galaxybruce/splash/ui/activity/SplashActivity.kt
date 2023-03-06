@@ -7,6 +7,7 @@ import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.app.privacy.AppPrivacyUtil
 import com.galaxybruce.component.internal.AppInternal
 import com.galaxybruce.component.router.AppRouterUrlBuilder
+import com.galaxybruce.component.ui.activity.AppTitleInfo
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.util.AppActivityUtil
 import com.galaxybruce.component.util.AppConstants
@@ -41,8 +42,10 @@ class SplashActivity : AppBaseActivity<SplashLayoutBinding, SplashViewModel>() {
             .addBindingParam(BR.vm, mPageViewModel)
     }
 
-    override fun getTitleMode(): Int {
-        return AppConstants.TITLE_MODE_NONE
+    override fun getTitleInfo(): AppTitleInfo {
+        return AppTitleInfo.build {
+            titleMode = AppConstants.TITLE_MODE_NONE
+        }
     }
 
     override fun bindLayoutId(): Int {
