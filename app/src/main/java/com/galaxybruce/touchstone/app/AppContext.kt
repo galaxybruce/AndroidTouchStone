@@ -19,8 +19,8 @@ import com.galaxybruce.touchstone.task.InitTaskFactory
 class AppContext : BaseApplication() {
 
     override fun onPreCreate() {
-        BaseApplication.DEBUG = BuildConfig.DEBUG
-        BaseApplication.DEBUG_ABLE = BuildConfig.DEBUG_ABLE
+        DEBUG = BuildConfig.DEBUG
+        DEBUG_ABLE = BuildConfig.DEBUG_ABLE
         AppConstants.DESIGN_UI_WIDTH = 750
     }
 

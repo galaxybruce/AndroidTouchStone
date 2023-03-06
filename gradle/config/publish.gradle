@@ -159,7 +159,7 @@ afterEvaluate {
                     }
                     allowInsecureProtocol = true
                 } else {
-                    url = project.uri(project.rootProject.projectDir.absolutePath + '/repo-local')
+                    url = project.uri(project.rootProject.projectDir.absolutePath + '/repo-temp')
                 }
             }
         }

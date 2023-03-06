@@ -182,10 +182,6 @@
     public void onSuccess*(***);
 }
 
--keepclassmembers class * {
-    public static ** kidJsonParse(***);
-}
-
 #httpclient
 -dontwarn org.apache.http.**
 -keep public class org.apache.http.**{*;}
