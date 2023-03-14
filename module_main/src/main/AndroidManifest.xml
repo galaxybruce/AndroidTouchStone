@@ -16,7 +16,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="galaxybruce" />
+                <data android:scheme="${build_appScheme}" />
             </intent-filter>
         </activity>
 
