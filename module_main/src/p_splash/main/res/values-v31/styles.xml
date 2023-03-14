@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppStartTheme" parent="AppJetpackSplashBaseTheme">
+        <!-- 必须是颜色值-->
+        <item name="android:windowSplashScreenBackground">@android:color/white</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/app_default_placeholder</item>
+        <item name="android:windowSplashScreenAnimationDuration">500</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/app_back_top_icon</item>
+    </style>
+</resources>
