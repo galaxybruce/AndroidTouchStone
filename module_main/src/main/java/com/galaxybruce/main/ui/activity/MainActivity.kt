@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.billy.cc.core.component.CC
 import com.galaxybruce.base.ui.activity.AppBaseActivity
+import com.galaxybruce.component.router.AppRouterUrlBuilder
 import com.galaxybruce.component.ui.activity.AppTitleInfo
 import com.galaxybruce.component.ui.dialog.AppConfirmDialog
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
@@ -51,7 +52,7 @@ class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
 
         fun onImageClick() {
             AppConfirmDialog.create("提示",
-                "哈哈哈哈",
+                "进入NetTestActivity",
                 false,
                 object : AppConfirmDialog.AppConfirmDialogCallback {
                     override fun onCancel() {
@@ -59,7 +60,9 @@ class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
                     }
 
                     override fun onConfirm() {
-                        showToast("ok== ${mPageViewModel.n.set(mPageViewModel.n.get() ?: 0 + 1)}")                    }
+                        showToast("ok== ${mPageViewModel.n.set(mPageViewModel.n.get() ?: 0 + 1)}")
+                        AppRouterUrlBuilder.instance("/test/TestActivity").go(mActivity)
+                    }
                 })
                 .show(mActivity, "aaa")
         }

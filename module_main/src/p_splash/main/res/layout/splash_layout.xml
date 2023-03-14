@@ -24,5 +24,18 @@
             android:scaleType="centerCrop"
             android:visibility="visible" />
 
+        <TextView
+            android:id="@+id/tv_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="50pt"
+            android:layout_marginEnd="30pt"
+            android:includeFontPadding="false"
+            android:textSize="30pt"
+            android:textColor="@color/theme_text_color_1"
+            android:text="跳过"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

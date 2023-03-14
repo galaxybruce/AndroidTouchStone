@@ -15,12 +15,12 @@
  * [Kotlin + buildSrc：更好的管理Gadle依赖](https://juejin.cn/post/6844903615346245646)
  */
 ext {
-    android = [compileSdkVersion: 31,
+    android = [compileSdkVersion: 33,
                minSdkVersion    : 21,
-               targetSdkVersion : 31,
+               targetSdkVersion : 33,
     ]
 
-    kotlin_version = '1.4.21'
+    kotlin_version = '1.8.0'
     lifecycle_version = "2.3.0"
     arouter_version = "1.5.2"
 
