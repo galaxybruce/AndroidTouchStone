@@ -34,10 +34,9 @@ class SplashActivity : AppBaseActivity<SplashLayoutBinding, SplashViewModel>() {
         }
         // installSplashScreen必须调用，原因是install函数会获取postSplashScreenTheme 配置的主题，并在检查通过后setTheme 给Activity。
         val compatSplashScreen = installSplashScreen()
-        val initTime = SystemClock.uptimeMillis()
         // 这段代码是用来让启动画面继续显示，用来在页面显示之前异步记载数据。根据实际需求决定要不要以及时间长短，或者通过其他条件动态决定
         compatSplashScreen.setKeepOnScreenCondition {
-            (SystemClock.uptimeMillis() - initTime) < 1000
+            !(mPageViewModel.dataLoaded.value ?: false)
         }
         super.onCreate(savedInstanceState)
         // 避免从桌面启动程序后，会重新实例化入口类的activity
@@ -68,14 +67,18 @@ class SplashActivity : AppBaseActivity<SplashLayoutBinding, SplashViewModel>() {
     override fun bindData(savedInstanceState: Bundle?) {
         super.bindData(savedInstanceState)
 
-        window.decorView.postDelayed({
-            if(AppInternal.getInstance().mustLogin() && !AppSessionManager.getInstance().isLogin) {
-                AppRouterUrlBuilder.instance("/app/login")
-                    .addParam(AppConstants.IntentKeys.KEY_LOGIN_SUCCESS_ROUTER, "/app/main").go(this)
-            } else {
-                AppRouterUrlBuilder.instance("/app/main").go(this)
+        setLiveDataObserver(mPageViewModel.dataLoaded) {
+            if(it) {
+                if(AppInternal.getInstance().mustLogin() && !AppSessionManager.getInstance().isLogin) {
+                    AppRouterUrlBuilder.instance("/app/login")
+                        .addParam(AppConstants.IntentKeys.KEY_LOGIN_SUCCESS_ROUTER, "/app/main").go(this)
+                } else {
+                    AppRouterUrlBuilder.instance("/app/main").go(this)
+                }
+                finish()
             }
-            finish()
-        }, 3000)
+        }
+
+        mPageViewModel.request.requestAdData()
     }
 }
