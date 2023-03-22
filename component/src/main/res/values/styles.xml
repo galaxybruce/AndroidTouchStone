@@ -31,7 +31,7 @@
     </style>
 
     <style name="AppPrivacyPolicyTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/app_splash_drawable</item>
+        <item name="android:windowBackground">@drawable/app_splash_bg</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="colorPrimaryDark">@android:color/transparent</item>

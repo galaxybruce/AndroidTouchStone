@@ -2,7 +2,8 @@
 
     <!--android 12以下的启动画面样式-->
     <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/app_splash_drawable</item>
+        <!--这里还是需要的，第一次有有隐私协议弹窗时，需要展示这个背景-->
+        <item name="android:windowBackground">@drawable/app_splash_bg</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="colorPrimaryDark">@android:color/transparent</item>
@@ -19,7 +20,7 @@
     <style name="AppJetpackSplashBaseTheme" parent="Theme.SplashScreen">
         <!-- 必须是颜色值-->
         <item name="windowSplashScreenBackground">@android:color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/app_default_placeholder</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/app_splash_icon</item>
         <item name="windowSplashScreenAnimationDuration">500</item>
         <item name="postSplashScreenTheme">@style/SplashTheme</item>
     </style>
