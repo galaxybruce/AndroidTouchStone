@@ -22,35 +22,56 @@
         android:background="@color/windowBackground"
         tools:context=".ui.activity.MainActivity">
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="200pt"
-            android:layout_height="200pt"
-            android:maxWidth="600pt"
-            android:maxHeight="500pt"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            android:background="#800000FF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:onClick="@{() -> click.onImageClick()}"
-            />
-
         <TextView
             android:id="@+id/tv_component"
-            android:layout_width="200pt"
-            android:layout_height="200pt"
+            android:layout_width="wrap_content"
+            android:layout_height="150pt"
+            android:minWidth="200pt"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="20pt"
+            android:gravity="center"
+            android:background="#800000FF"
             android:includeFontPadding="false"
             android:textSize="30pt"
-            android:textColor="@color/theme_text_color_1"
+            android:textColor="@android:color/white"
             android:text="跨模块通信"
             android:onClick="@{() -> click.onComponentClick()}"/>
+
+        <TextView
+            android:id="@+id/tv_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="150pt"
+            android:minWidth="200pt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_component"
+            android:layout_marginTop="20pt"
+            android:gravity="center"
+            android:background="#800000FF"
+            android:includeFontPadding="false"
+            android:textSize="30pt"
+            android:textColor="@android:color/white"
+            android:text="alert dialog"
+            android:onClick="@{() -> click.onAlertDialogClick()}"/>
+
+        <TextView
+            android:id="@+id/tv_unimp"
+            android:layout_width="wrap_content"
+            android:layout_height="150pt"
+            android:minWidth="200pt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_dialog"
+            android:layout_marginTop="20pt"
+            android:gravity="center"
+            android:background="#800000FF"
+            android:includeFontPadding="false"
+            android:textSize="30pt"
+            android:textColor="@android:color/white"
+            android:text="uni小程序"
+            android:onClick="@{() -> click.onUniMPClick()}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

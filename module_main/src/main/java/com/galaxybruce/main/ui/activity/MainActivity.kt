@@ -50,7 +50,7 @@ class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
      */
     inner class ClickProxy {
 
-        fun onImageClick() {
+        fun onAlertDialogClick() {
             AppConfirmDialog.create("提示",
                 "进入NetTestActivity",
                 false,
@@ -72,6 +72,10 @@ class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
                 .setActionName("showToast")
                 .build()
                 .call()
+        }
+
+        fun onUniMPClick() {
+            AppRouterUrlBuilder.instance("/unimp/UniMPMainActivity").go(mActivity)
         }
     }
 

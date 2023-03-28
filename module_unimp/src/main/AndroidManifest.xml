@@ -1,0 +1,40 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.galaxybruce.unimp" >
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true">
+
+        <provider
+            android:name="io.dcloud.common.util.DCloud_FileProvider"
+            android:authorities="${apk.applicationId}.dc.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/dcloud_file_provider" />
+        </provider>
+
+        <activity
+            android:name=".UniMPMainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|mcc|mnc|fontScale"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".TestPageActivity"
+            android:theme="@style/Theme.AppCompat"/>
+
+        <activity android:name=".DialogActivity"
+            android:theme="@style/ProjectDialogTheme"
+            />
+
+        <activity android:name=".plugin.module.NativePageActivity"/>
+    </application>
+
+</manifest>
