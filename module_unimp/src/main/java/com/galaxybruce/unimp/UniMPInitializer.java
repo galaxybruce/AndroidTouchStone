@@ -30,7 +30,7 @@ public class UniMPInitializer {
         return RuningAcitvityUtil.getAppName(context).contains("unimp");
     }
 
-    public static void onCreate(Context context) {
+    public static void init(Context context) {
         try {
             WXSDKEngine.registerModule("TestModule", TestModule.class);
             WXSDKEngine.registerComponent("myText", TestText.class);
