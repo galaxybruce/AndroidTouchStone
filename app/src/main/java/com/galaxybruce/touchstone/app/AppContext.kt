@@ -3,7 +3,6 @@ package com.galaxybruce.touchstone.app
 import com.effective.android.anchors.AnchorsManager
 import com.effective.android.anchors.Project
 import com.galaxybruce.component.app.BaseApplication
-import com.galaxybruce.component.app.privacy.AppPrivacyUtil
 import com.galaxybruce.component.util.AppConstants
 import com.galaxybruce.touchstone.BuildConfig
 import com.galaxybruce.touchstone.task.InitTaskFactory
@@ -26,6 +25,8 @@ class AppContext : BaseApplication() {
     }
 
     override fun initTask(isMainProcess: Boolean) {
+        UniMPInitializer.onCreate(this.applicationContext)
+
         if(UniMPInitializer.isUniMPProcess(this)) {
             return
         }

@@ -19,6 +19,8 @@ import io.dcloud.feature.sdk.MenuActionSheetItem;
 
 public class UniMPInitializer {
 
+    private static boolean inited = false;
+
     /**
      * 判断是否是小程序进程
      * 为了防止其他三方SDK可能影响小程序的运行 请禁止在小程序进程初始化其他三方SDK！！！
@@ -31,6 +33,10 @@ public class UniMPInitializer {
     }
 
     public static void onCreate(Context context) {
+        if(inited) {
+            return;
+        }
+        inited = true;
         try {
             WXSDKEngine.registerModule("TestModule", TestModule.class);
             WXSDKEngine.registerComponent("myText", TestText.class);

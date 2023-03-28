@@ -46,7 +46,7 @@ public class TestModule extends UniModule {
     public void gotoHostNativePage() {
         if(mUniSDKInstance != null) {
             Intent intent = new Intent();
-            intent.setClassName(mUniSDKInstance.getContext(), "com.example.unimpdemo.DialogActivity");
+            intent.setClassName(mUniSDKInstance.getContext(), "com.galaxybruce.unimp.DialogActivity");
             mUniSDKInstance.getContext().startActivity(intent);
         }
     }

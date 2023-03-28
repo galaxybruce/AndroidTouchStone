@@ -45,8 +45,6 @@ public class UniMPMainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UniMPInitializer.onCreate(this.getApplicationContext());
-
         mContext = this;
         mHandler = new Handler();
         setContentView(R.layout.main);
