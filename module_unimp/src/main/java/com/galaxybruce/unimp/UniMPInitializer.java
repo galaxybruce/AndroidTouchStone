@@ -11,12 +11,24 @@ import com.taobao.weex.common.WXException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.dcloud.common.util.RuningAcitvityUtil;
 import io.dcloud.feature.sdk.DCSDKInitConfig;
 import io.dcloud.feature.sdk.DCUniMPSDK;
 import io.dcloud.feature.sdk.Interface.IDCUniMPPreInitCallback;
 import io.dcloud.feature.sdk.MenuActionSheetItem;
 
 public class UniMPInitializer {
+
+    /**
+     * 判断是否是小程序进程
+     * 为了防止其他三方SDK可能影响小程序的运行 请禁止在小程序进程初始化其他三方SDK！！！
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isUniMPProcess(Context context) {
+        return RuningAcitvityUtil.getAppName(context).contains("unimp");
+    }
 
     public static void onCreate(Context context) {
         try {

@@ -7,6 +7,7 @@ import com.galaxybruce.component.app.privacy.AppPrivacyUtil
 import com.galaxybruce.component.util.AppConstants
 import com.galaxybruce.touchstone.BuildConfig
 import com.galaxybruce.touchstone.task.InitTaskFactory
+import com.galaxybruce.unimp.UniMPInitializer
 
 /**
  * @date 2019-06-22 10:41
@@ -25,6 +26,10 @@ class AppContext : BaseApplication() {
     }
 
     override fun initTask(isMainProcess: Boolean) {
+        if(UniMPInitializer.isUniMPProcess(this)) {
+            return
+        }
+
         // 启动任务初始化，建议以后都采用这种方式
         val initTaskFactory = InitTaskFactory(null)
         val builder = Project.Builder(InitTaskFactory.PROJECT, initTaskFactory)
