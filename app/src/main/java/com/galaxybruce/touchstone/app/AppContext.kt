@@ -25,10 +25,14 @@ class AppContext : BaseApplication() {
     }
 
     override fun initTask(isMainProcess: Boolean) {
-        UniMPInitializer.onCreate(this.applicationContext)
-
+        // uni小程序进程只需初始化小程序sdk，其他sdk不要初始化
         if(UniMPInitializer.isUniMPProcess(this)) {
+            UniMPInitializer.onCreate(this.applicationContext)
             return
+        }
+        // 其他进程根据实际需要来决定是否要初始化小程序sdk，主进程肯定是需要的
+        if(isMainProcess) {
+            UniMPInitializer.onCreate(this.applicationContext)
         }
 
         // 启动任务初始化，建议以后都采用这种方式

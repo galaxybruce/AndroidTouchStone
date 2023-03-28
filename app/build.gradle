@@ -16,7 +16,7 @@ ccregister.multiProcessEnabled = true
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    // 【uni小程序配置】依赖uni小程序sdk
+    // 【uni小程序配置】依赖uni小程序sdk，不需要把所有的aar都复制过来，根据需要引入aar
     implementation fileTree(dir: '../module_unimp/libs', include: ['*.aar'])
 
     // 自动查找项目根目录下的module并依赖

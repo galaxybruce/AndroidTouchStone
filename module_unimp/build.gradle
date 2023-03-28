@@ -24,6 +24,7 @@ dependencies {
 
     implementation project(':component')
 
+    // 根据需要引入相应的库
     // 替换unimp-sdk中的android-gif-drawable-release@1.2.23.aar //必须集成
     implementation rootProject.ext.dep.android_gif_drawable
     implementation 'com.facebook.fresco:fresco:2.5.0'//必须集成
