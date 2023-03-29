@@ -286,8 +286,8 @@ public class AppFilePathManager {
      * 使用方式：
      * AppFilePathManager.getSaveFilePath(mActivity, "test.xml",
      *     object: Function2<Uri?, Boolean, Unit> {
-     *         override fun invoke(p1: Uri?, p2: Boolean) {
-     *             AppLogUtils.i("uri: $p1 - $p2")
+     *         override fun invoke(uri: Uri?, saf: Boolean) {
+     *             AppLogUtils.i("uri: $uri - $saf")
      *         }
      *     })
      *
