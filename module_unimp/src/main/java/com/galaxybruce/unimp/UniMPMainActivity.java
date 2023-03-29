@@ -234,9 +234,9 @@ public class UniMPMainActivity extends Activity {
         btn_encrypt_wgt_install.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityCompat.requestPermissions(UniMPMainActivity.this, new String[]
-                                {Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        1002);
+//                ActivityCompat.requestPermissions(UniMPMainActivity.this, new String[]
+//                                {Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                        1002);
                 // 远程下载并且安装
                 updateWgt();
             }
@@ -251,7 +251,7 @@ public class UniMPMainActivity extends Activity {
             }
         });
 
-        checkPermission();
+//        checkPermission();
     }
 
     /**

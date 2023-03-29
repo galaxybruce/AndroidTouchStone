@@ -105,7 +105,7 @@ public class DownloadUtil {
      */
     private String isExistDir(String saveDir) throws IOException {
         // 下载位置
-        File downloadFile = new File(Environment.getExternalStorageDirectory().getPath() + "/download/", saveDir);
+        File downloadFile = new File(saveDir);
         if (!downloadFile.mkdirs()) {
             downloadFile.createNewFile();
         }
