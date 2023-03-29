@@ -20,12 +20,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize|mcc|mnc|fontScale"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true"/>
 
         <activity android:name=".TestPageActivity"
             android:theme="@style/Theme.AppCompat"/>

@@ -14,7 +14,7 @@ public class MySplashView implements IDCUniMPAppSplashView {
     FrameLayout splashView;
 
     @Override
-    public View getSplashView(Context context, String appid, String s1, String s2) {
+    public View getSplashView(Context context, String appid, String appName, String icon) {
         splashView = new FrameLayout(context);
         splashView.setBackgroundColor(Color.BLUE);
         TextView textView = new TextView(context);

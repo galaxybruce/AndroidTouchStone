@@ -30,13 +30,31 @@ public class UniMPInitializer {
         return RuningAcitvityUtil.getAppName(context).contains("unimp");
     }
 
-    public static void init(Context context) {
+    /**
+     * 初始化原生扩展能力
+     * 注意：原生扩展代码运行在小程序进程中，而且uni规定在小程序进程中禁止调用DCUniMPSDK的API。所以只需小程序进程初始化。
+     *
+     * 参考文章：
+     * <a href="https://nativesupport.dcloud.net.cn/UniMPDocs/Extension/android.html">native support</a>
+     *
+     * @param context
+     */
+    public static void initUniMPProcess(Context context) {
         try {
             WXSDKEngine.registerModule("TestModule", TestModule.class);
             WXSDKEngine.registerComponent("myText", TestText.class);
         } catch (WXException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 宿主进程初始化uni小程序sdk
+     * 注意：DCUniMPSDK的API只可以在宿主进程调用。否则会触发Not initialized异常。
+     *
+     * @param context
+     */
+    public static void initHostProcess(Context context) {
         //初始化 uni小程序SDK ----start----------
         MenuActionSheetItem item = new MenuActionSheetItem("关于", "gy");
 

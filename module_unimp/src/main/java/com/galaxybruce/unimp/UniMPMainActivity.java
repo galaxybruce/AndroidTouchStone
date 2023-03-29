@@ -222,7 +222,7 @@ public class UniMPMainActivity extends Activity {
                     }
                     case "gotoTestPage" :
                         Intent intent = new Intent();
-                        intent.setClassName(mContext, "com.example.unimpdemo.TestPageActivity");
+                        intent.setClassName(mContext, "com.galaxybruce.unimp.TestPageActivity");
                         DCUniMPSDK.getInstance().startActivityForUniMPTask(appid, intent);
                         break;
                 }

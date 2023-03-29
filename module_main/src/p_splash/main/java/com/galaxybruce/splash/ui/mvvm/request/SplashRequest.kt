@@ -11,7 +11,7 @@ class SplashRequest(private val viewModel: SplashViewModel) : JPBaseRequest() {
 //    private val mApi: LiveApi = KRetrofitFactory.createService(LiveApi::class.java)
 
     fun requestAdData() {
-        runDelayedOnUiThread(2000) {
+        runDelayedOnUiThread(500) {
             viewModel.dataLoaded.value = true
         }
     }
