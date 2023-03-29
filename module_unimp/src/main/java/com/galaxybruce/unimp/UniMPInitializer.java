@@ -58,8 +58,8 @@ public class UniMPInitializer {
                 .build();
         DCUniMPSDK.getInstance().initialize(context, config, new IDCUniMPPreInitCallback() {
             @Override
-            public void onInitFinished(boolean b) {
-                Log.i("unimp","onInitFinished----"+b);
+            public void onInitFinished(boolean isSuccess) {
+                Log.i("unimp","onInitFinished----" + isSuccess);
             }
         });
         //初始化 uni小程序SDK ----end----------
