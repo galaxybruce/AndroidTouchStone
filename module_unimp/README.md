@@ -32,3 +32,8 @@ process: com.galaxybruce.touchstone:unimp4
 ### 8. 原生扩展逻辑需要与宿主交互
 1. 可通过原生实现AIDL或者广播等等进行与宿主交互得到。玩法由开发者自行实现。
 2. 可通过小程序与宿主通道进行交互数据。但缺点是仅支持小程序js层与宿主原生层交互。限制比较多
+
+### 9. uni小程序sdk能否集成HBuilderX 打包生成的App中
+1. uni小程序sdk 仅支持在原生App中集成使用，不支持 HBuilderX 打包生成的App中集成。如需在uni-app项目中使用，请加QQ群984388064申请
+2. uni小程序sdk 支持同时运行多个小程序实例，但android平台最多打开三个
+3. uni 小程序 sdk 无法使用插件市场中付费的原生插件
