@@ -37,3 +37,41 @@ process: com.galaxybruce.touchstone:unimp4
 1. uni小程序sdk 仅支持在原生App中集成使用，不支持 HBuilderX 打包生成的App中集成。如需在uni-app项目中使用，请加QQ群984388064申请
 2. uni小程序sdk 支持同时运行多个小程序实例，但android平台最多打开三个
 3. uni 小程序 sdk 无法使用插件市场中付费的原生插件
+
+### 10. 小程序和原生通信的方式
+1. 小程序主动发消息给宿主，app全局监听，只能设置一次。
+```
+//小程序js层发送事件给宿主
+uni.sendNativeEvent("event名称",a, function(e){
+	console.log("sendNativeEvent-----------回调"+JSON.stringify(e));
+});
+
+//JAVA监听小程序发来的事件 通过callback返回参数
+DCUniMPSDK.getInstance().setOnUniMPEventCallBack(new IOnUniMPEventCallBack() {
+	@Override
+	public void onUniMPEventReceive(String appid, String event, Object data, DCUniMPJSCallback callback) {
+        callback.invoke( "测试数据");
+	}
+});
+```
+2. 宿主主动发消息给小程序
+```
+//JAVA原生层
+JSONObject data = new JSONObject();
+data.put("sj", "点击了关于");
+IUniMP.sendUniMPEvent("gy", data);
+
+//uni小程序JS代码 监听宿主触发给小程序的事件
+<script>
+	export default {
+		onLoad() {
+			uni.onNativeEventReceive((event,data)=>{
+				console.log('接收到宿主App消息：' + event + data);
+				this.nativeMsg = '接收到宿主App消息 event：' + event + " data: " + data;
+			})
+		}
+	}
+</script>
+```
+3. 扩展原生能力
+
