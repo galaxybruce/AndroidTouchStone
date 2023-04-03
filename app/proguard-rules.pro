@@ -364,6 +364,10 @@
 -keep class * implements com.taobao.weex.IWXObject{*;}
 -keep public class * extends com.taobao.weex.common.WXModule{*;}
 -keep public class * extends com.taobao.weex.ui.component.WXComponent{*;}
+-keep public class * extends io.dcloud.weex.AppHookProxy{*;}
+-keep public class * extends io.dcloud.feature.uniapp.UniAppHookProxy{*;}
+-keep public class * extends io.dcloud.feature.uniapp.common.UniModule{*;}
+-keep public class * extends io.dcloud.feature.uniapp.ui.component.UniComponent{*;}
 
 
 -keepattributes Signature
