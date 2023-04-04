@@ -1,10 +1,12 @@
 package com.galaxybruce.component.ui.jetpack;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.galaxybruce.component.ui.activity.BaseActivity;
 import com.galaxybruce.component.ui.dialog.AppDialogFragment;
 
 import androidx.annotation.NonNull;
@@ -137,4 +139,24 @@ public abstract class JPBaseDialogFragment<B extends ViewDataBinding> extends Ap
     protected <T> void setLiveDataObserver(@NonNull LiveData<T> liveData, @NonNull Observer<? super T> observer) {
         mJPPageDelegate.setLiveDataObserver(liveData, observer);
     }
+
+    @Override
+    public boolean isHostActive() {
+        Activity activity = getActivity();
+        return activity != null && !activity.isFinishing() && activity instanceof BaseActivity;
+    }
+
+    @Override
+    public void closeHost() {
+        Activity activity = getActivity();
+        if(activity != null) {
+            activity.finish();
+        }
+    }
+
+    @Override
+    public Activity getHostActivity() {
+        return getActivity();
+    }
+
 }

@@ -1,11 +1,13 @@
 package com.galaxybruce.component.ui.jetpack;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.galaxybruce.component.ui.activity.BaseActivity;
 import com.galaxybruce.component.ui.fragment.BaseFragment;
 
 import androidx.annotation.NonNull;
@@ -146,4 +148,20 @@ public abstract class JPBaseFragment<B extends ViewDataBinding> extends BaseFrag
         mJPPageDelegate.setLiveDataObserver(liveData, observer);
     }
 
+    @Override
+    public boolean isHostActive() {
+        return mActivity != null && !mActivity.isFinishing() && mActivity instanceof BaseActivity;
+    }
+
+    @Override
+    public void closeHost() {
+        if(mActivity != null) {
+            mActivity.finish();
+        }
+    }
+
+    @Override
+    public Activity getHostActivity() {
+        return getActivity();
+    }
 }
