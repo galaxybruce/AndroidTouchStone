@@ -31,7 +31,7 @@ public abstract class JPBaseFragmentV2<B extends ViewDataBinding, VM extends JPB
     @Override
     public JPBaseViewModel initViewModel() {
         Class<VM> tClass = (Class<VM>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        mPageViewModel = getActivityViewModel(tClass);
+        mPageViewModel = getFragmentViewModel(tClass);
         return mPageViewModel;
     }
 

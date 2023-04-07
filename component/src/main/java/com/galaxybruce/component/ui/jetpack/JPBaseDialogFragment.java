@@ -45,7 +45,9 @@ public abstract class JPBaseDialogFragment<B extends ViewDataBinding> extends Ap
     }
 
     /**
-     * 每个页面对应的Page ViewModel
+     * 每个页面对应的Page ViewModel，本质上也是fragment，所以和Fragment中获取方式一样
+     * mPageViewModel = getFragmentViewModel(XXXViewModel.class);
+     *
      * @return 返回 该页面对应的ViewModel
      */
     @Override
@@ -54,7 +56,9 @@ public abstract class JPBaseDialogFragment<B extends ViewDataBinding> extends Ap
     }
 
     /**
-     * 多个"通用的ViewModel"的初始化
+     * 多个"通用的ViewModel"的初始化，本质上也是fragment，所以和Fragment中获取方式一样
+     * mPageViewModel = getFragmentViewModel(XXXViewModel.class);
+     * 
      * @return
      */
     @Override
