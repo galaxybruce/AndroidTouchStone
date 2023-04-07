@@ -13,7 +13,7 @@ import java.lang.reflect.ParameterizedType;
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 
-public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPBaseViewModel> extends JPBaseActivity<B> {
+public abstract class JPBaseActivityV2<VM extends JPBaseViewModel, B extends ViewDataBinding> extends JPBaseActivity<B> {
 
     protected VM mPageViewModel;
     protected IAppTitleBarView mAppTitleBarView;
@@ -26,8 +26,10 @@ public abstract class JPBaseActivityV2<B extends ViewDataBinding, VM extends JPB
      */
     @Override
     public JPBaseViewModel initViewModel() {
-        Class<VM> tClass = (Class<VM>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        mPageViewModel = getActivityViewModel(tClass);
+        Class<VM> tClass = (Class<VM>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        if(!tClass.equals(JPBaseViewModel.class)) {
+            mPageViewModel = getActivityViewModel(tClass);
+        }
         return mPageViewModel;
     }
 

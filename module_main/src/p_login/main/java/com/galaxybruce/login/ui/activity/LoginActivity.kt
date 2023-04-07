@@ -41,7 +41,7 @@ import com.galaxybruce.main.databinding.LoginLayoutBinding
  * modification history:
  */
 @Route(path = "/app/login")
-class LoginActivity : AppBaseActivity<LoginLayoutBinding, LoginViewModel>() {
+class LoginActivity : AppBaseActivity<LoginViewModel, LoginLayoutBinding>() {
 
     override fun initDataBindConfig(): JPDataBindingConfig {
         return JPDataBindingConfig(bindLayoutId())

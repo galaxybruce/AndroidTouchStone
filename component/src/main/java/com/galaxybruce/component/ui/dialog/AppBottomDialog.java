@@ -9,6 +9,7 @@ import android.view.WindowManager;
 
 import com.galaxybruce.component.R;
 import com.galaxybruce.component.ui.jetpack.JPBaseDialogFragment;
+import com.galaxybruce.component.ui.jetpack.JPBaseViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +29,8 @@ import androidx.fragment.app.DialogFragment;
  * modification history:
  *
  */
-public abstract class AppBottomDialog<B extends ViewDataBinding> extends JPBaseDialogFragment<B> {
+public abstract class AppBottomDialog<VM extends JPBaseViewModel, B extends ViewDataBinding>
+        extends JPBaseDialogFragment<VM, B> {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

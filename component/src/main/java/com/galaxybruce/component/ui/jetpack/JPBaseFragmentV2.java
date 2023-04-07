@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.ViewDataBinding;
 
-public abstract class JPBaseFragmentV2<B extends ViewDataBinding, VM extends JPBaseViewModel> extends JPBaseFragment<B> {
+public abstract class JPBaseFragmentV2<VM extends JPBaseViewModel, B extends ViewDataBinding> extends JPBaseFragment<B> {
 
     protected VM mPageViewModel;
     protected IAppTitleBarView mAppTitleBarView;
@@ -30,8 +30,10 @@ public abstract class JPBaseFragmentV2<B extends ViewDataBinding, VM extends JPB
      */
     @Override
     public JPBaseViewModel initViewModel() {
-        Class<VM> tClass = (Class<VM>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        mPageViewModel = getFragmentViewModel(tClass);
+        Class<VM> tClass = (Class<VM>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        if(!tClass.equals(JPBaseViewModel.class)) {
+            mPageViewModel = getFragmentViewModel(tClass);
+        }
         return mPageViewModel;
     }
 

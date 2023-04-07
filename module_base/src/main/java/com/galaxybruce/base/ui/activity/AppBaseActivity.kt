@@ -12,7 +12,7 @@ import com.galaxybruce.component.ui.jetpack.JPBaseViewModel
  * <p>
  * modification history:
  */
-abstract class AppBaseActivity<B : ViewDataBinding, VM : JPBaseViewModel> : JPBaseActivityV2<B, VM>() {
+abstract class AppBaseActivity<VM : JPBaseViewModel, B : ViewDataBinding> : JPBaseActivityV2<VM, B>() {
 
 
 

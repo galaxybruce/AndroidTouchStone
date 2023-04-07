@@ -15,7 +15,7 @@ import com.galaxybruce.main.databinding.MainLayoutBinding
 import com.galaxybruce.main.ui.mvvm.viewmodel.MainViewModel
 
 @Route(path = "/app/main")
-class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
+class MainActivity : AppBaseActivity<MainViewModel, MainLayoutBinding>() {
 
     override fun initDataBindConfig(): JPDataBindingConfig {
         return JPDataBindingConfig(bindLayoutId())

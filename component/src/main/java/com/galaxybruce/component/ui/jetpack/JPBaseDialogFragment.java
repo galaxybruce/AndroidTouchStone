@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.galaxybruce.component.ui.activity.BaseActivity;
 import com.galaxybruce.component.ui.dialog.AppDialogFragment;
 
+import java.lang.reflect.ParameterizedType;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
@@ -25,8 +27,10 @@ import androidx.lifecycle.ViewModelProvider;
  * <p>
  * modification history:
  */
-public abstract class JPBaseDialogFragment<B extends ViewDataBinding> extends AppDialogFragment implements JPHost {
+public abstract class JPBaseDialogFragment<VM extends JPBaseViewModel, B extends ViewDataBinding>
+        extends AppDialogFragment implements JPHost {
 
+    protected VM mPageViewModel;
     private B mDataBinding;
     private JPPageDelegate<B> mJPPageDelegate;
 
@@ -52,7 +56,11 @@ public abstract class JPBaseDialogFragment<B extends ViewDataBinding> extends Ap
      */
     @Override
     public JPBaseViewModel initViewModel() {
-        return null;
+        Class<VM> tClass = (Class<VM>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        if(!tClass.equals(JPBaseViewModel.class)) {
+            mPageViewModel = getFragmentViewModel(tClass);
+        }
+        return mPageViewModel;
     }
 
     /**

@@ -7,6 +7,7 @@ import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.ui.activity.AppTitleInfo
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.util.AppConstants
+import com.galaxybruce.component.util.ToastUtils.showToast
 import com.galaxybruce.main.BR
 import com.galaxybruce.main.R
 import com.galaxybruce.main.databinding.NetTestLayoutBinding
@@ -14,7 +15,7 @@ import com.galaxybruce.main.ui.mvvm.viewmodel.NetTestViewModel
 
 
 @Route(path = "/test/TestActivity")
-class NetTestActivity : AppBaseActivity<NetTestLayoutBinding, NetTestViewModel>() {
+class NetTestActivity : AppBaseActivity<NetTestViewModel, NetTestLayoutBinding>() {
 
     override fun initDataBindConfig(): JPDataBindingConfig {
         return JPDataBindingConfig(bindLayoutId())
