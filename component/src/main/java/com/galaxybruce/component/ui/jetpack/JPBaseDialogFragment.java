@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import com.galaxybruce.component.ui.activity.BaseActivity;
 import com.galaxybruce.component.ui.dialog.AppDialogFragment;
 
-import java.lang.reflect.ParameterizedType;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
@@ -19,6 +17,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
+import static com.galaxybruce.component.ui.jetpack.util.JPViewModeExtKt.getVmClazz;
 
 /**
  * @author bruce.zhang
@@ -56,7 +56,7 @@ public abstract class JPBaseDialogFragment<VM extends JPBaseViewModel, B extends
      */
     @Override
     public JPBaseViewModel initViewModel() {
-        Class<VM> tClass = (Class<VM>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        Class<VM> tClass = getVmClazz(this);
         if(!tClass.equals(JPBaseViewModel.class)) {
             mPageViewModel = getFragmentViewModel(tClass);
         }

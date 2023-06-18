@@ -10,12 +10,12 @@ import com.galaxybruce.component.ui.activity.AppTitleInfo;
 import com.galaxybruce.component.ui.activity.IAppTitleBarView;
 import com.galaxybruce.component.util.AppConstants;
 
-import java.lang.reflect.ParameterizedType;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.ViewDataBinding;
+
+import static com.galaxybruce.component.ui.jetpack.util.JPViewModeExtKt.getVmClazz;
 
 public abstract class JPBaseFragmentV2<VM extends JPBaseViewModel, B extends ViewDataBinding> extends JPBaseFragment<B> {
 
@@ -30,7 +30,7 @@ public abstract class JPBaseFragmentV2<VM extends JPBaseViewModel, B extends Vie
      */
     @Override
     public JPBaseViewModel initViewModel() {
-        Class<VM> tClass = (Class<VM>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        Class<VM> tClass = getVmClazz(this);
         if(!tClass.equals(JPBaseViewModel.class)) {
             mPageViewModel = getFragmentViewModel(tClass);
         }
