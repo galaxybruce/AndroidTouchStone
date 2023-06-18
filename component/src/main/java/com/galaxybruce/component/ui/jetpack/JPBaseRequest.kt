@@ -1,13 +1,10 @@
 package com.galaxybruce.component.ui.jetpack
 
 import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.MutableLiveData
-import com.blankj.utilcode.util.ViewUtils.runOnUiThread
 import com.galaxybruce.component.net.exception.AppLoginExpiresException
 import com.galaxybruce.component.net.exception.AppNetException
 import com.galaxybruce.component.net.model.IAppBean
 import com.galaxybruce.component.net.transformer.AppNetResponseTransformer
-import com.galaxybruce.component.ui.jetpack.livedata.UnStickyMutableLiveData
 import com.galaxybruce.component.util.AppConstants.EMPTY_STR
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
@@ -97,45 +94,7 @@ import io.reactivex.schedulers.Schedulers
  *
  * modification history:
  */
-abstract class JPBaseRequest : IJPViewModelAction, DefaultLifecycleObserver {
-
-    // 这里为什么使用UnPeekLiveData，而不是普通的LiveData？是为了解决数据倒灌的问题。
-    // 页面弹窗、加载框、登录的不像普通的数据重复设置不影响
-    private val actionEvent: MutableLiveData<JPPageActionEvent> = UnStickyMutableLiveData<JPPageActionEvent>()
-
-    override fun showLoadingProgress(message: String?) {
-        runOnUiThread {
-            actionEvent.value = JPPageActionEvent(JPPageActionEvent.SHOW_LOADING_DIALOG, message)
-        }
-    }
-
-    override fun hideLoadingProgress() {
-        runOnUiThread {
-            actionEvent.value = JPPageActionEvent(JPPageActionEvent.DISMISS_LOADING_DIALOG)
-        }
-    }
-
-    override fun showToast(message: String?) {
-        runOnUiThread {
-            actionEvent.value = JPPageActionEvent(JPPageActionEvent.SHOW_TOAST, message)
-        }
-    }
-
-    override fun reLogin() {
-        runOnUiThread {
-            actionEvent.value = JPPageActionEvent(JPPageActionEvent.LOGIN)
-        }
-    }
-
-    override fun finish() {
-        runOnUiThread {
-            actionEvent.value = JPPageActionEvent(JPPageActionEvent.FINISH)
-        }
-    }
-    
-    override fun getActionLiveData(): MutableLiveData<JPPageActionEvent> {
-        return actionEvent
-    }
+abstract class JPBaseRequest : IJPViewModelAction by JPRequestAction(), DefaultLifecycleObserver {
 
     fun <T : IAppBean> handleEverythingResult(showLoading: Boolean): ObservableTransformer<T, T> {
         return handleEverythingResult(showLoading, EMPTY_STR)
@@ -147,8 +106,8 @@ abstract class JPBaseRequest : IJPViewModelAction, DefaultLifecycleObserver {
 
     fun <T : IAppBean> handleOnlyNetworkResult(showLoading: Boolean,
                                                     loadingMessage: String): ObservableTransformer<T, T> {
-        return ObservableTransformer { upstream ->
-            handleCommon(upstream, showLoading, loadingMessage, true) }
+        return ObservableTransformer { upstream -> handleCommon(
+            upstream, showLoading, loadingMessage, true) }
     }
 
     private fun <T : IAppBean> handleEverythingResult(showLoading: Boolean,
