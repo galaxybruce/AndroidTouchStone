@@ -31,8 +31,8 @@ public class AppNetExceptionHandler {
      * @param e 异常对象
      * @return KRetrofitException
      */
-    public static Throwable handleException(Throwable e) {
-        Throwable httpException;
+    public static Exception handleException(Throwable e) {
+        Exception httpException;
         if (e instanceof HttpException) {
             httpException = new AppRetrofitException(MESSAGE_BAD_NETWORK, ((HttpException) e).code());
         } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
@@ -42,7 +42,7 @@ public class AppNetExceptionHandler {
         } else if (e instanceof JsonParseException || e instanceof JSONException || e instanceof ParseException) {
             httpException = new AppRetrofitException(MESSAGE_PARSE, ERROR_PARSE);
         } else if (e instanceof AppNetException || e instanceof AppLoginExpiresException) {
-            httpException = e;
+            httpException = (Exception) e;
         } else {
             httpException = new AppRetrofitException(e.getMessage(), ERROR_UNKNOWN);
         }

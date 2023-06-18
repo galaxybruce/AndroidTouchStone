@@ -16,6 +16,10 @@ import io.reactivex.schedulers.Schedulers
  * @author bruce.zhang
  * @description 逻辑处理的入口类，在这里可以调用JPBaseRepository或者其他更深层次的逻辑处理类
  *
+ *  注意：[JPBaseRequest] 与 [JPBaseRequestV2]的区别：
+ *  JPBaseRequest：RxJava
+ *  JPBaseRequestV2: 协程
+ *
  * add by bruce.zhang start
  *
  * TODO tip：

@@ -45,7 +45,6 @@ class NetTestActivity : AppBaseActivity<NetTestViewModel, NetTestLayoutBinding>(
     override fun bindData(savedInstanceState: Bundle?) {
         super.bindData(savedInstanceState)
 
-        mPageViewModel.title.set("xxx")
         // todo LiveData数据监听例子，实际代码请删除
         setLiveDataObserver(
             mPageViewModel.name,
@@ -55,7 +54,7 @@ class NetTestActivity : AppBaseActivity<NetTestViewModel, NetTestLayoutBinding>(
 
     private fun performRequest() {
         // todo perform net Requrest
-        mPageViewModel.request.performRequest("xxx")
+        mPageViewModel.request.doTask()
     }
 
     /**
