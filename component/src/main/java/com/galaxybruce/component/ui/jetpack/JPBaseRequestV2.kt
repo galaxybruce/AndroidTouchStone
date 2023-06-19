@@ -103,6 +103,8 @@ abstract class JPBaseRequestV2(private val viewModel: JPBaseViewModel)
      * 处理耗时任务，使场景：
      * 1. 处理单个的耗时任务，也可以是网络请求
      * 2. 处理多个网络请求
+     *
+     * 例如：
      * doTask(
      *     {
      *         val requestUrl: String = DemoUrl.URL_DEMO
@@ -151,12 +153,24 @@ abstract class JPBaseRequestV2(private val viewModel: JPBaseViewModel)
 
     /**
      * 处理单个网络请求
+     * 例如：
+     * request(
+     *     {
+     *         val requestUrl: String = DemoUrl.URL_DEMO
+     *         mApi.getDataSuspend(requestUrl)
+     *     }, { response ->
+     *         this.viewModel.name.value = JSON.toJSONString(response.data)
+     *     }, { exception ->
+     *         showToast(exception.message)
+     *     }
+     * )
      *
      * @param block 请求体方法，必须要用suspend关键字修饰
      * @param success 成功回调
      * @param error 失败回调
      * @param showLoading 是否显示加载框
      * @param loadingMessage 加载框提示内容
+     *
      */
     fun <T: IAppBean> request(
         block: suspend () -> T,
