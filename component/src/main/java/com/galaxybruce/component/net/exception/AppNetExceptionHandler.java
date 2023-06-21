@@ -3,17 +3,19 @@ package com.galaxybruce.component.net.exception;
 import android.net.ParseException;
 
 import com.google.gson.JsonParseException;
+import com.google.gson.stream.MalformedJsonException;
 
+import org.apache.http.conn.ConnectTimeoutException;
 import org.json.JSONException;
 
-import java.io.InterruptedIOException;
 import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+
+import javax.net.ssl.SSLException;
 
 import retrofit2.HttpException;
 
-import static com.galaxybruce.component.net.exception.AppRetrofitConstants.Code.*;
-import static com.galaxybruce.component.net.exception.AppRetrofitConstants.Message.*;
 
 
 /**
@@ -33,18 +35,21 @@ public class AppNetExceptionHandler {
      */
     public static Exception handleException(Throwable e) {
         Exception httpException;
-        if (e instanceof HttpException) {
-            httpException = new AppRetrofitException(MESSAGE_BAD_NETWORK, ((HttpException) e).code());
-        } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
-            httpException = new AppRetrofitException(MESSAGE_CONNECT, ERROR_CONNECT);
-        } else if (e instanceof InterruptedIOException) {
-            httpException = new AppRetrofitException(MESSAGE_CONNECT_TIMEOUT, ERROR_CONNECT_TIMEOUT);
-        } else if (e instanceof JsonParseException || e instanceof JSONException || e instanceof ParseException) {
-            httpException = new AppRetrofitException(MESSAGE_PARSE, ERROR_PARSE);
-        } else if (e instanceof AppNetException || e instanceof AppLoginExpiresException) {
+        if (e instanceof AppNetException || e instanceof AppLoginExpiresException) {
             httpException = (Exception) e;
+        } else if (e instanceof HttpException) {
+            httpException = new AppNetException(AppNetError.ERROR_BAD_NETWORK, e);
+        } else if (e instanceof ConnectException || e instanceof UnknownHostException) {
+            httpException = new AppNetException(AppNetError.ERROR_CONNECT, e);
+        } else if (e instanceof ConnectTimeoutException || e instanceof SocketTimeoutException) {
+            httpException = new AppNetException(AppNetError.ERROR_CONNECT_TIMEOUT, e);
+        } else if (e instanceof JsonParseException || e instanceof JSONException ||
+                e instanceof ParseException || e instanceof MalformedJsonException) {
+            httpException = new AppNetException(AppNetError.ERROR_PARSE, e);
+        } else if (e instanceof SSLException) {
+            httpException = new AppNetException(AppNetError.ERROR_SSL, e);
         } else {
-            httpException = new AppRetrofitException(e.getMessage(), ERROR_UNKNOWN);
+            httpException = new AppNetException(AppNetError.ERROR_UNKNOWN, e);
         }
         return httpException;
     }

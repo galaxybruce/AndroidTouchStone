@@ -69,7 +69,7 @@ abstract class JPBaseRequestV2(private val viewModel: JPBaseViewModel)
                 if(showLoading) {
                     hideLoadingProgress()
                 }
-                errorCallback(it)
+                errorCallback(AppNetExceptionHandler.handleException(it))
             }
         }
     }
