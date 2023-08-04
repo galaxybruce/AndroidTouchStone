@@ -1,8 +1,6 @@
 package com.galaxybruce.main.ui.activity
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.billy.cc.core.component.CC
 import com.galaxybruce.base.ui.activity.AppBaseActivity
@@ -14,7 +12,6 @@ import com.galaxybruce.component.util.AppConstants
 import com.galaxybruce.main.BR
 import com.galaxybruce.main.R
 import com.galaxybruce.main.databinding.MainLayoutBinding
-import com.galaxybruce.main.test.TaskService
 import com.galaxybruce.main.ui.mvvm.viewmodel.MainViewModel
 
 @Route(path = "/app/main")
@@ -71,13 +68,10 @@ class MainActivity : AppBaseActivity<MainViewModel, MainLayoutBinding>() {
         }
 
         fun onComponentClick() {
-//            CC.obtainBuilder("SampleComponent")
-//                .setActionName("showToast")
-//                .build()
-//                .call()
-
-            val intent = Intent(mActivity, TaskService::class.java)
-            ContextCompat.startForegroundService(mActivity, intent)
+            CC.obtainBuilder("SampleComponent")
+                .setActionName("showToast")
+                .build()
+                .call()
         }
     }
 
