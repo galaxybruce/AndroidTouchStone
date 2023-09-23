@@ -38,11 +38,10 @@ class MainActivity : AppBaseActivity<MainViewModel, MainLayoutBinding>() {
     override fun bindData(savedInstanceState: Bundle?) {
         super.bindData(savedInstanceState)
 
-        performRequest()
     }
 
     private fun performRequest() {
-        mPageViewModel.request.performRequest("xxx")
+        mPageViewModel.request.performRequest(this)
     }
 
     /**
@@ -64,7 +63,11 @@ class MainActivity : AppBaseActivity<MainViewModel, MainLayoutBinding>() {
                         AppRouterUrlBuilder.instance("/test/TestActivity").go(mActivity)
                     }
                 })
-                .show(mActivity, "aaa")
+                .show(mActivity, "AppConfirmDialog_1")
+        }
+
+        fun onRequestClick() {
+            performRequest()
         }
 
         fun onComponentClick() {
