@@ -51,6 +51,8 @@ class MainRequest(private val viewModel: MainViewModel) : JPBaseRequest() {
 
     /**
      * [利用协程同步代码形式获取弹窗返回结果](https://juejin.cn/post/7131396910438416392)
+     * [Kotlin--suspendCancellableCoroutine和suspendCoroutine的区别及使用](https://blog.csdn.net/qq_41751493/article/details/113698815)
+     * [Kotlin协程-协程的暂停与恢复 & suspendCancellableCoroutine的使用](https://juejin.cn/post/7128555351725015054)
      */
     private suspend fun showInputDialog(context: Context): Result<String> {
         return suspendCancellableCoroutine { continuation ->
