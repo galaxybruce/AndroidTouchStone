@@ -17,7 +17,7 @@ package com.galaxybruce.component.util.chain
  *     this.add(Action2())
  *     this.add(Action3())
  *     this.add(Action4())
- * }.action(Unit, AppChainActionResult<Unit>()) { result ->
+ * }.action(Unit) { result ->
  *     AppLogUtils.i("执行目标任务")
  * }
  *
@@ -41,7 +41,6 @@ class AppChainActionHandler<T,R> {
     /**
      * 开始执行
      * @param request 一些列行为依赖的共同的参数对象，如果不需要参数，传Unit
-     * @param result 链式任务返回结果，如果不需要返回接口，传AppChainActionResult<Unit>()
      * @param callback 所有行为执行完成后的回调。一般来说，这个callback就是等所以依赖的行为
      * 执行完毕后再执行；也可以把callback中要执行的内容封装成一个ChainAction，这样callback中
      * 就不需要再做任何东西。
@@ -50,8 +49,7 @@ class AppChainActionHandler<T,R> {
      * next?.action(request, result, callback) ?: callback.invoke(result)
      */
     fun action(request: T,
-               result: AppChainActionResult<R> = AppChainActionResult(),
                callback: (AppChainActionResult<R>) -> Unit) {
-        _first?.action(request, result, callback)
+        _first?.action(request, AppChainActionResult(), callback)
     }
 }
