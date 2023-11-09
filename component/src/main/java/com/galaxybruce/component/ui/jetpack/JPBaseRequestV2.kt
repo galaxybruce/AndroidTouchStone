@@ -47,8 +47,8 @@ abstract class JPBaseRequestV2(private val viewModel: JPBaseViewModel)
      */
     fun <T> doTask(
         block: suspend () -> T,
-        successCallback: (T) -> Unit = {},
-        errorCallback: (Throwable) -> Unit = {},
+        successCallback: suspend (T) -> Unit = {},
+        errorCallback: suspend (Throwable) -> Unit = {},
         showLoading: Boolean = false,
         loadingMessage: String? = null
     ) {
@@ -97,8 +97,8 @@ abstract class JPBaseRequestV2(private val viewModel: JPBaseViewModel)
      */
     fun <T: IAppBean> request(
         block: suspend () -> T,
-        successCallback: (T) -> Unit = {},
-        errorCallback: (Throwable) -> Unit = {},
+        successCallback: suspend (T) -> Unit = {},
+        errorCallback: suspend (Throwable) -> Unit = {},
         showLoading: Boolean = true,
         loadingMessage: String? = null
     ): Job {
