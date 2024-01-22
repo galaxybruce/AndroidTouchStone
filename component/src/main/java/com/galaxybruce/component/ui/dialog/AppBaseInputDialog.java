@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.galaxybruce.component.R;
+import com.galaxybruce.component.ui.jetpack.JPBaseViewModel;
 import com.galaxybruce.component.util.AppMaxTextLengthFilter;
 import com.galaxybruce.component.util.ToastUtils;
 
@@ -44,7 +45,7 @@ import androidx.databinding.ViewDataBinding;
  * <p>
  * modification history:
  */
-public abstract class AppBaseInputDialog<B extends ViewDataBinding> extends AppCustomConfirmDialog<B> {
+public abstract class AppBaseInputDialog<B extends ViewDataBinding> extends AppCustomConfirmDialog<JPBaseViewModel, B> {
 
     @Override
     protected boolean supportMVVM() {

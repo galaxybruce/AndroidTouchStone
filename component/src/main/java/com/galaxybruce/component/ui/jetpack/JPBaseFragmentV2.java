@@ -10,14 +10,14 @@ import com.galaxybruce.component.ui.activity.AppTitleInfo;
 import com.galaxybruce.component.ui.activity.IAppTitleBarView;
 import com.galaxybruce.component.util.AppConstants;
 
-import java.lang.reflect.ParameterizedType;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.ViewDataBinding;
 
-public abstract class JPBaseFragmentV2<B extends ViewDataBinding, VM extends JPBaseViewModel> extends JPBaseFragment<B> {
+import static com.galaxybruce.component.ui.jetpack.util.JPViewModeExtKt.getVmClazz;
+
+public abstract class JPBaseFragmentV2<VM extends JPBaseViewModel, B extends ViewDataBinding> extends JPBaseFragment<B> {
 
     protected VM mPageViewModel;
     protected IAppTitleBarView mAppTitleBarView;
@@ -30,8 +30,10 @@ public abstract class JPBaseFragmentV2<B extends ViewDataBinding, VM extends JPB
      */
     @Override
     public JPBaseViewModel initViewModel() {
-        Class<VM> tClass = (Class<VM>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        mPageViewModel = getActivityViewModel(tClass);
+        Class<VM> tClass = getVmClazz(this);
+        if(!tClass.equals(JPBaseViewModel.class)) {
+            mPageViewModel = getFragmentViewModel(tClass);
+        }
         return mPageViewModel;
     }
 

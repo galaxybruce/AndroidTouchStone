@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.galaxybruce.component.R;
 import com.galaxybruce.component.ui.jetpack.JPBaseDialogFragment;
+import com.galaxybruce.component.ui.jetpack.JPBaseViewModel;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +29,8 @@ import androidx.fragment.app.DialogFragment;
  * <p>
  * modification history:
  */
-public abstract class AppCustomConfirmDialog<B extends ViewDataBinding> extends JPBaseDialogFragment<B>
+public abstract class AppCustomConfirmDialog<VM extends JPBaseViewModel, B extends ViewDataBinding>
+        extends JPBaseDialogFragment<VM, B>
         implements DialogInterface.OnKeyListener, DialogInterface.OnShowListener{
 
     public static class Builder<T extends Builder> {

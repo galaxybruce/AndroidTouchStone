@@ -13,6 +13,7 @@ android {
 
 //开启app内部多进程组件调用
 ccregister.multiProcessEnabled = true
+ccregister.excludeProcessNames = [':privacyProcess']
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

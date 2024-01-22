@@ -1,5 +1,10 @@
 package com.galaxybruce.component.ui.jetpack;
 
+import android.app.Activity;
+
+import com.galaxybruce.component.ui.ILogin;
+import com.galaxybruce.component.ui.IUiView;
+
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelStoreOwner;
 
@@ -10,7 +15,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
  * <p>
  * modification history:
  */
-public interface JPHost extends LifecycleOwner, ViewModelStoreOwner {
+public interface JPHost extends LifecycleOwner, ViewModelStoreOwner, IUiView, ILogin {
 
     LifecycleOwner getLifecycleOwner();
 
@@ -32,4 +37,21 @@ public interface JPHost extends LifecycleOwner, ViewModelStoreOwner {
      */
     JPDataBindingConfig initDataBindConfig();
 
+    /**
+     * 是否出入活跃状态
+     * @return
+     */
+    boolean isHostActive();
+
+    /**
+     * 关闭容器
+     */
+    void closeHost();
+
+    Activity getHostActivity();
+
+    @Override
+    default void finishAllActivity() {
+
+    }
 }

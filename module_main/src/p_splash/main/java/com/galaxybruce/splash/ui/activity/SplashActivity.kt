@@ -26,7 +26,7 @@ import com.galaxybruce.splash.ui.mvvm.viewmodel.SplashViewModel
  * <p>
  * modification history:
  */
-class SplashActivity : AppBaseActivity<SplashLayoutBinding, SplashViewModel>() {
+class SplashActivity : AppBaseActivity<SplashViewModel, SplashLayoutBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (!AppPrivacyUtil.checkPrivacyInLaunchActivity(this)) {

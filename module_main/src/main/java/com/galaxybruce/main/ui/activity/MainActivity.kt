@@ -15,7 +15,7 @@ import com.galaxybruce.main.databinding.MainLayoutBinding
 import com.galaxybruce.main.ui.mvvm.viewmodel.MainViewModel
 
 @Route(path = "/app/main")
-class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
+class MainActivity : AppBaseActivity<MainViewModel, MainLayoutBinding>() {
 
     override fun initDataBindConfig(): JPDataBindingConfig {
         return JPDataBindingConfig(bindLayoutId())
@@ -38,11 +38,10 @@ class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
     override fun bindData(savedInstanceState: Bundle?) {
         super.bindData(savedInstanceState)
 
-        performRequest()
     }
 
     private fun performRequest() {
-        mPageViewModel.request.performRequest("xxx")
+        mPageViewModel.request.performRequest(this)
     }
 
     /**
@@ -64,7 +63,11 @@ class MainActivity : AppBaseActivity<MainLayoutBinding, MainViewModel>() {
                         AppRouterUrlBuilder.instance("/test/TestActivity").go(mActivity)
                     }
                 })
-                .show(mActivity, "aaa")
+                .show(mActivity, "AppConfirmDialog_1")
+        }
+
+        fun onRequestClick() {
+            performRequest()
         }
 
         fun onComponentClick() {

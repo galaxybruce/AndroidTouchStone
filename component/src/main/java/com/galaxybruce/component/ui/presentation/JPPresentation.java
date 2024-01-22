@@ -1,5 +1,6 @@
 package com.galaxybruce.component.ui.presentation;
 
+import android.app.Activity;
 import android.app.Presentation;
 import android.content.Context;
 import android.hardware.display.DisplayManager;
@@ -13,17 +14,18 @@ import android.view.WindowManager;
 import com.galaxybruce.component.ui.IUiInit;
 import com.galaxybruce.component.ui.jetpack.JPBaseViewModel;
 import com.galaxybruce.component.ui.jetpack.JPHost;
+import com.galaxybruce.component.ui.jetpack.JPPageDelegate;
 import com.galaxybruce.component.ui.presentation.view.AppPresentationLoadingView;
 import com.galaxybruce.component.ui.presentation.view.AppPresentationToastView;
 import com.galaxybruce.component.util.log.AppLogUtils;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.ViewModelStore;
-import androidx.lifecycle.ViewModelStoreOwner;
 
 /**
  * @author bruce.zhang
@@ -49,15 +51,15 @@ import androidx.lifecycle.ViewModelStoreOwner;
  */
 public abstract class JPPresentation<B extends ViewDataBinding>
         extends Presentation
-        implements JPHost, IUiInit, LifecycleOwner, ViewModelStoreOwner {
+        implements JPHost, IUiInit {
 
     protected Context mOuterContext;
 
     private B mDataBinding;
-    private JPPresentationDelegate<B> mJPPresentationDelegate;
+    private JPPageDelegate<B> mJPPresentationDelegate;
 
-    private LifecycleRegistry lifecycle = new LifecycleRegistry(this);
-    private ViewModelStore mViewModelStore = new ViewModelStore();
+    private final LifecycleRegistry lifecycle = new LifecycleRegistry(this);
+    private final ViewModelStore mViewModelStore = new ViewModelStore();
 
     private AppPresentationLoadingView mLoadingView;
     private AppPresentationToastView mToastView;
@@ -147,7 +149,7 @@ public abstract class JPPresentation<B extends ViewDataBinding>
         super.onCreate(savedInstanceState);
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_CREATE);
 
-        mJPPresentationDelegate = new JPPresentationDelegate<>(this);
+        mJPPresentationDelegate = new JPPageDelegate<>(this);
 
         setRootLayout(bindLayoutId());
         initData(null, savedInstanceState);
@@ -171,12 +173,12 @@ public abstract class JPPresentation<B extends ViewDataBinding>
     public void dismiss() {
         super.dismiss();
         lifecycle.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY);
-        hideLoading();
+        hideLoadingProgress();
         hideToast();
     }
 
     protected void setRootLayout(int layoutId) {
-        mDataBinding = mJPPresentationDelegate.setRootLayout(layoutId, LayoutInflater.from(getContext()), null);
+        mDataBinding = mJPPresentationDelegate.setRootLayout(layoutId, LayoutInflater.from(getContext()), null, false);
         if(mDataBinding != null) {
             setContentView(mDataBinding.getRoot());
         }
@@ -186,16 +188,18 @@ public abstract class JPPresentation<B extends ViewDataBinding>
         return mJPPresentationDelegate.getPresentationModel(modelClass);
     }
 
-    public void showLoading() {
+    @Override
+    public void showLoadingProgress(@Nullable String message) {
         // window manager不能同时add两个view
         hideToast();
         if(mLoadingView == null) {
             mLoadingView = new AppPresentationLoadingView(mOuterContext);
         }
-        mLoadingView.show(null);
+        mLoadingView.show(message);
     }
 
-    public void hideLoading() {
+    @Override
+    public void hideLoadingProgress() {
         if(mLoadingView != null) {
             mLoadingView.hide();
             mLoadingView = null;
@@ -204,7 +208,7 @@ public abstract class JPPresentation<B extends ViewDataBinding>
 
     public void showToast(final String message) {
         // window manager不能同时add两个view
-        hideLoading();
+        hideLoadingProgress();
         if(mToastView == null) {
             mToastView = new AppPresentationToastView(mOuterContext);
         }
@@ -217,5 +221,24 @@ public abstract class JPPresentation<B extends ViewDataBinding>
             mToastView = null;
         }
     }
-    
+
+    @Override
+    public void login() {
+
+    }
+
+    @Override
+    public boolean isHostActive() {
+        return isShowing();
+    }
+
+    @Override
+    public void closeHost() {
+        dismiss();
+    }
+
+    @Override
+    public Activity getHostActivity() {
+        return getOwnerActivity();
+    }
 }

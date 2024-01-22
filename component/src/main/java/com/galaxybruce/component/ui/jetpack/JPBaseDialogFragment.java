@@ -1,10 +1,12 @@
 package com.galaxybruce.component.ui.jetpack;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.galaxybruce.component.ui.activity.BaseActivity;
 import com.galaxybruce.component.ui.dialog.AppDialogFragment;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import static com.galaxybruce.component.ui.jetpack.util.JPViewModeExtKt.getVmClazz;
+
 /**
  * @author bruce.zhang
  * @date 2020/11/25 16:50
@@ -23,8 +27,10 @@ import androidx.lifecycle.ViewModelProvider;
  * <p>
  * modification history:
  */
-public abstract class JPBaseDialogFragment<B extends ViewDataBinding> extends AppDialogFragment implements JPHost {
+public abstract class JPBaseDialogFragment<VM extends JPBaseViewModel, B extends ViewDataBinding>
+        extends AppDialogFragment implements JPHost {
 
+    protected VM mPageViewModel;
     private B mDataBinding;
     private JPPageDelegate<B> mJPPageDelegate;
 
@@ -43,16 +49,24 @@ public abstract class JPBaseDialogFragment<B extends ViewDataBinding> extends Ap
     }
 
     /**
-     * 每个页面对应的Page ViewModel
+     * 每个页面对应的Page ViewModel，本质上也是fragment，所以和Fragment中获取方式一样
+     * mPageViewModel = getFragmentViewModel(XXXViewModel.class);
+     *
      * @return 返回 该页面对应的ViewModel
      */
     @Override
     public JPBaseViewModel initViewModel() {
-        return null;
+        Class<VM> tClass = getVmClazz(this);
+        if(!tClass.equals(JPBaseViewModel.class)) {
+            mPageViewModel = getFragmentViewModel(tClass);
+        }
+        return mPageViewModel;
     }
 
     /**
-     * 多个"通用的ViewModel"的初始化
+     * 多个"通用的ViewModel"的初始化，本质上也是fragment，所以和Fragment中获取方式一样
+     * mPageViewModel = getFragmentViewModel(XXXViewModel.class);
+     * 
      * @return
      */
     @Override
@@ -137,4 +151,24 @@ public abstract class JPBaseDialogFragment<B extends ViewDataBinding> extends Ap
     protected <T> void setLiveDataObserver(@NonNull LiveData<T> liveData, @NonNull Observer<? super T> observer) {
         mJPPageDelegate.setLiveDataObserver(liveData, observer);
     }
+
+    @Override
+    public boolean isHostActive() {
+        Activity activity = getActivity();
+        return activity != null && !activity.isFinishing() && activity instanceof BaseActivity;
+    }
+
+    @Override
+    public void closeHost() {
+        Activity activity = getActivity();
+        if(activity != null) {
+            activity.finish();
+        }
+    }
+
+    @Override
+    public Activity getHostActivity() {
+        return getActivity();
+    }
+
 }

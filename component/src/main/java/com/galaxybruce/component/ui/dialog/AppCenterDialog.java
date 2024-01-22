@@ -22,7 +22,8 @@ import androidx.fragment.app.DialogFragment;
  * <p>
  * modification history:
  */
-public class AppCenterDialog<B extends ViewDataBinding> extends JPBaseDialogFragment<B> {
+public class AppCenterDialog<VM extends JPBaseViewModel, B extends ViewDataBinding>
+        extends JPBaseDialogFragment<VM, B> {
 
     @Override
     public void onCreate(@androidx.annotation.Nullable Bundle savedInstanceState) {

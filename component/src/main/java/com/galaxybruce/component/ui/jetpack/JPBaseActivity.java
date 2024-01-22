@@ -1,6 +1,9 @@
 package com.galaxybruce.component.ui.jetpack;
 
+import android.app.Activity;
 import android.os.Bundle;
+
+import com.galaxybruce.component.ui.activity.BaseActivity;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
@@ -9,8 +12,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.galaxybruce.component.ui.activity.BaseActivity;
 
 /**
  * @date 2020/8/11  10:08 AM
@@ -122,4 +123,18 @@ public abstract class JPBaseActivity<B extends ViewDataBinding> extends BaseActi
         mJPPageDelegate.setLiveDataObserver(liveData, observer);
     }
 
+    @Override
+    public boolean isHostActive() {
+        return mActivity != null && !mActivity.isFinishing() && mActivity instanceof BaseActivity;
+    }
+
+    @Override
+    public void closeHost() {
+        finish();
+    }
+
+    @Override
+    public Activity getHostActivity() {
+        return this;
+    }
 }

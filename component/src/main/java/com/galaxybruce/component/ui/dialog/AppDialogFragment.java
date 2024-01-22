@@ -15,7 +15,10 @@ import android.view.WindowManager;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.AdaptScreenUtils;
+import com.galaxybruce.component.ui.ILogin;
 import com.galaxybruce.component.ui.IUiInit;
+import com.galaxybruce.component.ui.IUiView;
+import com.galaxybruce.component.ui.activity.BaseActivity;
 import com.galaxybruce.component.util.AppConstants;
 
 import androidx.annotation.CallSuper;
@@ -42,7 +45,7 @@ import androidx.fragment.app.FragmentTransaction;
  * <p>
  * modification history:
  */
-public abstract class AppDialogFragment extends DialogFragment implements IUiInit {
+public abstract class AppDialogFragment extends DialogFragment implements IUiInit, IUiView, ILogin {
 
     public void show(Context context, String tag) {
         Activity activity = ActivityUtils.getActivityByContext(context);
@@ -155,6 +158,38 @@ public abstract class AppDialogFragment extends DialogFragment implements IUiIni
     @Override
     public void dismiss() {
         super.dismissAllowingStateLoss();
+    }
+
+    @Override
+    public void showToast(@Nullable String message) {
+        Activity activity = getActivity();
+        if(activity instanceof BaseActivity) {
+            ((BaseActivity)activity).showToast(message);
+        }
+    }
+
+    @Override
+    public void showLoadingProgress(@Nullable String message) {
+        Activity activity = getActivity();
+        if(activity instanceof BaseActivity) {
+            ((BaseActivity)activity).showLoadingProgress(message);
+        }
+    }
+
+    @Override
+    public void hideLoadingProgress() {
+        Activity activity = getActivity();
+        if(activity instanceof BaseActivity) {
+            ((BaseActivity)activity).hideLoadingProgress();
+        }
+    }
+
+    @Override
+    public void login() {
+        Activity activity = getActivity();
+        if(activity instanceof BaseActivity) {
+            ((BaseActivity)activity).login();
+        }
     }
 
     /**

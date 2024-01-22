@@ -41,6 +41,7 @@ public class JPPageDelegate<B extends ViewDataBinding> {
     private ViewModelProvider mAppViewModelProvider;
     private ViewModelProvider mActivityViewModelProvider;
     private ViewModelProvider mFragmentViewModelProvider;
+    private ViewModelProvider mPresentationModelProvider;
     /**
      * 父fragment的provider，可能有很多层级，根据fragment类名区分
      */
@@ -49,41 +50,31 @@ public class JPPageDelegate<B extends ViewDataBinding> {
 
     public JPPageDelegate(JPHost host) {
         mJPHost = host;
-        if(host instanceof BaseActivity) {
-            mHostActivity = true;
-        } else if(host instanceof Fragment) {
-            mHostActivity = false;
-        } else {
-            throw new IllegalArgumentException("init mvvm param host must be activity or fragment !!!");
-        }
+        mHostActivity = host instanceof BaseActivity;
     }
 
     /**
      * 页面上loading  relogin  toast等事件
      */
     private final Observer<JPPageActionEvent> jpPageActionObserver = jpPageActionEvent -> {
-        BaseActivity activity = null;
-        if(mJPHost instanceof BaseActivity) {
-            activity = (BaseActivity)mJPHost;
-        }
-        if(activity == null || activity.isFinishing()) {
+        if(!mJPHost.isHostActive()) {
             return;
         }
         switch (jpPageActionEvent.getAction()) {
             case JPPageActionEvent.SHOW_LOADING_DIALOG:
-                activity.showLoadingProgress(jpPageActionEvent.getMessage());
+                mJPHost.showLoadingProgress(jpPageActionEvent.getMessage());
                 break;
             case JPPageActionEvent.DISMISS_LOADING_DIALOG:
-                activity.hideLoadingProgress();
+                mJPHost.hideLoadingProgress();
                 break;
             case JPPageActionEvent.SHOW_TOAST:
-                activity.showToast(jpPageActionEvent.getMessage());
+                mJPHost.showToast(jpPageActionEvent.getMessage());
                 break;
             case JPPageActionEvent.LOGIN:
-                activity.login();
+                mJPHost.login();
                 break;
             case JPPageActionEvent.FINISH:
-                activity.finish();
+                mJPHost.closeHost();
                 break;
             default:
                 break;
@@ -139,6 +130,13 @@ public class JPPageDelegate<B extends ViewDataBinding> {
         }
     }
 
+    public <T extends JPBaseViewModel> T getPresentationModel(@NonNull Class<T> modelClass) {
+        if (mPresentationModelProvider == null) {
+            mPresentationModelProvider = new ViewModelProvider(mJPHost);
+        }
+        return mPresentationModelProvider.get(modelClass);
+    }
+
     protected <T extends JPBaseViewModel> T getFragmentViewModel(@NonNull Class<T> modelClass) {
         if (mFragmentViewModelProvider == null) {
             mFragmentViewModelProvider = new ViewModelProvider(mJPHost);
@@ -186,14 +184,9 @@ public class JPPageDelegate<B extends ViewDataBinding> {
     }
 
     protected ViewModelProvider getAppViewModelProvider(){
-        Activity activity;
-        if(mHostActivity) {
-            activity = (Activity) mJPHost;
-        } else {
-            activity = ((Fragment)mJPHost).getActivity();
-            if (activity == null) {
-                throw new IllegalStateException("Can't create ViewModelProvider for detached fragment");
-            }
+        Activity activity = mJPHost.getHostActivity();
+        if (activity == null) {
+            throw new IllegalStateException("Can't create ViewModelProvider for detached fragment");
         }
         return new ViewModelProvider((BaseApplication)activity.getApplicationContext()
                 , getAppFactory(activity));
