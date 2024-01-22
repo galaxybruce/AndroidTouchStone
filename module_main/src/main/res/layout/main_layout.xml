@@ -24,9 +24,8 @@
 
         <TextView
             android:id="@+id/tv_component"
-            android:layout_width="wrap_content"
-            android:layout_height="150pt"
-            android:minWidth="200pt"
+            android:layout_width="200pt"
+            android:layout_height="100pt"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -40,13 +39,28 @@
             android:onClick="@{() -> click.onComponentClick()}"/>
 
         <TextView
-            android:id="@+id/tv_dialog"
-            android:layout_width="wrap_content"
-            android:layout_height="150pt"
-            android:minWidth="200pt"
+            android:id="@+id/tv_request"
+            android:layout_width="200pt"
+            android:layout_height="100pt"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_component"
+            android:layout_marginTop="20pt"
+            android:background="#800000FF"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:textSize="30pt"
+            android:textColor="@color/theme_text_color_1"
+            android:text="发送请求"
+            android:onClick="@{() -> click.onRequestClick()}"/>
+
+        <TextView
+            android:id="@+id/tv_dialog"
+            android:layout_width="200pt"
+            android:layout_height="100pt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_request"
             android:layout_marginTop="20pt"
             android:gravity="center"
             android:background="#800000FF"
@@ -58,9 +72,8 @@
 
         <TextView
             android:id="@+id/tv_unimp"
-            android:layout_width="wrap_content"
-            android:layout_height="150pt"
-            android:minWidth="200pt"
+            android:layout_width="200pt"
+            android:layout_height="100pt"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_dialog"
