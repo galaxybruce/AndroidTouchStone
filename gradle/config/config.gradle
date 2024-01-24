@@ -15,9 +15,9 @@
  * [Kotlin + buildSrc：更好的管理Gadle依赖](https://juejin.cn/post/6844903615346245646)
  */
 ext {
-    android = [compileSdkVersion: 33,
+    android = [compileSdkVersion: 34,
                minSdkVersion    : 21,
-               targetSdkVersion : 33,
+               targetSdkVersion : 34,
     ]
 
     kotlin_version = '1.8.0'
