@@ -27,14 +27,21 @@ abstract class JPBaseRequestV2(private val viewModel: JPBaseViewModel)
      * 例如：
      * doTask(
      *     {
-     *         val requestUrl: String = DemoUrl.URL_DEMO
+     *         // 并发请求
      *         coroutineScope {
+     *             val requestUrl: String = DemoUrl.URL_DEMO
      *             val deferredOne = async { mApi.getDataSuspend(requestUrl) }
      *             val deferredTwo = async { mApi.getDataSuspend(requestUrl) }
      *             val response1 = deferredOne.await()
      *             val response2 = deferredTwo.await()
      *             JSON.toJSONString(response1.data) + "\n" + JSON.toJSONString(response2.data)
      *        }
+     *
+     *        // 按循序请求
+     *      val r1 = request()
+     *      val input = showInputDialog(context)
+     *      val r2 = request2(input.getOrThrow()) // input.getOrElse { "输入出现异常" }
+     *      r2
      *    }, { response ->
      *        this.viewModel.name.value = response
      *    }, { exception ->
