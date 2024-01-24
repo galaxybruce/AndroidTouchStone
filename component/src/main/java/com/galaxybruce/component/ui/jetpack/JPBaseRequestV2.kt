@@ -5,10 +5,7 @@ import com.galaxybruce.component.net.exception.AppLoginExpiresException
 import com.galaxybruce.component.net.exception.AppNetException
 import com.galaxybruce.component.net.exception.AppNetExceptionHandler
 import com.galaxybruce.component.net.model.IAppBean
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 /**
  * @date 2020/9/16 11:48
@@ -71,6 +68,43 @@ abstract class JPBaseRequestV2(private val viewModel: JPBaseViewModel)
                 }
                 errorCallback(AppNetExceptionHandler.handleException(it))
             }
+        }
+    }
+
+    /**
+     * 挂起操作，比如等待弹窗输入
+     * private suspend fun showInputDialog(context: Context): Result<String> {
+     *     return doSuspendTask { successCallback, errorCallback ->
+     *         AppConfirmDialog.create("提示",
+     *             "协程中弹窗输入内容？",
+     *             false,
+     *             object : AppConfirmDialog.AppConfirmDialogCallback {
+     *                 override fun onCancel() {
+     *                     errorCallback("用户点击取消")
+     *                 }
+     *                 override fun onConfirm() {
+     *                     successCallback("用户点击确定")
+     *                 }
+     *             })
+     *             .show(context, "AppConfirmDialog_2")
+     *     }
+     * }
+     */
+    suspend fun <T> doSuspendTask(callback: ((T) -> Unit, (String) -> Unit) -> Unit): Result<T> {
+        return suspendCancellableCoroutine { continuation ->
+            continuation.invokeOnCancellation {
+                // 协程被取消的处理
+                continuation.resume(Result.failure(it ?: Exception("任务已取消")), null)
+            }
+
+            callback({ result ->
+                continuation.resume(Result.success(result), null)
+            }, { errMsg ->
+                if (!continuation.isCompleted) {
+                    //为true则是点击了确定,已经返回结果
+                    continuation.resume(Result.failure(RuntimeException(errMsg)), null)
+                }
+            })
         }
     }
 
@@ -141,4 +175,5 @@ abstract class JPBaseRequestV2(private val viewModel: JPBaseViewModel)
             }
         }
     }
+
 }

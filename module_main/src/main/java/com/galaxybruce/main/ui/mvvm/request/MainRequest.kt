@@ -76,25 +76,17 @@ class MainRequest(private val viewModel: MainViewModel) : JPBaseRequestV2(viewMo
      * [Kotlin协程-协程的暂停与恢复 & suspendCancellableCoroutine的使用](https://juejin.cn/post/7128555351725015054)
      */
     private suspend fun showInputDialog(context: Context): Result<String> {
-        return suspendCancellableCoroutine { continuation ->
-            continuation.invokeOnCancellation {
-                // 协程被取消的处理
-                continuation.resume(Result.failure(it ?: Exception("任务已取消")), null)
-            }
-
+        return doSuspendTask { successCallback, errorCallback ->
             AppConfirmDialog.create("提示",
                 "协程中弹窗输入内容？",
                 false,
                 object : AppConfirmDialog.AppConfirmDialogCallback {
                     override fun onCancel() {
-                        if (!continuation.isCompleted) {
-                            //为true则是点击了确定,已经返回结果
-                            continuation.resume(Result.failure(RuntimeException("用户点击取消")), null)
-                        }
+                        errorCallback("用户点击取消")
                     }
 
                     override fun onConfirm() {
-                        continuation.resume(Result.success("用户点击确定"), null)
+                        successCallback("用户点击确定")
                     }
                 })
                 .show(context, "AppConfirmDialog_2")
