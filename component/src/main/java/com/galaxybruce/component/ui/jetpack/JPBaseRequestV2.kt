@@ -80,6 +80,9 @@ abstract class JPBaseRequestV2(private val viewModel: JPBaseViewModel)
 
     /**
      * 挂起操作，比如等待弹窗输入
+     * @param doTaskCallback 执行具体任务
+     * @param canceledCallback 协程被取消回调
+     *
      * private suspend fun showInputDialog(context: Context): Result<String> {
      *     return doSuspendTask { successCallback, errorCallback ->
      *         AppConfirmDialog.create("提示",
@@ -97,14 +100,15 @@ abstract class JPBaseRequestV2(private val viewModel: JPBaseViewModel)
      *     }
      * }
      */
-    suspend fun <T> doSuspendTask(callback: ((T) -> Unit, (String) -> Unit) -> Unit): Result<T> {
+    suspend fun <T> doSuspendTask(doTaskCallback: ((T) -> Unit, (String) -> Unit) -> Unit,
+                                  canceledCallback: (Throwable) -> Unit = {}): Result<T> {
         return suspendCancellableCoroutine { continuation ->
             continuation.invokeOnCancellation {
                 // 协程被取消的处理
-                continuation.resume(Result.failure(it ?: Exception("任务已取消")), null)
+                canceledCallback(it ?: Exception("任务已取消"))
             }
 
-            callback({ result ->
+            doTaskCallback({ result ->
                 continuation.resume(Result.success(result), null)
             }, { errMsg ->
                 if (!continuation.isCompleted) {

@@ -76,9 +76,9 @@ class MainRequest(private val viewModel: MainViewModel) : JPBaseRequestV2(viewMo
      * [Kotlin协程-协程的暂停与恢复 & suspendCancellableCoroutine的使用](https://juejin.cn/post/7128555351725015054)
      */
     private suspend fun showInputDialog(context: Context): Result<String> {
-        return doSuspendTask { successCallback, errorCallback ->
+        return doSuspendTask(doTaskCallback = { successCallback, errorCallback ->
             AppConfirmDialog.create("提示",
-                "协程中弹窗输入内容？",
+                "协程中弹窗输入内容111？",
                 false,
                 object : AppConfirmDialog.AppConfirmDialogCallback {
                     override fun onCancel() {
@@ -90,6 +90,8 @@ class MainRequest(private val viewModel: MainViewModel) : JPBaseRequestV2(viewMo
                     }
                 })
                 .show(context, "AppConfirmDialog_2")
-        }
+        }, canceledCallback = {
+
+        })
     }
 }
