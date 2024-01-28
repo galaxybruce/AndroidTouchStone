@@ -15,18 +15,17 @@
  * [Kotlin + buildSrc：更好的管理Gadle依赖](https://juejin.cn/post/6844903615346245646)
  */
 ext {
-    android = [compileSdkVersion: 34,
+    android = [compileSdkVersion: 33,
                minSdkVersion    : 21,
-               targetSdkVersion : 34,
+               targetSdkVersion : 33,
     ]
 
     kotlin_version = '1.8.0'
     lifecycle_version = "2.3.0"
-    arouter_version = "1.5.2"
 
     dep = [
             plugin  : [
-                    "com.galaxybruce.android:pioneer-gradle-plugin:0.0.44",
+                    "com.galaxybruce.android:pioneer-gradle-plugin:0.1.3",
                     "com.galaxybruce.android:buildConfig:1.0.0",
                     "com.galaxybruce.android:cc-register:1.0.1",
                     "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version",
@@ -123,8 +122,6 @@ ext {
             androidUtilCode             : "com.blankj:utilcodex:1.31.0",
 
             anchors                     : "com.galaxybruce.android:anchors:1.1.4",
-            arouter_api                 : "com.alibaba:arouter-api:$arouter_version",
-            arouter_compiler            : "com.alibaba:arouter-compiler:$arouter_version"
     ]
 }
 

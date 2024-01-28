@@ -1,10 +1,8 @@
 package com.galaxybruce.main.ui.activity
 
 import android.os.Bundle
-import com.alibaba.android.arouter.facade.annotation.Route
 import com.billy.cc.core.component.CC
 import com.galaxybruce.base.ui.activity.AppBaseActivity
-import com.galaxybruce.component.router.AppRouterUrlBuilder
 import com.galaxybruce.component.ui.activity.AppTitleInfo
 import com.galaxybruce.component.ui.dialog.AppConfirmDialog
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
@@ -14,7 +12,6 @@ import com.galaxybruce.main.R
 import com.galaxybruce.main.databinding.MainLayoutBinding
 import com.galaxybruce.main.ui.mvvm.viewmodel.MainViewModel
 
-@Route(path = "/app/main")
 class MainActivity : AppBaseActivity<MainViewModel, MainLayoutBinding>() {
 
     override fun initDataBindConfig(): JPDataBindingConfig {
@@ -60,7 +57,9 @@ class MainActivity : AppBaseActivity<MainViewModel, MainLayoutBinding>() {
 
                     override fun onConfirm() {
                         showToast("ok== ${mPageViewModel.n.set(mPageViewModel.n.get() ?: 0 + 1)}")
-                        AppRouterUrlBuilder.instance("/test/TestActivity").go(mActivity)
+                        CC.obtainBuilder("MainComponent")
+                            .setActionName("openTestActivity")
+                            .build().call()
                     }
                 })
                 .show(mActivity, "AppConfirmDialog_1")

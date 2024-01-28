@@ -159,8 +159,6 @@ dependencies {
     // LeakCanary LeakCanary升级到2.x之后，只需在build.gradle中添加一个依赖就行，代码中无需嵌入
     debugImplementation dep.leakcanary.android
 
-    kapt rootProject.ext.dep.arouter_compiler
-    api rootProject.ext.dep.arouter_api
 }
 
 private String appIdSuffix() {

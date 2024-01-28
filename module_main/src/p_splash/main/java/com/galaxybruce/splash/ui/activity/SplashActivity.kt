@@ -1,14 +1,13 @@
 package com.galaxybruce.splash.ui.activity
 
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.View
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.billy.cc.core.component.CC
 import com.galaxybruce.base.manager.AppSessionManager
 import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.app.privacy.AppPrivacyUtil
 import com.galaxybruce.component.internal.AppInternal
-import com.galaxybruce.component.router.AppRouterUrlBuilder
 import com.galaxybruce.component.ui.activity.AppTitleInfo
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.util.AppActivityUtil
@@ -70,10 +69,14 @@ class SplashActivity : AppBaseActivity<SplashViewModel, SplashLayoutBinding>() {
         setLiveDataObserver(mPageViewModel.dataLoaded) {
             if(it) {
                 if(AppInternal.getInstance().mustLogin() && !AppSessionManager.getInstance().isLogin) {
-                    AppRouterUrlBuilder.instance("/app/login")
-                        .addParam(AppConstants.IntentKeys.KEY_LOGIN_SUCCESS_ROUTER, "/app/main").go(this)
+                    CC.obtainBuilder("MainComponent")
+                        .setActionName("openLoginActivity")
+                        .addParam(AppConstants.IntentKeys.KEY_LOGIN_SUCCESS_ROUTER, "openMainActivity")
+                        .build().call()
                 } else {
-                    AppRouterUrlBuilder.instance("/app/main").go(this)
+                    CC.obtainBuilder("MainComponent")
+                        .setActionName("openMainActivity")
+                        .build().call()
                 }
                 finish()
             }

@@ -2,10 +2,9 @@ package com.galaxybruce.login.ui.activity
 
 
 import android.os.Bundle
-import com.alibaba.android.arouter.facade.annotation.Route
+import com.billy.cc.core.component.CC
 import com.galaxybruce.base.manager.AppSessionManager
 import com.galaxybruce.base.ui.activity.AppBaseActivity
-import com.galaxybruce.component.router.AppRouterUrlBuilder
 import com.galaxybruce.component.ui.activity.AppTitleInfo
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.util.AppConstants
@@ -40,7 +39,6 @@ import com.galaxybruce.main.databinding.LoginLayoutBinding
  * <p>
  * modification history:
  */
-@Route(path = "/app/login")
 class LoginActivity : AppBaseActivity<LoginViewModel, LoginLayoutBinding>() {
 
     override fun initDataBindConfig(): JPDataBindingConfig {
@@ -73,7 +71,9 @@ class LoginActivity : AppBaseActivity<LoginViewModel, LoginLayoutBinding>() {
                 if(routePath.isNullOrBlank()) {
                     finish()
                 } else {
-                    AppRouterUrlBuilder.instance(routePath).go(this)
+                    CC.obtainBuilder("MainComponent")
+                        .setActionName(routePath)
+                        .build().call()
                     finishAllActivity()
                 }
             }

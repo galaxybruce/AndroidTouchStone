@@ -1,21 +1,28 @@
 package com.galaxybruce.main.ui.activity
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import com.alibaba.android.arouter.facade.annotation.Route
 import com.galaxybruce.base.ui.activity.AppBaseActivity
 import com.galaxybruce.component.ui.activity.AppTitleInfo
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.util.AppConstants
-import com.galaxybruce.component.util.ToastUtils.showToast
 import com.galaxybruce.main.BR
 import com.galaxybruce.main.R
 import com.galaxybruce.main.databinding.NetTestLayoutBinding
 import com.galaxybruce.main.ui.mvvm.viewmodel.NetTestViewModel
 
 
-@Route(path = "/test/TestActivity")
 class NetTestActivity : AppBaseActivity<NetTestViewModel, NetTestLayoutBinding>() {
+
+    companion object {
+        @JvmStatic
+        fun start(context: Context) {
+            val starter = Intent(context, NetTestActivity::class.java)
+            context.startActivity(starter)
+        }
+    }
 
     override fun initDataBindConfig(): JPDataBindingConfig {
         return JPDataBindingConfig(bindLayoutId())

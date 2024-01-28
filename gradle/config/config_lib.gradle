@@ -73,9 +73,6 @@ dependencies {
     androidTestImplementation rootProject.ext.dep.androidx_espressocore
     androidTestImplementation rootProject.ext.dep.androidx_junit
 
-
-    kapt rootProject.ext.dep.arouter_compiler
-    api rootProject.ext.dep.arouter_api
 }
 
 afterEvaluate {

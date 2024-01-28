@@ -2,7 +2,6 @@ package com.galaxybruce.touchstone.task;
 
 import android.app.Application;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.effective.android.anchors.Process;
 import com.effective.android.anchors.Task;
 import com.galaxybruce.base.manager.AppSessionManager;
@@ -107,11 +106,11 @@ public class InitNecessaryTask_Main_Process extends Task implements IProguardKee
     }
 
     private void initRouter(Application application) {
-        if (BuildConfig.DEBUG) {
-            ARouter.openLog();
-            ARouter.openDebug();
-        }
-        ARouter.init(application);
+//        if (BuildConfig.DEBUG) {
+//            ARouter.openLog();
+//            ARouter.openDebug();
+//        }
+//        ARouter.init(application);
     }
 
     private void initUserInfo() {

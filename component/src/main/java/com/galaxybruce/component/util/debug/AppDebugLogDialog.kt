@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alibaba.android.arouter.facade.annotation.Route
 import com.blankj.utilcode.util.ClickUtils
 import com.blankj.utilcode.util.ScreenUtils
 import com.galaxybruce.component.BR
@@ -35,7 +34,6 @@ import com.galaxybruce.component.util.cache.AppBigDataCacheManager
  *
  * modification history:
  */
-@Route(path = "/base/debuglog")
 class AppDebugLogDialog : JPBaseFragment<AppDebugLogDialogBinding>() {
 
     companion object {
