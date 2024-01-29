@@ -29,7 +29,7 @@ ext {
                     "com.galaxybruce.android:buildConfig:1.0.0",
                     "com.galaxybruce.android:cc-register:1.0.1",
                     "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version",
-                    "com.alibaba:arouter-register:1.0.2"
+//                    "com.alibaba:arouter-register:1.0.2"
             ],
 
             androidx : [
