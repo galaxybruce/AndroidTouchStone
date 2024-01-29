@@ -1,6 +1,11 @@
 package com.galaxybruce.component.util.extensions
 
-import android.app.*
+import android.app.Activity
+import android.app.AlarmManager
+import android.app.KeyguardManager
+import android.app.Notification
+import android.app.NotificationManager
+import android.app.Service
 import android.app.admin.DevicePolicyManager
 import android.content.ActivityNotFoundException
 import android.content.ClipboardManager
@@ -32,6 +37,9 @@ import androidx.annotation.*
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.galaxybruce.component.util.ToastUtils
 import com.google.android.material.snackbar.Snackbar
 import java.security.MessageDigest
@@ -568,11 +576,11 @@ fun Fragment?.toast(@StringRes textId: Int, duration: Int = Toast.LENGTH_LONG) =
 /**
  * Extension method to display notification text for Fragment.
  */
-inline fun Fragment.notification(body: NotificationCompat.Builder.() -> Unit) = activity.notification(body)
+inline fun Fragment.notification(body: NotificationCompat.Builder.() -> Unit) = activity?.notification(body)
 /**
  * Extension method to share text for Fragment.
  */
-fun Fragment.share(text: String, subject: String = "") = activity.share(text, subject)
+fun Fragment.share(text: String, subject: String = "") = activity?.share(text, subject)
 /**
  * Extension method to provide hide keyboard for [Fragment].
  */
