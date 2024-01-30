@@ -22,11 +22,11 @@ android {
 
         consumerProguardFiles 'proguard-rules.pro'
 
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [AROUTER_MODULE_NAME: project.getName()]
-            }
-        }
+//        javaCompileOptions {
+//            annotationProcessorOptions {
+//                arguments = [AROUTER_MODULE_NAME: project.getName()]
+//            }
+//        }
 
         // 每个module可以单独设置manifestPlaceholders
         manifestPlaceholders = [
