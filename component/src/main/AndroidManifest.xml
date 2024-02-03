@@ -10,10 +10,35 @@
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
     <uses-permission android:name="MediaStore.Images.Media.INTERNAL_CONTENT_URI" />
     <uses-permission android:name="MediaStore.Images.Media.EXTERNAL_CONTENT_URI" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <!-- android 13 版本读取权限细化-->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <!-- 该权限将授权读写所有共享存储内容，这也将同时包含非媒体类型的文件。
+    但是获得这个权限的应用还是无法访问其他应用的应用专属目录 (app-specific directory)，无论是外部存储还是内部存储。
+    建议不要使用该权限，访问共享文件，应该使用文件选择器
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+     -->
+    <!-- android 13  通知权限 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+    <!--android 11 声明软件包可见性需求 https://developer.android.google.cn/training/package-visibility/declaring?hl=zh-cn-->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="*/*" />
+        </intent>
+        <!--在软件包可见性有限的情况下执行常见用例 https://developer.android.com/training/package-visibility/use-cases?hl=zh-cn -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
+    
     <application>
         <meta-data
             android:name="BUILD_CONFIG"

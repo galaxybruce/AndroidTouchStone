@@ -16,28 +16,41 @@
 
 package com.galaxybruce.component.file;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.RecoverableSecurityException;
 import android.content.ContentResolver;
-import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
-import android.provider.DocumentsContract;
+import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 
+import com.blankj.utilcode.util.UriUtils;
+import com.blankj.utilcode.util.Utils;
+import com.blankj.utilcode.util.UtilsTransActivity;
+
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
-import java.io.FileFilter;
-import java.text.DecimalFormat;
-import java.util.Comparator;
+import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 /**
  * @version 2009-07-03
@@ -45,10 +58,9 @@ import java.util.Comparator;
  * @version 2013-12-11
  * @author paulburke (ipaulpro)
  */
-@TargetApi(Build.VERSION_CODES.KITKAT)
 public class AppUriFileUtils {
     private AppUriFileUtils() {} //private constructor to enforce Singleton pattern
-    
+
     /** TAG for log messages. */
     static final String TAG = "FileUtils";
     private static final boolean DEBUG = false; // Set to true to enable logging
@@ -58,8 +70,6 @@ public class AppUriFileUtils {
     public static final String MIME_TYPE_IMAGE = "image/*";
     public static final String MIME_TYPE_VIDEO = "video/*";
     public static final String MIME_TYPE_APP = "application/*";
-
-    public static final String HIDDEN_PREFIX = ".";
 
     /**
      * Gets the extension of a file name, like ".png" or ".jpg".
@@ -114,33 +124,6 @@ public class AppUriFileUtils {
     }
 
     /**
-     * Returns the path only (without file name).
-     *
-     * @param file
-     * @return
-     */
-    public static File getPathWithoutFilename(File file) {
-        if (file != null) {
-            if (file.isDirectory()) {
-                // no file to be split off. Return everything
-                return file;
-            } else {
-                String filename = file.getName();
-                String filepath = file.getAbsolutePath();
-
-                // Construct path without file name.
-                String pathwithoutname = filepath.substring(0,
-                        filepath.length() - filename.length());
-                if (pathwithoutname.endsWith("/")) {
-                    pathwithoutname = pathwithoutname.substring(0, pathwithoutname.length() - 1);
-                }
-                return new File(pathwithoutname);
-            }
-        }
-        return null;
-    }
-
-    /**
      * @return The MIME type for the given file.
      */
     public static String getMimeType(File file) {
@@ -157,20 +140,11 @@ public class AppUriFileUtils {
      * @return The MIME type for the give Uri.
      */
     public static String getMimeType(Context context, Uri uri) {
-    	String filePath = getPath(context, uri);
-    	if(TextUtils.isEmpty(filePath)) return null;
-    	
+        String filePath = getPath(context, uri);
+        if(TextUtils.isEmpty(filePath)) return null;
+
         File file = new File(filePath);
         return getMimeType(file);
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is {@link AppLocalStorageProvider}.
-     * @author paulburke
-     */
-    public static boolean isLocalStorageDocument(Uri uri) {
-        return AppLocalStorageProvider.AUTHORITY.equals(uri.getAuthority());
     }
 
     /**
@@ -220,7 +194,7 @@ public class AppUriFileUtils {
      * @author paulburke
      */
     public static String getDataColumn(Context context, Uri uri, String selection,
-            String[] selectionArgs) {
+                                       String[] selectionArgs) {
 
         Cursor cursor = null;
         final String column = "_data";
@@ -235,8 +209,10 @@ public class AppUriFileUtils {
                 if (DEBUG)
                     DatabaseUtils.dumpCursor(cursor);
 
-                final int column_index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(column_index);
+                final int column_index = cursor.getColumnIndex(column);
+                if(column_index > -1) {
+                    return cursor.getString(column_index);
+                }
             }
         } finally {
             if (cursor != null)
@@ -252,7 +228,7 @@ public class AppUriFileUtils {
      * <br>
      * Callers should check whether the path is local before assuming it
      * represents a local file.
-     * 
+     *
      * @param context The context.
      * @param uri The Uri to query.
      * @see #isLocal(String)
@@ -260,85 +236,10 @@ public class AppUriFileUtils {
      * @author paulburke
      */
     public static String getPath(final Context context, final Uri uri) {
-
-        if (DEBUG)
-            Log.d(TAG + " File -",
-                    "Authority: " + uri.getAuthority() +
-                            ", Fragment: " + uri.getFragment() +
-                            ", Port: " + uri.getPort() +
-                            ", Query: " + uri.getQuery() +
-                            ", Scheme: " + uri.getScheme() +
-                            ", Host: " + uri.getHost() +
-                            ", Segments: " + uri.getPathSegments().toString()
-                    );
-
-        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-
-        // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            // LocalStorageProvider
-            if (isLocalStorageDocument(uri)) {
-                // The path is the id
-                return DocumentsContract.getDocumentId(uri);
-            }
-            // ExternalStorageProvider
-            else if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
-                }
-
-                // TODO handle non-primary volumes
-            }
-            // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
-
-                final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
-
-                return getDataColumn(context, contentUri, null, null);
-            }
-            // MediaProvider
-            else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
-                        split[1]
-                };
-
-                return getDataColumn(context, contentUri, selection, selectionArgs);
-            }
+        File file = UriUtils.uri2File(uri);
+        if(file != null) {
+            return file.getAbsolutePath();
         }
-        // MediaStore (and general)
-        else if ("content".equalsIgnoreCase(uri.getScheme())) {
-
-            // Return the remote address
-            if (isGooglePhotosUri(uri))
-                return uri.getLastPathSegment();
-
-            return getDataColumn(context, uri, null, null);
-        }
-        // File
-        else if ("file".equalsIgnoreCase(uri.getScheme())) {
-            return uri.getPath();
-        }
-
         return null;
     }
 
@@ -351,44 +252,175 @@ public class AppUriFileUtils {
      * @author paulburke
      */
     public static File getFile(Context context, Uri uri) {
-        if (uri != null) {
-            String path = getPath(context, uri);
-            if (path != null && isLocal(path)) {
-                return new File(path);
+        return UriUtils.uri2File(uri);
+    }
+
+    /**
+     * 判断公有目中文件是否存在：Android10填坑适配指南，实际经验代码，拒绝翻译 https://www.jianshu.com/p/d79c2ee86b2a
+     * @param context
+     * @param uri
+     * @return
+     */
+    public static boolean isContentUriExists(Context context, Uri uri) {
+        if (null == context || uri == null) {
+            return false;
+        }
+        ContentResolver cr = context.getContentResolver();
+        try {
+            AssetFileDescriptor afd = cr.openAssetFileDescriptor(uri, "r");
+            if (null == afd || afd.getLength() == 0) {
+                return false;
+            } else {
+                try {
+                    afd.close();
+                } catch (IOException e) {
+                }
+                return true;
+            }
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static void deleteContentUri(Activity activity, Uri uri, DeleteMediaActivityImpl.DeleteMediaCallback deleteMediaCallback) {
+        AppUriFileUtils.DeleteMediaActivityImpl.deleteMedia(activity, uri, deleteMediaCallback);
+    }
+
+    /**
+     * 删除文件
+     * @param activity
+     * @param uri
+     * @param
+     * @return
+     */
+    private static boolean deleteContentUri(Activity activity, Uri uri, int permissionRequestCode) {
+        int result = 0;
+        if(uri != null) {
+            try {
+                result = activity.getContentResolver().delete(uri, null, null);
+            } catch (Exception e) {
+                try {
+                    if(permissionRequestCode > 0) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            activity.startIntentSenderForResult(
+                                    ((RecoverableSecurityException)e).getUserAction().getActionIntent().getIntentSender(),
+                                    permissionRequestCode, null, 0, 0, 0);
+                        }
+                    }
+                } catch (IntentSender.SendIntentException e2) {
+//                    LogUtil.log("startIntentSender fail");
+                }
+            }
+        }
+        return result > 0;
+    }
+
+    /**
+     * 根据图片路径反查id
+     * @param context
+     * @param path 图片绝对路径
+     * @return
+     */
+    public static Uri getImageContentUri(Context context, String path) {
+        Cursor cursor = null;
+        try {
+            cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    new String[] { MediaStore.Images.Media._ID }, MediaStore.Images.Media.DATA + "=? ",
+                    new String[] { path }, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                int index = cursor.getColumnIndex(MediaStore.MediaColumns._ID);
+                if(index >= 0) {
+                    int id = cursor.getInt(index);
+                    return Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, String.valueOf(id));
+                }
+            } else {
+                // 如果图片不在手机的共享图片数据库，就先把它插入。
+                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                    if (new File(path).exists()) {
+                        ContentValues values = new ContentValues();
+                        values.put(MediaStore.Images.Media.DATA, path);
+                        return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
             }
         }
         return null;
     }
 
     /**
-     * Get the file size in a human-readable string.
-     *
-     * @param size
+     * 根据视频路径反查id
+     * @param context
+     * @param path 图片绝对路径
      * @return
-     * @author paulburke
      */
-    public static String getReadableFileSize(int size) {
-        final int BYTES_IN_KILOBYTES = 1024;
-        final DecimalFormat dec = new DecimalFormat("###.#");
-        final String KILOBYTES = " KB";
-        final String MEGABYTES = " MB";
-        final String GIGABYTES = " GB";
-        float fileSize = 0;
-        String suffix = KILOBYTES;
+    public static Uri getVideoContentUri(Context context, String path) {
+        Cursor cursor = null;
+        try {
+            cursor = context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                    new String[] { MediaStore.Video.Media._ID }, MediaStore.Video.Media.DATA + "=? ",
+                    new String[] { path }, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                int index = cursor.getColumnIndex(MediaStore.MediaColumns._ID);
+                if(index >= 0) {
+                    int id = cursor.getInt(index);
+                    return Uri.withAppendedPath(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, String.valueOf(id));
+                }
+            } else {
+                // 如果图片不在手机的共享图片数据库，就先把它插入。
+                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                    if (new File(path).exists()) {
+                        ContentValues values = new ContentValues();
+                        values.put(MediaStore.Video.Media.DATA, path);
+                        return context.getContentResolver().insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, values);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return null;
+    }
 
-        if (size > BYTES_IN_KILOBYTES) {
-            fileSize = size / BYTES_IN_KILOBYTES;
-            if (fileSize > BYTES_IN_KILOBYTES) {
-                fileSize = fileSize / BYTES_IN_KILOBYTES;
-                if (fileSize > BYTES_IN_KILOBYTES) {
-                    fileSize = fileSize / BYTES_IN_KILOBYTES;
-                    suffix = GIGABYTES;
-                } else {
-                    suffix = MEGABYTES;
+    /**
+     * 通过uri获取公有目录下的bitmap
+     * @param context
+     * @param uri
+     * @return
+     */
+    public static Bitmap getBitmapFromUri(Context context, Uri uri) {
+        ParcelFileDescriptor parcelFileDescriptor = null;
+        FileDescriptor fileDescriptor = null;
+        Bitmap bitmap = null;
+        try {
+            parcelFileDescriptor = context.getContentResolver().openFileDescriptor(uri, "r");
+            if (parcelFileDescriptor != null && parcelFileDescriptor.getFileDescriptor() != null) {
+                fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+                //转换uri为bitmap类型
+                bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (parcelFileDescriptor != null) {
+                try {
+                    parcelFileDescriptor.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
-        return String.valueOf(dec.format(fileSize) + suffix);
+        return bitmap;
     }
 
     /**
@@ -472,12 +504,11 @@ public class AppUriFileUtils {
         }
         return bm;
     }
-    
+
     public static String getThumbnailPath(Context context, Uri uri) {
         return getThumbnailPath(context, uri, getMimeType(context, uri));
     }
-    
-    @SuppressLint("Range")
+
     public static String getThumbnailPath(Context context, Uri uri, String mimeType) {
         if (DEBUG)
             Log.d(TAG, "Attempting to get thumbnail");
@@ -490,21 +521,27 @@ public class AppUriFileUtils {
             try {
                 cursor = resolver.query(uri, null, null, null, null);
                 if (cursor.moveToFirst()) {
-                	 final int id = cursor.getInt(0);
-                	 if (mimeType.contains("video")) {
-                		 thumbnailCursor = MediaStore.Images.Thumbnails.queryMiniThumbnail(
-                				 resolver, id, MediaStore.Video.Thumbnails.MINI_KIND, null);
-                		 if(thumbnailCursor.moveToFirst()) {
-					         path = thumbnailCursor.getString(thumbnailCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA));
-                		 }
-                     }
-                     else if (mimeType.contains("image")) {
-                         thumbnailCursor = MediaStore.Images.Thumbnails.queryMiniThumbnail(
-                				 resolver, id, MediaStore.Images.Thumbnails.MINI_KIND, null);
-                		 if(thumbnailCursor.moveToFirst()) {
-					         path = thumbnailCursor.getString(thumbnailCursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
-                		 }
-                     }
+                    final int id = cursor.getInt(0);
+                    if (mimeType.contains("video")) {
+                        thumbnailCursor = MediaStore.Images.Thumbnails.queryMiniThumbnail(
+                                resolver, id, MediaStore.Video.Thumbnails.MINI_KIND, null);
+                        if(thumbnailCursor.moveToFirst()) {
+                            int index = thumbnailCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA);
+                            if(index >= 0) {
+                                path = thumbnailCursor.getString(index);
+                            }
+                        }
+                    }
+                    else if (mimeType.contains("image")) {
+                        thumbnailCursor = MediaStore.Images.Thumbnails.queryMiniThumbnail(
+                                resolver, id, MediaStore.Images.Thumbnails.MINI_KIND, null);
+                        if(thumbnailCursor.moveToFirst()) {
+                            int index = thumbnailCursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
+                            if(index >= 0) {
+                                path = thumbnailCursor.getString(index);
+                            }
+                        }
+                    }
                 }
             } catch (Exception e) {
                 if (DEBUG)
@@ -513,74 +550,16 @@ public class AppUriFileUtils {
                 if (cursor != null)
                     cursor.close();
                 if (thumbnailCursor != null)
-                	thumbnailCursor.close();
+                    thumbnailCursor.close();
             }
         }
         return path;
     }
 
-    /**
-     * File and folder comparator. TODO Expose sorting option method
-     *
-     * @author paulburke
-     */
-    public static Comparator<File> sComparator = new Comparator<File>() {
-        @Override
-        public int compare(File f1, File f2) {
-            // Sort alphabetically by lower case, which is much cleaner
-            return f1.getName().toLowerCase().compareTo(
-                    f2.getName().toLowerCase());
-        }
-    };
-
-    /**
-     * File (not directories) filter.
-     *
-     * @author paulburke
-     */
-    public static FileFilter sFileFilter = new FileFilter() {
-        @Override
-        public boolean accept(File file) {
-            final String fileName = file.getName();
-            // Return files only (not directories) and skip hidden files
-            return file.isFile() && !fileName.startsWith(HIDDEN_PREFIX);
-        }
-    };
-
-    /**
-     * Folder (directories) filter.
-     *
-     * @author paulburke
-     */
-    public static FileFilter sDirFilter = new FileFilter() {
-        @Override
-        public boolean accept(File file) {
-            final String fileName = file.getName();
-            // Return directories only and skip hidden directories
-            return file.isDirectory() && !fileName.startsWith(HIDDEN_PREFIX);
-        }
-    };
-
-    /**
-     * Get the Intent for selecting content to be used in an Intent Chooser.
-     *
-     * @return The intent for opening a file with Intent.createChooser()
-     * @author paulburke
-     */
-    public static Intent createGetContentIntent() {
-        // Implicitly allow the user to select a particular kind of data
-        final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        // The MIME data type filter
-        intent.setType("*/*");
-        // Only return URIs that can be opened with ContentResolver
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        return intent;
-    }
-    
     public static int[] getBitmapPixel(Context context, Uri uri) {
 
-    	int[] pixel = new int[2];
-    	
+        int[] pixel = new int[2];
+
         if (uri == null || !isMediaUri(uri)) {
             return pixel;
         }
@@ -590,8 +569,8 @@ public class AppUriFileUtils {
         try {
             cursor = resolver.query(uri, new String[]{MediaStore.Images.Media.WIDTH, MediaStore.Images.Media.HEIGHT}, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
-            	pixel[0] = cursor.getInt(0);
-            	pixel[1] = cursor.getInt(1);
+                pixel[0] = cursor.getInt(0);
+                pixel[1] = cursor.getInt(1);
             }
         } catch (Exception e) {
         } finally {
@@ -599,5 +578,49 @@ public class AppUriFileUtils {
                 cursor.close();
         }
         return pixel;
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static final class DeleteMediaActivityImpl extends UtilsTransActivity.TransActivityDelegate {
+
+        public static interface DeleteMediaCallback {
+            void onMediaDeleted(boolean success);
+        }
+        private static DeleteMediaCallback mediaCallback;
+        private static final String MEDIA_URI                = "MEDIA_URI";
+
+        public static void deleteMedia(final Activity activity, final Uri uri, final DeleteMediaCallback mediaCallback) {
+            DeleteMediaActivityImpl.mediaCallback = mediaCallback;
+
+            UtilsTransActivity.start(activity, new Utils.Consumer<Intent>() {
+                @Override
+                public void accept(Intent data) {
+                    data.putExtra(MEDIA_URI, uri);
+                }
+            }, new DeleteMediaActivityImpl());
+        }
+
+        @Override
+        public void onCreated(final UtilsTransActivity activity, @Nullable Bundle savedInstanceState) {
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                    | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
+            Uri mediaUri = activity.getIntent().getParcelableExtra(MEDIA_URI);
+            AppUriFileUtils.deleteContentUri(activity, mediaUri, 100);
+        }
+
+        @Override
+        public void onActivityResult(@NotNull UtilsTransActivity activity, int requestCode, int resultCode, Intent data) {
+            boolean success = false;
+            if(requestCode == 100 && resultCode == UtilsTransActivity.RESULT_OK) {
+                Uri mediaUri = activity.getIntent().getParcelableExtra(MEDIA_URI);
+                success = AppUriFileUtils.deleteContentUri(activity, mediaUri, 0);
+            }
+            if(DeleteMediaActivityImpl.mediaCallback != null) {
+                DeleteMediaActivityImpl.mediaCallback.onMediaDeleted(success);
+                DeleteMediaActivityImpl.mediaCallback = null;
+            }
+            activity.finish();
+        }
     }
 }

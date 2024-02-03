@@ -1,4 +1,4 @@
-package com.galaxybruce.component.util.imageloader.scroll;
+package com.galaxybruce.component.util.bitmap.imageloader.scroll;
 
 import android.content.Context;
 import android.widget.AbsListView;

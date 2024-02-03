@@ -2,7 +2,9 @@ package com.galaxybruce.component.file;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
@@ -263,6 +265,126 @@ public class AppFileUtils {
             return in2b;
         }
     }
+
+    public static void copyFile(Context context, File src, Uri destUri) throws IOException {
+        ParcelFileDescriptor fileDescriptor = context.getContentResolver().openFileDescriptor(destUri, "rw");
+        copyFile(src, fileDescriptor);
+    }
+
+    public static void copyFile(File src, ParcelFileDescriptor dest) throws IOException {
+        if(dest == null) {
+            return;
+        }
+        FileInputStream istream = new FileInputStream(src);
+        try {
+            FileOutputStream ostream = new FileOutputStream(dest.getFileDescriptor());
+            try {
+                copyStream(istream, ostream);
+            } finally {
+                ostream.close();
+            }
+        } finally {
+            istream.close();
+            dest.close();
+        }
+    }
+
+    public static void copyFile(Context context, Uri srcUri, File dest) throws IOException {
+        ParcelFileDescriptor fileDescriptor = context.getContentResolver().openFileDescriptor(srcUri, "r");
+        copyFile(fileDescriptor, dest);
+    }
+
+    public static void copyFile(ParcelFileDescriptor src, File dest) throws IOException {
+        if(src == null) {
+            return;
+        }
+        FileInputStream istream = new FileInputStream(src.getFileDescriptor());
+        try {
+            FileOutputStream ostream = new FileOutputStream(dest);
+            try {
+                copyStream(istream, ostream);
+            } finally {
+                ostream.close();
+            }
+        } finally {
+            istream.close();
+            src.close();
+        }
+    }
+
+    /**
+     * 获取流并写入到app私有目录
+     * 参考文章：android 10（Q）上传图片及视频，访问媒体文件适配: https://blog.csdn.net/le920309/article/details/103134203/
+     *
+     * @param context
+     * @param srcUri
+     * @return
+     */
+    public static File copyFile2AppDir(Context context, Uri srcUri, String suffix) {
+        try {
+            ParcelFileDescriptor fileDescriptor = context.getContentResolver().openFileDescriptor(srcUri, "r");
+            if(fileDescriptor != null) {
+                return copyFile2AppDir(context, fileDescriptor, suffix);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取流并写入到app私有目录
+     *
+     * 如果copy私有文件到公有目录，参考 Android10填坑适配指南，实际经验代码，拒绝翻译：https://www.jianshu.com/p/d79c2ee86b2a
+     * @param context
+     * @param src
+     * @param suffix 后缀名
+     * @return
+     */
+    public static File copyFile2AppDir(Context context, ParcelFileDescriptor src, String suffix) {
+        String filePath = AppFilePathManager.getAppFilePath(context, "temp", null, suffix);
+        File file = new File(filePath);
+        FileOutputStream fos = null;
+        FileInputStream fis = null;
+        try {
+            fos = new FileOutputStream(file);
+            fis = new FileInputStream(src.getFileDescriptor());
+
+            byte[] buffer = new byte[2048];
+            int byteRead;
+            while (-1 != (byteRead = fis.read(buffer))) {
+                fos.write(buffer, 0, byteRead);
+            }
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(fis != null) {
+                    fis.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if(fos != null) {
+                    fos.flush();
+                    fos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(src != null) {
+                try {
+                    src.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
 
     public static void copyFile(File from, File to) {
         if(from != null && from.exists()) {

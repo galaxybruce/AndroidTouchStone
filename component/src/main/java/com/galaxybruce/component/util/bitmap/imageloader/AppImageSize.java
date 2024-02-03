@@ -1,4 +1,4 @@
-package com.galaxybruce.component.util.imageloader;
+package com.galaxybruce.component.util.bitmap.imageloader;
 
 /**
  * Date: 2017/3/29 16:18

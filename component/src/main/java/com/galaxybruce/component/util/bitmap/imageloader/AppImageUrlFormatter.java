@@ -1,4 +1,4 @@
-package com.galaxybruce.component.util.imageloader;
+package com.galaxybruce.component.util.bitmap.imageloader;
 
 import android.text.TextUtils;
 

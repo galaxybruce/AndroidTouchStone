@@ -3,16 +3,16 @@ package com.galaxybruce.component.file;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.AppUtils;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.galaxybruce.component.util.AndroidSDKVersionUtils;
 import com.galaxybruce.component.util.AppActivityResultUtil;
 import com.galaxybruce.component.util.AppFileProvider;
-import com.galaxybruce.component.util.helper.AppPermissionHelper;
+import com.galaxybruce.component.util.permission.AppPermissionHelper;
 
 import java.io.File;
 
@@ -297,19 +297,19 @@ public class AppFilePathManager {
      */
     public static void getSaveFilePath(Activity activity, String fileName,
                                        @NonNull Function2<Uri, Boolean, Unit> filePathCallback) {
-        AppPermissionHelper.request(activity,
-                new PermissionUtils.SimpleCallback() {
-                    @Override
-                    public void onGranted() {
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            AppActivityResultUtil.createDocument(activity, fileName,
-                                    new ActivityResultCallback<Uri>() {
-                                        @Override
-                                        public void onActivityResult(Uri result) {
-                                            filePathCallback.invoke(result, true);
-                                        }
-                                    });
-                        } else {
+        if(AndroidSDKVersionUtils.hasQ()) {
+            AppActivityResultUtil.createDocument(activity, fileName,
+                    new ActivityResultCallback<Uri>() {
+                        @Override
+                        public void onActivityResult(Uri result) {
+                            filePathCallback.invoke(result, true);
+                        }
+                    });
+        } else {
+            AppPermissionHelper.request(activity,
+                    new PermissionUtils.SimpleCallback() {
+                        @Override
+                        public void onGranted() {
                             File fileDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
                             fileDir = new File(fileDir, AppUtils.getAppName());
                             if(!fileDir.exists()) {
@@ -319,13 +319,13 @@ public class AppFilePathManager {
                             Uri uriForFile = AppFileProvider.getUriForFile(activity, new File(filePath));
                             filePathCallback.invoke(uriForFile, false);
                         }
-                    }
 
-                    @Override
-                    public void onDenied() {
+                        @Override
+                        public void onDenied() {
 
-                    }
-                },
-                PermissionConstants.STORAGE);
+                        }
+                    },
+                    PermissionConstants.STORAGE);
+        }
     }
 }

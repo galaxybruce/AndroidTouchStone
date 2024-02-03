@@ -6,8 +6,8 @@ import androidx.databinding.BindingAdapter
 import com.blankj.utilcode.util.ClickUtils
 import com.galaxybruce.component.ui.jetpack.JPListDataModel
 import com.galaxybruce.component.ui.view.recyclerview.AppRecyclerView2
-import com.galaxybruce.component.util.imageloader.AppImageLoader
-import com.galaxybruce.component.util.imageloader.AppImageSize
+import com.galaxybruce.component.util.bitmap.imageloader.AppImageLoader
+import com.galaxybruce.component.util.bitmap.imageloader.AppImageSize
 
 
 /**

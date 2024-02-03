@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
-import com.galaxybruce.component.util.helper.AppPermissionHelper;
+import com.galaxybruce.component.util.permission.AppPermissionHelper;
 
 import java.io.File;
 import java.io.Serializable;
@@ -155,19 +155,20 @@ public class AppActivityResultUtil {
    public static void openDocument(Activity activity,
                                    String[] mineTypes,
                                    @NonNull final ActivityResultCallback<Uri> callback) {
-      AppPermissionHelper.request(activity,
-              new PermissionUtils.SimpleCallback() {
-                 @Override
-                 public void onGranted() {
-                    openActivity(activity, mineTypes, new ActivityResultContracts.OpenDocument(), callback);
-                 }
-
-                 @Override
-                 public void onDenied() {
-
-                 }
-              },
-              PermissionConstants.STORAGE);
+       openActivity(activity, mineTypes, new ActivityResultContracts.OpenDocument(), callback);
+//      AppPermissionHelper.request(activity,
+//              new PermissionUtils.SimpleCallback() {
+//                 @Override
+//                 public void onGranted() {
+//                    openActivity(activity, mineTypes, new ActivityResultContracts.OpenDocument(), callback);
+//                 }
+//
+//                 @Override
+//                 public void onDenied() {
+//
+//                 }
+//              },
+//              PermissionConstants.STORAGE);
    }
 
    /**
@@ -196,19 +197,20 @@ public class AppActivityResultUtil {
    public static void createDocument(Activity activity,
                                      String fileName,
                                      @NonNull final ActivityResultCallback<Uri> callback) {
-       AppPermissionHelper.request(activity,
-               new PermissionUtils.SimpleCallback() {
-                   @Override
-                   public void onGranted() {
-                       openActivity(activity, fileName, new ActivityResultContracts.CreateDocument(), callback);
-                   }
-
-                   @Override
-                   public void onDenied() {
-
-                   }
-               },
-               PermissionConstants.STORAGE);
+       openActivity(activity, fileName, new ActivityResultContracts.CreateDocument(), callback);
+//       AppPermissionHelper.request(activity,
+//               new PermissionUtils.SimpleCallback() {
+//                   @Override
+//                   public void onGranted() {
+//                       openActivity(activity, fileName, new ActivityResultContracts.CreateDocument(), callback);
+//                   }
+//
+//                   @Override
+//                   public void onDenied() {
+//
+//                   }
+//               },
+//               PermissionConstants.STORAGE);
    }
 
    /**

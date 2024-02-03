@@ -1,4 +1,4 @@
-package com.galaxybruce.component.util.imageloader.glide;
+package com.galaxybruce.component.util.bitmap.imageloader.glide;
 
 import android.content.Context;
 
