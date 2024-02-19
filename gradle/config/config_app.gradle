@@ -13,6 +13,8 @@ configSigning project
 configApkName project
 
 android {
+    buildFeatures.buildConfig true
+
     compileOptions {
         // Flag to enable support for the new language APIs
         coreLibraryDesugaringEnabled true
@@ -24,7 +26,7 @@ android {
         jvmTarget = "11"
     }
 
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    compileSdk rootProject.ext.android.compileSdkVersion
 
     splits { // [优化ApK大小之ABI Filters 和 APK split](https://www.jianshu.com/p/76db8b87fac3)
         // Configures multiple APKs based on ABI.

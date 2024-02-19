@@ -2,6 +2,10 @@ apply {
     from "${rootDir.path}/gradle/config/config_lib.gradle"
 }
 
+android {
+    namespace 'com.galaxybruce.base'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

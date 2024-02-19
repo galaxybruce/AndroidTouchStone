@@ -1,5 +1,13 @@
 apply {
     from "${rootDir.path}/gradle/config/config_lib.gradle"
+}
+
+android {
+    namespace 'com.galaxybruce.main'
+}
+
+apply {
+    // 这个要放在namespace后面，插件中需要获取namespace
     plugin "galaxybruce-pioneer"
 }
 

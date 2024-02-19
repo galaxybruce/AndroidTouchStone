@@ -13,7 +13,7 @@ android {
         jvmTarget = "11"
     }
 
-    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    compileSdk rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
@@ -73,12 +73,6 @@ dependencies {
     androidTestImplementation rootProject.ext.dep.androidx_espressocore
     androidTestImplementation rootProject.ext.dep.androidx_junit
 
-}
-
-afterEvaluate {
-    // 控制module是否生成BuildConfig文件
-    generateReleaseBuildConfig.enabled = true
-    generateDebugBuildConfig.enabled = true
 }
 
 version='1.0.0-SNAPSHOT'

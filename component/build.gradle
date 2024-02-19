@@ -3,6 +3,8 @@ apply {
 }
 
 android {
+    namespace 'com.galaxybruce.component'
+
     defaultConfig {
         javaCompileOptions {
             annotationProcessorOptions {

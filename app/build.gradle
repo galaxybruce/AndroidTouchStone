@@ -6,6 +6,10 @@ apply {
 ccregister.multiProcessEnabled = true
 ccregister.excludeProcessNames = [':privacyProcess']
 
+android {
+    namespace 'com.galaxybruce.touchstone'
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
