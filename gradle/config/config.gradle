@@ -134,5 +134,7 @@ def addRepos(RepositoryHandler handler) {
     handler.maven { url 'https://maven.aliyun.com/repository/public'}
     handler.maven { url "https://maven.aliyun.com/repository/google" }
     handler.maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+    handler.google()
+    handler.mavenCentral()
 }
 ext.addRepos = this.&addRepos
