@@ -37,6 +37,7 @@ dependencies {
     api rootProject.ext.dep.androidx.appcompat_v7
     api rootProject.ext.dep.androidx.multidex
     api rootProject.ext.dep.androidx.constraint
+    api 'androidx.core:core-ktx:1.10.1'
     api rootProject.ext.dep.kotlin
 
     api rootProject.ext.dep.lifecycle_viewmodel_ktx

@@ -1,7 +1,10 @@
 package com.galaxybruce.splash.ui.activity
 
+import android.animation.ObjectAnimator
+import android.graphics.Path
 import android.os.Bundle
 import android.view.View
+import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.billy.cc.core.component.CC
 import com.galaxybruce.base.manager.AppSessionManager
@@ -12,6 +15,7 @@ import com.galaxybruce.component.ui.activity.AppTitleInfo
 import com.galaxybruce.component.ui.jetpack.JPDataBindingConfig
 import com.galaxybruce.component.util.AppActivityUtil
 import com.galaxybruce.component.util.AppConstants
+import com.galaxybruce.component.util.extensions.remove
 import com.galaxybruce.main.BR
 import com.galaxybruce.main.R
 import com.galaxybruce.main.databinding.SplashLayoutBinding
@@ -37,6 +41,16 @@ class SplashActivity : AppBaseActivity<SplashViewModel, SplashLayoutBinding>() {
         compatSplashScreen.setKeepOnScreenCondition {
             // 这里可以不用等数据加载完成，直接返回false即可
             !(mPageViewModel.dataLoaded.value ?: false)
+        }
+        // 退出动画
+        compatSplashScreen.setOnExitAnimationListener { provider ->
+            ObjectAnimator.ofFloat(provider.iconView, View.SCALE_X, View.SCALE_Y, Path().apply {
+                moveTo(1f, 1f)
+                lineTo(0f, 0f)
+            }).apply {
+                doOnEnd { provider.view.remove() }
+                start()
+            }
         }
         super.onCreate(savedInstanceState)
         // 避免从桌面启动程序后，会重新实例化入口类的activity
