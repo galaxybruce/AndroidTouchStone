@@ -17,11 +17,12 @@
 
     参考文章：
     * [Android 12 SplashScreen API 以及Jetpack兼容库](https://juejin.cn/post/6995390367520686087)
+    * [icon尺寸](https://developer.android.com/develop/ui/views/launch/splash-screen?hl=zh-cn)
     -->
     <style name="AppJetpackSplashBaseTheme" parent="Theme.SplashScreen">
         <!-- 必须是颜色值-->
         <item name="windowSplashScreenBackground">@android:color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/app_splash_anim_icon</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/app_splash_anim_drawable</item>
         <item name="windowSplashScreenAnimationDuration">500</item>
         <item name="postSplashScreenTheme">@style/SplashTheme</item>
     </style>
