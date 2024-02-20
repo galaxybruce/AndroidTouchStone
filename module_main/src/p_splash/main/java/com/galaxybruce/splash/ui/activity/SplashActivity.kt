@@ -35,6 +35,7 @@ class SplashActivity : AppBaseActivity<SplashViewModel, SplashLayoutBinding>() {
         val compatSplashScreen = installSplashScreen()
         // 这段代码是用来让启动画面继续显示，用来在页面显示之前异步记载数据。根据实际需求决定要不要以及时间长短，或者通过其他条件动态决定
         compatSplashScreen.setKeepOnScreenCondition {
+            // 这里可以不用等数据加载完成，直接返回false即可
             !(mPageViewModel.dataLoaded.value ?: false)
         }
         super.onCreate(savedInstanceState)
@@ -68,17 +69,21 @@ class SplashActivity : AppBaseActivity<SplashViewModel, SplashLayoutBinding>() {
 
         setLiveDataObserver(mPageViewModel.dataLoaded) {
             if(it) {
-                if(AppInternal.getInstance().mustLogin() && !AppSessionManager.getInstance().isLogin) {
-                    CC.obtainBuilder("MainComponent")
-                        .setActionName("openLoginActivity")
-                        .addParam(AppConstants.IntentKeys.KEY_LOGIN_SUCCESS_ROUTER, "openMainActivity")
-                        .build().call()
-                } else {
-                    CC.obtainBuilder("MainComponent")
-                        .setActionName("openMainActivity")
-                        .build().call()
-                }
-                finish()
+                // 数据加载完后，在启动页停留2秒，观察下启动动画消失后的情况
+                window.decorView.postDelayed({
+                    if(AppInternal.getInstance().mustLogin() && !AppSessionManager.getInstance().isLogin) {
+                        CC.obtainBuilder("MainComponent")
+                            .setActionName("openLoginActivity")
+                            .addParam(AppConstants.IntentKeys.KEY_LOGIN_SUCCESS_ROUTER, "openMainActivity")
+                            .build().call()
+                    } else {
+                        CC.obtainBuilder("MainComponent")
+                            .setActionName("openMainActivity")
+                            .build().call()
+                    }
+                    finish()
+                }, 2000)
+
             }
         }
 

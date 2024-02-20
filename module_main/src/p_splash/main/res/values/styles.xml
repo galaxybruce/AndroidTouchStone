@@ -13,6 +13,7 @@
     1. SplashActivity应用AppStartTheme样式，AppStartTheme中的postSplashScreenTheme使用原来低版本的SplashTheme
     2. application使用AppTheme
     3. MainActivity使用MainTheme
+    4. MainActivity的背景layout根布局的背景设置成windowBackground
 
     参考文章：
     * [Android 12 SplashScreen API 以及Jetpack兼容库](https://juejin.cn/post/6995390367520686087)
@@ -20,7 +21,7 @@
     <style name="AppJetpackSplashBaseTheme" parent="Theme.SplashScreen">
         <!-- 必须是颜色值-->
         <item name="windowSplashScreenBackground">@android:color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/app_splash_icon</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/app_splash_anim_icon</item>
         <item name="windowSplashScreenAnimationDuration">500</item>
         <item name="postSplashScreenTheme">@style/SplashTheme</item>
     </style>
