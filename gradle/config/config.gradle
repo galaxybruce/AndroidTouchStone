@@ -20,7 +20,10 @@ ext {
                targetSdkVersion : 33,
     ]
 
+    // kotlin标准库
     kotlin_version = '1.8.0'
+    // kotlin协程库
+    kotlin_coroutines_version = '1.7.0'
     lifecycle_version = "2.3.0"
 
     dep = [
@@ -32,19 +35,6 @@ ext {
 //                    "com.alibaba:arouter-register:1.0.2"
             ],
 
-            androidx : [
-                    appcompat_v7        : 'androidx.appcompat:appcompat:1.3.0-beta01',
-                    support_v4          : "androidx.legacy:legacy-support-v4:1.0.0",
-                    gridlayout          : "androidx.gridlayout:gridlayout:1.0.0",
-                    recyclerview_v7     : "androidx.recyclerview:recyclerview:1.1.0",
-                    cardview_v7         : "androidx.cardview:cardview:1.0.0",
-                    percent             : "androidx.percentlayout:percentlayout:1.0.0",
-                    multidex            : 'androidx.multidex:multidex:2.0.1',
-                    constraint          : 'androidx.constraintlayout:constraintlayout:2.0.4',
-                    exifinterface       : 'androidx.exifinterface:exifinterface:1.3.2',
-                    viewpager2          : 'androidx.viewpager2:viewpager2:1.1.0-alpha01',
-            ],
-
             //--------------------JUnit----------------------
             mockito                     : "org.mockito:mockito-core:3.9.0",
             junit                       : "junit:junit:4.12",
@@ -53,75 +43,19 @@ ext {
             androidx_runner             : 'androidx.test:runner:1.1.0',
             androidx_espressocore       : 'androidx.test.espresso:espresso-core:3.1.0',
 
-            //-------------------Android---------------------
-            kotlin                      : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version",
-            flexbox                     : "com.google.android:flexbox:0.3.2",
-            design                      : 'com.google.android.material:material:1.0.0',
-
 
             //-------------------第三方-----------------------
+            // 这里只保留几个经典的，全局性的三方库
             leakcanary  : [
                     android                 : "com.squareup.leakcanary:leakcanary-android:2.9.1",
             ],
-            cc                          : "com.galaxybruce.android:cc:1.0.1",
             //图片库
             glide                       : "com.github.bumptech.glide:glide:4.11.0",
             glide_compiler              : "com.github.bumptech.glide:compiler:4.11.0",
-            PhotoView                   : "com.github.chrisbanes:PhotoView:2.3.0",
-
-            //json解析
-            fastjson                    : "com.alibaba:fastjson:1.2.33",
-            gson                        : "com.google.code.gson:gson:2.8.2",
-
-            //网络
-            okhttp                      : "com.squareup.okhttp3:okhttp:4.9.0",
-            retrofit2                   : "com.squareup.retrofit2:retrofit:2.9.0",
-            retrofit2_converter_gson    : "com.squareup.retrofit2:converter-gson:2.9.0",
-            retrofit2_converters        : "com.squareup.retrofit2:retrofit-converters:2.8.0",
-            retrofit2_adapter_rxjava2   : "com.squareup.retrofit2:adapter-rxjava2:2.9.0",
-
-            //rx
-            rxjava2                     : "io.reactivex.rxjava2:rxjava:2.2.8",
-            rxandroid                   : "io.reactivex.rxjava2:rxandroid:2.1.1",
-            rxbinding                   : "com.jakewharton.rxbinding3:rxbinding:3.1.0",
-            rxlifecycle                 : "com.trello.rxlifecycle3:rxlifecycle:3.1.0",
-            rxlifecycle_android         : "com.trello.rxlifecycle3:rxlifecycle-android:3.1.0",
-
-            // ViewModel
-            lifecycle_viewmodel           : "androidx.lifecycle:lifecycle-viewmodel:${lifecycle_version}",
-            // LiveData
-            lifecycle_livedata            : "androidx.lifecycle:lifecycle-livedata:${lifecycle_version}",
-            // Saved state module for ViewModel
-            lifecycle_viewmodel_savedstate: "androidx.lifecycle:lifecycle-viewmodel-savedstate:${lifecycle_version}",
-            // Annotation processor
-            lifecycle_compiler            : "androidx.lifecycle:lifecycle-compiler:${lifecycle_version}",
-            // alternately - if using Java8, use the following instead of lifecycle-compiler
-            lifecycle_common_java8        : "androidx.lifecycle:lifecycle-common-java8:${lifecycle_version}",
-            // ViewModel
-            lifecycle_viewmodel_ktx       : "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle_version}",
-            // LiveData
-            lifecycle_livedata_ktx        : "androidx.lifecycle:lifecycle-livedata-ktx:${lifecycle_version}",
-            lifecycle_runtime_ktx         : "androidx.lifecycle:lifecycle-runtime-ktx:${lifecycle_version}",
-
 
             //异常统计
             bugly                       : "com.tencent.bugly:crashreport:3.4.4",
             bugly_nativecrashreport     : "com.tencent.bugly:nativecrashreport:3.9.2",
-            //加载so
-            relinker                    : "com.getkeepsafe.relinker:relinker:1.2.2",
-
-            //二维码
-            zxing                       : "com.google.zxing:core:3.4.1",
-            //gif
-            android_gif_drawable        : "pl.droidsonroids.gif:android-gif-drawable:1.2.8",
-            //自动缩放的TextView
-            autofittextview             : 'me.grantland:autofittextview:0.2.1',
-
-            javassist                   : "org.javassist:javassist:3.24.0-GA",
-            commons_io                  : "commons-io:commons-io:2.5",
-            androidUtilCode             : "com.blankj:utilcodex:1.31.0",
-
-            anchors                     : "com.galaxybruce.android:anchors:1.1.4",
     ]
 }
 
@@ -136,5 +70,6 @@ def addRepos(RepositoryHandler handler) {
     handler.maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
     handler.google()
     handler.mavenCentral()
+    handler.maven { url "https://jitpack.io" }
 }
 ext.addRepos = this.&addRepos

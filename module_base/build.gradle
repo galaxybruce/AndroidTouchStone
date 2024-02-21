@@ -9,7 +9,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api rootProject.ext.dep.cc
+    api "com.galaxybruce.android:cc:1.0.1"
     api project(':component')
 }
 
