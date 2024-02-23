@@ -83,6 +83,23 @@ abstract class JPBaseRequestV2(private val viewModel: JPBaseViewModel)
      * @param doTaskCallback 执行具体任务
      * @param canceledCallback 协程被取消回调
      *
+     * doTask(
+     *     block = {
+     *         // 多个连续请求中有弹窗
+     *         val r1 = request()
+     *         val input = showInputDialog(context)
+     *         val r2 = request2(input.getOrThrow()) // input.getOrElse { "输入出现异常" }
+     *         r2
+     *     },
+     *     successCallback = { result ->
+     *         showToast(result)
+     *     },
+     *     errorCallback = {
+     *         showToast(it.message)
+     *     },
+     *     showLoading = false
+     * )
+     *
      * private suspend fun showInputDialog(context: Context): Result<String> {
      *     return doSuspendTask { successCallback, errorCallback ->
      *         AppConfirmDialog.create("提示",
@@ -100,6 +117,7 @@ abstract class JPBaseRequestV2(private val viewModel: JPBaseViewModel)
      *     }
      * }
      */
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun <T> doSuspendTask(doTaskCallback: ((T) -> Unit, (String) -> Unit) -> Unit,
                                   canceledCallback: (Throwable) -> Unit = {}): Result<T> {
         return suspendCancellableCoroutine { continuation ->
