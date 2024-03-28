@@ -96,9 +96,9 @@ public class JPPageDelegate<B extends ViewDataBinding> {
             if(dataBindingConfig != null) {
                 ViewDataBinding binding;
                 if(mHostActivity && !attachToParent) {
-                    binding = DataBindingUtil.setContentView((AppCompatActivity)mJPHost, dataBindingConfig.getLayout());
+                    binding = DataBindingUtil.setContentView((AppCompatActivity)mJPHost, layoutId);
                 } else {
-                    binding = DataBindingUtil.inflate(inflater, dataBindingConfig.getLayout(), container, attachToParent);
+                    binding = DataBindingUtil.inflate(inflater, layoutId, container, attachToParent);
                 }
                 binding.setLifecycleOwner(mJPHost);
                 SparseArray<Object> bindingParams = dataBindingConfig.getBindingParams();

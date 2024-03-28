@@ -48,7 +48,7 @@ public class AppSimpleInputDialog extends AppBaseInputDialog {
     }
 
     @Override
-    public int bindContentLayoutId() {
+    public int bindLayoutId() {
         return R.layout.app_simple_input_dialog_layout;
     }
 

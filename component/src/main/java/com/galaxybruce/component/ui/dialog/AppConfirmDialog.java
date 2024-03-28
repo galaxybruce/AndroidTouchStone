@@ -116,7 +116,7 @@ public class AppConfirmDialog extends AppCustomConfirmDialog {
     private TextView tvMessage;
 
     @Override
-    public int bindContentLayoutId() {
+    public int bindLayoutId() {
         return R.layout.app_confirm_dialog;
     }
 

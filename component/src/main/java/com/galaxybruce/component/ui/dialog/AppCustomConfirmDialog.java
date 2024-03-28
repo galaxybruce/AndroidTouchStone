@@ -91,23 +91,13 @@ public abstract class AppCustomConfirmDialog<VM extends JPBaseViewModel, B exten
 
     @Override
     protected View setRootLayout(int layoutId, @NonNull LayoutInflater inflater, ViewGroup container) {
-        if(supportMVVM()) {
-            View contentView = super.setRootLayout(bindContentLayoutId(), inflater, null);
-            View rootView = LayoutInflater.from(getContext()).inflate(layoutId, container, false);
-            FrameLayout contentLayout = rootView.findViewById(R.id.dialog_content);
-            contentLayout.addView(contentView);
-            return rootView;
-        } else {
-            return super.setRootLayout(layoutId, inflater, container);
-        }
+        View contentView = super.setRootLayout(layoutId, inflater, null);
+        View rootView = LayoutInflater.from(getContext()).inflate(R.layout.app_custom_confirm_dialog, container, false);
+        FrameLayout contentLayout = rootView.findViewById(R.id.dialog_content);
+        contentLayout.addView(contentView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        return rootView;
     }
-
-    @Override
-    public final int bindLayoutId() {
-        return R.layout.app_custom_confirm_dialog;
-    }
-
-    public abstract int bindContentLayoutId();
 
     @Override
     public void initData(@androidx.annotation.Nullable Bundle bundle, @androidx.annotation.Nullable Bundle savedInstanceState) {
@@ -122,11 +112,6 @@ public abstract class AppCustomConfirmDialog<VM extends JPBaseViewModel, B exten
     @Override
     public void initView(@Nullable View view) {
         super.initView(view);
-
-        if(!supportMVVM()) {
-            FrameLayout contentLayout = view.findViewById(R.id.dialog_content);
-            LayoutInflater.from(getContext()).inflate(bindContentLayoutId(), contentLayout, true);
-        }
 
         vLine = view.findViewById(R.id.line);
         btnCancel = view.findViewById(R.id.btnCancel);
