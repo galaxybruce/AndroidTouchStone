@@ -1,16 +1,30 @@
 package com.galaxybruce.component.util
 
+import android.view.MotionEvent
 import android.view.View
 import com.blankj.utilcode.util.ScreenUtils
 
 /**
- * @date 2024/4/16 16:59
+ * @date 2023/7/10 17:43
  * @author bruce.zhang
- * @description (亲，我是做什么的)
+ * @description
  *
  * modification history:
  */
-object PopupWindowUtils {
+object AppViewUtils {
+
+    /**
+     * 检查触摸事件是否在view范围内
+     */
+    fun checkViewBound(view: View, event: MotionEvent): Boolean {
+        val location = intArrayOf(0, 0)
+        view.getLocationInWindow(location)
+        val left = location[0]
+        val top = location[1]
+        val bottom = top + view.height
+        val right = left + view.width
+        return event.x > left && event.x < right && event.y > top && event.y < bottom
+    }
 
     /**
      * 计算出来的位置，y方向就在anchorView的上面和下面对齐显示，x方向就是与屏幕右边对齐显示
