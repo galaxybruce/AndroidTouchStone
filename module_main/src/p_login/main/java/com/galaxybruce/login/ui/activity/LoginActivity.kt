@@ -91,7 +91,9 @@ class LoginActivity : AppBaseActivity<LoginViewModel, LoginLayoutBinding>() {
     inner class ClickProxy {
         fun login() {
             mPageViewModel.request.loginRequest(mPageViewModel.email.get(),
-                mPageViewModel.password.get())
+                mPageViewModel.password.get()) {
+                mPageViewModel.loginSuccess.value = true
+            }
         }
     }
 }

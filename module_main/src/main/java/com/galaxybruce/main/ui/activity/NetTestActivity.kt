@@ -61,7 +61,9 @@ class NetTestActivity : AppBaseActivity<NetTestViewModel, NetTestLayoutBinding>(
 
     private fun performRequest() {
         // todo perform net Requrest
-        mPageViewModel.request.doTask()
+        mPageViewModel.request.doTask {
+            mPageViewModel.name.value = it
+        }
     }
 
     /**

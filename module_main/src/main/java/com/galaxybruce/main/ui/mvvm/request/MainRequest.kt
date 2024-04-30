@@ -3,12 +3,14 @@ package com.galaxybruce.main.ui.mvvm.request
 import android.annotation.SuppressLint
 import android.content.Context
 import com.galaxybruce.component.ui.dialog.AppConfirmDialog
-import com.galaxybruce.component.ui.jetpack.JPBaseRequestV2
+import com.galaxybruce.component.ui.jetpack.JPBaseRequest
+import com.galaxybruce.component.ui.jetpack.doSuspendTask
+import com.galaxybruce.component.ui.jetpack.doTask
 import com.galaxybruce.main.ui.mvvm.viewmodel.MainViewModel
 import kotlinx.coroutines.*
 
 
-class MainRequest(private val viewModel: MainViewModel) : JPBaseRequestV2(viewModel) {
+class MainRequest(viewModel: MainViewModel) : JPBaseRequest(viewModel) {
 
 //    private val mApi: LiveApi = KRetrofitFactory.createService(LiveApi::class.java)
 

@@ -16,8 +16,7 @@ import io.reactivex.schedulers.Schedulers
  * @author bruce.zhang
  * @description 逻辑处理的入口类，在这里可以调用JPBaseRepository或者其他更深层次的逻辑处理类
  *
- *  注意：[JPBaseRequest] 与 [JPBaseRequestV2]的区别：
- *  JPBaseRequestV2 在 JPBaseRequest基础上支持协程
+ * 参考文章：https://github.com/KunMinX/Jetpack-MVVM-Best-Practice.git
  *
  * add by bruce.zhang start
  *
@@ -97,7 +96,7 @@ import io.reactivex.schedulers.Schedulers
  *
  * modification history:
  */
-abstract class JPBaseRequest : IJPViewModelAction by JPRequestAction(), DefaultLifecycleObserver {
+abstract class JPBaseRequest(val viewModel: JPBaseViewModel) : IJPViewModelAction by JPRequestAction(), DefaultLifecycleObserver {
 
     fun <T : IAppBean> handleEverythingResult(showLoading: Boolean): ObservableTransformer<T, T> {
         return handleEverythingResult(showLoading, EMPTY_STR)

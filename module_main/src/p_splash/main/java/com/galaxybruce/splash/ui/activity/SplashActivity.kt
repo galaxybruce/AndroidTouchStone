@@ -101,6 +101,8 @@ class SplashActivity : AppBaseActivity<SplashViewModel, SplashLayoutBinding>() {
             }
         }
 
-        mPageViewModel.request.requestAdData()
+        mPageViewModel.request.requestAdData {
+            mPageViewModel.dataLoaded.value = true
+        }
     }
 }

@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel
  * @date 2020/8/10  5:43 PM
  * @author
  * @description viewModel 基类
- * <p>
+ *
+ * 参考文章：https://github.com/KunMinX/Jetpack-MVVM-Best-Practice.git
  *
  * add by bruce.zhang start
  *

@@ -5,7 +5,9 @@ import android.annotation.SuppressLint
 import com.alibaba.fastjson.JSON
 import com.galaxybruce.component.net.AppServiceGenerator
 import com.galaxybruce.component.ui.jetpack.JPBaseRequest
-import com.galaxybruce.component.ui.jetpack.JPBaseRequestV2
+import com.galaxybruce.component.ui.jetpack.SuccessCallback
+import com.galaxybruce.component.ui.jetpack.doTask
+import com.galaxybruce.component.ui.jetpack.request
 import com.galaxybruce.main.model.ApkUpdateInfo
 import com.galaxybruce.main.model.AppBean4Cms
 import com.galaxybruce.main.network.http.DemoApi
@@ -16,15 +18,14 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import java.lang.ref.ReferenceQueue
 
-class NetTestRequest(private val viewModel: NetTestViewModel) : JPBaseRequestV2(viewModel) {
+class NetTestRequest(viewModel: NetTestViewModel) : JPBaseRequest(viewModel) {
 
     private val mApi: DemoApi = AppServiceGenerator.createService(
         DemoApi::class.java)
 
     @SuppressLint("CheckResult")
-    fun performRequest(activityId: String?) {
+    fun performRequest(successCallback: SuccessCallback<ApkUpdateInfo>) {
         val requestUrl: String = DemoUrl.URL_DEMO
         // RxJava
         mApi.getData(requestUrl)
@@ -32,20 +33,20 @@ class NetTestRequest(private val viewModel: NetTestViewModel) : JPBaseRequestV2(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-               this.viewModel.name.value = JSON.toJSONString(it.data)
+                successCallback(it.data)
             }, {
                 showToast(it.message)
             })
     }
 
-    fun performRequestSuspend(activityId: String?) {
+    fun performRequestSuspend(successCallback: SuccessCallback<ApkUpdateInfo>) {
         request(
             {
                 delay(1000)
                 val requestUrl: String = DemoUrl.URL_DEMO
                 mApi.getDataSuspend(requestUrl)
             }, { response ->
-                this.viewModel.name.value = JSON.toJSONString(response.data)
+                successCallback(response.data)
             }, { exception ->
                 showToast(exception.message)
             }
@@ -55,7 +56,7 @@ class NetTestRequest(private val viewModel: NetTestViewModel) : JPBaseRequestV2(
     /**
      * 处理耗时任务
      */
-    fun doTask() {
+    fun doTask(successCallback: SuccessCallback<String>) {
         doTask(
             {
                 val requestUrl: String = DemoUrl.URL_DEMO
@@ -67,7 +68,7 @@ class NetTestRequest(private val viewModel: NetTestViewModel) : JPBaseRequestV2(
                     JSON.toJSONString(response1.data) + "\n" + JSON.toJSONString(response2.data)
                 }
             }, { response ->
-                this.viewModel.name.value = response
+                successCallback(response)
             }, { exception ->
                 showToast(exception.message)
             },

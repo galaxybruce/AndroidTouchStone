@@ -7,6 +7,7 @@ import com.galaxybruce.component.app.BaseApplication
 import com.galaxybruce.component.net.AppServiceGenerator
 import com.galaxybruce.component.net.model.AppGenericBean
 import com.galaxybruce.component.ui.jetpack.JPBaseRequest
+import com.galaxybruce.component.ui.jetpack.SuccessCallback
 import com.galaxybruce.login.network.http.LoginApi
 import com.galaxybruce.login.network.http.LoginServerUrl
 import com.galaxybruce.login.ui.mvvm.viewmodel.LoginViewModel
@@ -14,12 +15,12 @@ import com.galaxybruce.main.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class LoginRequest(private val viewModel: LoginViewModel) : JPBaseRequest() {
+class LoginRequest(viewModel: LoginViewModel) : JPBaseRequest(viewModel) {
 
     private val mApi: LoginApi = AppServiceGenerator.createService(LoginApi::class.java)
 
     @SuppressLint("CheckResult")
-    fun loginRequest(account: String?, pwd: String?) {
+    fun loginRequest(account: String?, pwd: String?, successCallback: SuccessCallback<Boolean>) {
         showLoadingProgress()
 
         val requestUrl: String = LoginServerUrl.URL_LOGIN
@@ -28,7 +29,7 @@ class LoginRequest(private val viewModel: LoginViewModel) : JPBaseRequest() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                getUserInfoRequest(account, pwd)
+                getUserInfoRequest(account, pwd, successCallback)
             }, {
                 hideLoadingProgress()
                 showToast(it.message)
@@ -36,7 +37,7 @@ class LoginRequest(private val viewModel: LoginViewModel) : JPBaseRequest() {
     }
 
     @SuppressLint("CheckResult")
-    fun getUserInfoRequest(account: String?, pwd: String?) {
+    fun getUserInfoRequest(account: String?, pwd: String?, successCallback: SuccessCallback<Boolean>) {
         val requestUrl: String = LoginServerUrl.URL_USER_INFO
         mApi.getUserInfo(requestUrl)
             .compose(this.handleEverythingResult<AppGenericBean<AppUserInfo>>(false))
@@ -53,11 +54,11 @@ class LoginRequest(private val viewModel: LoginViewModel) : JPBaseRequest() {
                     this.account = account
                     this.pwd = pwd
                 }
-                viewModel.loginSuccess.value = true
+                successCallback(true)
             }, {
                 showToast(it.message)
                 // todo demo中没有接口，直接返回登录成功
-                viewModel.loginSuccess.value = true
+                successCallback(true)
             })
     }
 }
