@@ -137,4 +137,11 @@ public abstract class JPBaseActivity<B extends ViewDataBinding> extends BaseActi
     public Activity getHostActivity() {
         return this;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mDataBinding.unbind();
+        mDataBinding = null;
+    }
 }

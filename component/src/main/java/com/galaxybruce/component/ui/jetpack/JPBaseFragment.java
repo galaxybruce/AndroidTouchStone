@@ -164,4 +164,11 @@ public abstract class JPBaseFragment<B extends ViewDataBinding> extends BaseFrag
     public Activity getHostActivity() {
         return getActivity();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mDataBinding.unbind();
+        mDataBinding = null;
+    }
 }
